@@ -25,7 +25,7 @@ body {
 
 main {
     flex: 1;
-    margin: 0 16rem;
+    margin: 0 14rem;
 }
 
 @font-face {
@@ -65,4 +65,43 @@ main {
     display: flex;
     flex-direction: column;
     padding-bottom: 2rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.index-img {
+    width: 200px;
+    height: 236px;
+    border-radius: 12px;
+}
+
+.item {
+    padding-right: 2rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 700px 200px;
+}
+
+article {
+    display: flex;
+    flex-direction: column;
+}
+
+.border-left {
+    border-left: 1px solid #000;
+    padding-left: .5rem;
+}
+
+.link {
+    padding: 0;
+}
+
+.link a i {
+    margin-right: .5rem;
+    color: #000;
 }
