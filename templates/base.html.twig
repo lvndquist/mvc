@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav>
+            <a href="{{ path('index') }}">Home</a>
+            <a href="{{ path('about') }}">About</a>
+            <a href="{{ path('report') }}">Report</a>
+        </nav>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+    </body>
+</html>

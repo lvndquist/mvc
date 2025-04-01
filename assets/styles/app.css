@@ -1,0 +1,68 @@
+@import "nav.css";
+
+/*body {
+    margin: 0 auto;
+    max-width: 400px;
+}*/
+
+* {
+    font-family: 'Coolvetica-Rg','Roboto', sans-serif;
+    letter-spacing: 1px;
+}
+
+body, html {
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    margin: 0 16rem;
+}
+
+@font-face {
+    font-family: 'Coolveica-Rg';
+    src: url('../fonts/coolvetica.ttf') format('truetype');
+}
+
+a,
+p,
+td,
+th,
+li,
+dd {
+  word-wrap: break-word;
+  font-family: 'Arial','Roboto', sans-serif;
+}
+
+h1,
+p {
+
+    font-family: 'Coolvetica-Rg','Roboto', sans-serif;
+    color: #111;
+}
+
+h1 {
+    font-size: 1.7rem;
+}
+
+p {
+    font-size: 17.25px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
