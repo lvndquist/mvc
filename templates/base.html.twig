@@ -16,13 +16,23 @@
 
     </head>
     <body>
+
         <nav>
-            <a href="{{ path('index') }}">Home</a>
-            <a href="{{ path('about') }}">About</a>
-            <a href="{{ path('report') }}">Report</a>
+            <a href="{{ path('index') }}" class="{% if app.request.attributes.get('_route') == 'index' %}active{% endif %}">Home</a>
+            <a href="{{ path('about') }}" class="{% if app.request.attributes.get('_route') == 'about' %}active{% endif %}">About</a>
+            <a href="{{ path('report') }}" class="{% if app.request.attributes.get('_route') == 'report' %}active{% endif %}">Report</a>
+            <a href="{{ path('lucky') }}" class="{% if app.request.attributes.get('_route') == 'lucky' %}active{% endif %}">Lucky</a>
+            <a href="{{ path('api') }}" class="{% if app.request.attributes.get('_route') == 'api' %}active{% endif %}">API</a>
         </nav>
+
         <main>
             {% block body %}{% endblock %}
         </main>
+
+        <footer>
+            <p>Copyright &copy; lvndquist</p>
+        </footer>
+
+
     </body>
 </html>

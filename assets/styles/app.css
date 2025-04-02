@@ -25,7 +25,7 @@ body {
 
 main {
     flex: 1;
-    margin: 0 14rem;
+    margin: 0 12rem;
 }
 
 @font-face {
@@ -64,7 +64,6 @@ p {
 main {
     display: flex;
     flex-direction: column;
-    padding-bottom: 2rem;
 }
 
 .container {
@@ -104,4 +103,21 @@ article {
 .link a i {
     margin-right: .5rem;
     color: #000;
+}
+
+footer {
+    width: 100%;
+    background-color: #a387bb;
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer p {
+    color: #fff;
+    margin: 0;
+}
+
+.lucky-img {
+    width: 200px;
+    height: 200px;
 }
