@@ -27,9 +27,7 @@
             <a href="{{ path('card') }}" class="{% if app.request.attributes.get('_route') == 'card' %}active{% endif %}">Card</a>
         </nav>
 
-        <main>
-            {% block body %}{% endblock %}
-        </main>
+        {% block body %}{% endblock %}
 
         <footer>
             <p>Copyright &copy; lvndquist</p>

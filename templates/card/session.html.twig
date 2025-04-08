@@ -3,10 +3,12 @@
 {% block title %}Session{% endblock %}
 
 {% block body %}
-    <h1>Session</h1>
-    <div class = "container column">
-        {{ include('flash.html.twig') }}
-        <a href = "{{path("session_delete")}}">Delete session</a>
-        <pre> {{ dump(session) }}</pre>
-    </div>
+    <main>
+        <h1>Session</h1>
+        <div class = "container column">
+            {{ include('flash.html.twig') }}
+            <a href = "{{path("session_delete")}}">Delete session</a>
+            <pre> {{ dump(session) }}</pre>
+        </div>
+    </main>
 {% endblock %}

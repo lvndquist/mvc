@@ -1,5 +1,6 @@
 @import "nav.css";
 @import "flash.css";
+@import "cards.css";
 
 /*body {
     margin: 0 auto;
@@ -26,7 +27,11 @@ body {
 
 main {
     flex: 1;
-    margin: 0 12rem;
+    margin: 0 8rem;
+}
+
+.small-margin {
+    margin: 0 2rem;
 }
 
 @font-face {

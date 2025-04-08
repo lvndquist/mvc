@@ -3,70 +3,71 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <article>
-        <header>
-            <h1>Redovisning av kursmoment i kursen mvc (DV1608)</h1>
-        </header>
-        <section>
-            <ul class = "report-list">
-                <li><a href = "#kmom01">Kmom01</a></li>
-                <li><a href = "#kmom02">Kmom02</a></li>
-                <li><a href = "#kmom03">Kmom03</a></li>
-                <li><a href = "#kmom04">Kmom04</a></li>
-                <li><a href = "#kmom05">Kmom05</a></li>
-                <li><a href = "#kmom06">Kmom06</a></li>
-                <li><a href = "#kmom10">Kmom10</a></li>
-            </ul>
-        </section>
+    <main>
+        <article>
+            <header>
+                <h1>Redovisning av kursmoment i kursen mvc (DV1608)</h1>
+            </header>
+            <section>
+                <ul class = "report-list">
+                    <li><a href = "#kmom01">Kmom01</a></li>
+                    <li><a href = "#kmom02">Kmom02</a></li>
+                    <li><a href = "#kmom03">Kmom03</a></li>
+                    <li><a href = "#kmom04">Kmom04</a></li>
+                    <li><a href = "#kmom05">Kmom05</a></li>
+                    <li><a href = "#kmom06">Kmom06</a></li>
+                    <li><a href = "#kmom10">Kmom10</a></li>
+                </ul>
+            </section>
 
-        <section id = "kmom01">
-            <h2>Kmom01</h2>
-            <p>Nu kommer jag direkt från kursen, oopython. Så objektorienteringen finns färsk i minnet. I övrigt har jag sedan tidigare även jobbat objektorienterat i språk som Java, Javascript, och C++. Det ska bli intressant att se hur det fungerar med PHP.</p>
+            <section id = "kmom01">
+                <h2>Kmom01</h2>
+                <p>Nu kommer jag direkt från kursen, oopython. Så objektorienteringen finns färsk i minnet. I övrigt har jag sedan tidigare även jobbat objektorienterat i språk som Java, Javascript, och C++. Det ska bli intressant att se hur det fungerar med PHP.</p>
 
-            <p>En klass är en mall som man kan skapa objekt från. Till exempel, om vi har en bil-klass så kan vi använda denna för att skapa objekt av typen bil. Objektet kan sedan ha metoder och attribut. En bil skulle kunna ha en metod: <code>unlock()</code>, och en attribut <code>licencePlate</code>.</p>
-            <p>I PHP finns kapslas metoder or attribut in med hjälp av <code>public</code>, <code>private</code>, och <code>protected</code>. Dessa begränsar hur saker och ting kan nås relativt till klassen. <code>public</code> metoder och attribut kan nås överallt, <code>private</code> innebär att man begränsar metoden eller attributet till klassen, och <code>protected</code> begränsar till klassen och möjliga klasser i klassen.
-            <p>Via arv kan en klass få tillgång till metoder från en annan klass. Vi kan till exempel ha en fordonsklass och en bilklass, där bilklassen kan ärva från fordonsklassen. I detta sammanhang går det även att överlagra metoder, där man vill ha samma metod men med ett annat anpassat beteende beroende på klass.</p>
-            <p>Jag hade inga större problem med strukturen, och jag kände att jag ganska snabbt kom igång. Dock känns det som att det kan bli en del att hålla koll på när man jobbar mer med det. Jag får även intrycket att det inte rör sig om något så "light-weight", när jag kopierade över strukturen från kmom01 så var mappen 120MB.</p>
-            <p>Jag skulle inte påstå att jag dök ner allt för djupt i "PHP The Right Way", men vad jag såg kan den bli användbar när det är något jag funderar på hur man gör. Något jag minns från webtec-kursen, var att jag inte fullt greppade PDO, vilket jag såg att artikeln tog upp. Jag hoppas att det kommer tillfälle att sätta sig in lite djupare i detta denna gång.</p>
-            <p><b>TIL: </b> det blev inte egentligen inte allt för mycket nytt detta moment, men jag antar generellt syntax:en för klasser och objekt i PHP, som jag inte jobbat med tidigare.</p>
-        </section>
+                <p>En klass är en mall som man kan skapa objekt från. Till exempel, om vi har en bil-klass så kan vi använda denna för att skapa objekt av typen bil. Objektet kan sedan ha metoder och attribut. En bil skulle kunna ha en metod: <code>unlock()</code>, och en attribut <code>licencePlate</code>.</p>
+                <p>I PHP finns kapslas metoder or attribut in med hjälp av <code>public</code>, <code>private</code>, och <code>protected</code>. Dessa begränsar hur saker och ting kan nås relativt till klassen. <code>public</code> metoder och attribut kan nås överallt, <code>private</code> innebär att man begränsar metoden eller attributet till klassen, och <code>protected</code> begränsar till klassen och möjliga klasser i klassen.
+                <p>Via arv kan en klass få tillgång till metoder från en annan klass. Vi kan till exempel ha en fordonsklass och en bilklass, där bilklassen kan ärva från fordonsklassen. I detta sammanhang går det även att överlagra metoder, där man vill ha samma metod men med ett annat anpassat beteende beroende på klass.</p>
+                <p>Jag hade inga större problem med strukturen, och jag kände att jag ganska snabbt kom igång. Dock känns det som att det kan bli en del att hålla koll på när man jobbar mer med det. Jag får även intrycket att det inte rör sig om något så "light-weight", när jag kopierade över strukturen från kmom01 så var mappen 120MB.</p>
+                <p>Jag skulle inte påstå att jag dök ner allt för djupt i "PHP The Right Way", men vad jag såg kan den bli användbar när det är något jag funderar på hur man gör. Något jag minns från webtec-kursen, var att jag inte fullt greppade PDO, vilket jag såg att artikeln tog upp. Jag hoppas att det kommer tillfälle att sätta sig in lite djupare i detta denna gång.</p>
+                <p><b>TIL: </b> det blev inte egentligen inte allt för mycket nytt detta moment, men jag antar generellt syntax:en för klasser och objekt i PHP, som jag inte jobbat med tidigare.</p>
+            </section>
 
-        <section id = "kmom02">
-            <h2>Kmom02</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-        </section>
+            <section id = "kmom02">
+                <h2>Kmom02</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            </section>
 
-        <section id = "kmom03">
-            <h2>Kmom03</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            <section id = "kmom03">
+                <h2>Kmom03</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
 
-        </section>
+            </section>
 
-        <section id = "kmom04">
-            <h2>Kmom04</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-        </section>
+            <section id = "kmom04">
+                <h2>Kmom04</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            </section>
 
-        <section id = "kmom05">
-            <h2>Kmom05</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-        </section>
+            <section id = "kmom05">
+                <h2>Kmom05</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            </section>
 
-        <section id = "kmom06">
-            <h2>Kmom06</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-        </section>
+            <section id = "kmom06">
+                <h2>Kmom06</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            </section>
 
-        <section id = "kmom10">
-            <h2>Kmom10</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-            <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-        </section>
-    </article>
-
+            <section id = "kmom10">
+                <h2>Kmom10</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
+                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
+            </section>
+        </article>
+    </main>
 {% endblock %}

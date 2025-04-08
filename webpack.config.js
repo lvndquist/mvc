@@ -10,9 +10,13 @@ Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
-    .setPublicPath('build')
+    .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]'
+    })
 
     /*
      * ENTRY CONFIG

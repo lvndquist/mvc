@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use App\Card\DeckOfCards;
 
 class CardController extends AbstractController
 {
@@ -41,6 +41,29 @@ class CardController extends AbstractController
 
     #[Route("/card", name: "card")]
     public function card(): Response
+    {
+        return $this->render('card/card.html.twig');
+    }
+
+    #[Route("/card/deck", name: "card_deck")]
+    public function cardDeck(): Response
+    {
+        $deck = new DeckOfCards();
+
+        $data = [
+            "deck" => $deck->getCards()
+        ];
+        return $this->render('card/deck.html.twig', $data);
+    }
+
+    #[Route("/card/deck/shuffle", name: "deck_shuffle")]
+    public function deckShuffle(): Response
+    {
+        return $this->render('card/card.html.twig');
+    }
+
+    #[Route("/card/deck/draw", name: "deck_draw")]
+    public function deckDraw(): Response
     {
         return $this->render('card/card.html.twig');
     }

@@ -3,24 +3,26 @@
 {% block title %}About{% endblock %}
 
 {% block body %}
-    <h1>About</h1>
-    <div class = "grid">
-        <div class = "grid-item">
-            <p>
-                Kursen "mvc" är smeknamnet till DV1608, och behandlar objektorienterad PHP-programmering med kända webbramverk, enhetstestning, kodkvalitet och databaskopplingar med objekt relational mapping (ORM).
-            </p>
+    <main>
+        <h1>About</h1>
+        <div class = "grid">
+            <div class = "grid-item">
+                <p>
+                    Kursen "mvc" är smeknamnet till DV1608, och behandlar objektorienterad PHP-programmering med kända webbramverk, enhetstestning, kodkvalitet och databaskopplingar med objekt relational mapping (ORM).
+                </p>
+            </div>
+            <div class = "border-left">
+                <p class = "link">
+                    <a href="https://github.com/dbwebb-se/mvc/" target="_blank">
+                        <i class="fab fa-github"></i>Kursens repo
+                    </a>
+                </p>
+                <p class = "link">
+                    <a href="https://github.com/lvndquist/mvc" target="_blank">
+                        <i class="fab fa-github"></i>Eget repo
+                    </a>
+                </p>
+            </div>
         </div>
-        <div class = "border-left">
-            <p class = "link">
-                <a href="https://github.com/dbwebb-se/mvc/" target="_blank">
-                    <i class="fab fa-github"></i>Kursens repo
-                </a>
-            </p>
-            <p class = "link">
-                <a href="https://github.com/lvndquist/mvc" target="_blank">
-                    <i class="fab fa-github"></i>Eget repo
-                </a>
-            </p>
-        </div>
-    </div>
+    </main>
 {% endblock %}
