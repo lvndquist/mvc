@@ -1,4 +1,5 @@
 @import "nav.css";
+@import "flash.css";
 
 /*body {
     margin: 0 auto;
@@ -69,6 +70,10 @@ main {
 .container {
     display: flex;
     flex-direction: row;
+}
+
+.column {
+    flex-direction: column;
 }
 
 .index-img {

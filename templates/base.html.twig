@@ -23,6 +23,8 @@
             <a href="{{ path('report') }}" class="{% if app.request.attributes.get('_route') == 'report' %}active{% endif %}">Report</a>
             <a href="{{ path('lucky') }}" class="{% if app.request.attributes.get('_route') == 'lucky' %}active{% endif %}">Lucky</a>
             <a href="{{ path('api') }}" class="{% if app.request.attributes.get('_route') == 'api' %}active{% endif %}">API</a>
+            <a href="{{ path('session') }}" class="{% if app.request.attributes.get('_route') == 'session' %}active{% endif %}">Session</a>
+            <a href="{{ path('card') }}" class="{% if app.request.attributes.get('_route') == 'card' %}active{% endif %}">Card</a>
         </nav>
 
         <main>

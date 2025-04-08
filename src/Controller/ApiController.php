@@ -7,14 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
 class ApiController extends AbstractController
 {
-
     #[Route("/api", name: "api")]
     public function api(): Response
     {
-        return $this->render('api.html.twig');
+        return $this->render('report/api.html.twig');
     }
 
     #[Route("/api/quote", name: "quote")]
@@ -36,7 +34,6 @@ class ApiController extends AbstractController
             "date" => date("Y-m-d"),
             "generated" => date("Y-m-d H:i:s")
             ]
-
         );
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
