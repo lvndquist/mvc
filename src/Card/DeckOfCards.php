@@ -17,6 +17,11 @@ class DeckOfCards
         }
     }
 
+    public function shuffle(): void
+    {
+        shuffle($this->cards);
+    }
+
     public function getCards(): array
     {
         return $this->cards;
