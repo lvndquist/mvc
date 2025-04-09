@@ -131,3 +131,8 @@ footer p {
     width: 200px;
     height: 200px;
 }
+
+.session-delete {
+    display: inline;
+    width: 130px;
+}

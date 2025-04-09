@@ -2,11 +2,32 @@
     background-color: #006400;
     padding: 2rem;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: row;
     border-radius: 30px;
     margin: 1rem auto;
+    min-width: 1200px;
     max-width: 1200px;
+    min-height: 860px;
+}
+
+.playing-cards {
+    /*justify-content: center;*/
+    margin: 0 auto;
+    height: auto;
+    width: auto;
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-right: 3rem;
+}
+
+.side h1 {
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
 
 .deck-row {
@@ -22,6 +43,28 @@
     height: 125px;
     background: url("../images/deck.png") no-repeat;
     background-size: 1200px auto;
+    margin: .5rem;
+}
+
+.card-back {
+    display: inline-block;
+    padding: 0;
+    border-radius: 6px;
+    width: 84px;
+    height: 125px;
+    background: url("../images/backside.jpg") no-repeat;
+    background-size: 88px auto;
+    background-position: -2px -4.5px;
+    margin: .5rem;
+}
+
+.card-empty {
+    display: inline-block;
+    padding: 0;
+    border-radius: 6px;
+    width: 84px;
+    height: 125px;
+    border: 1px solid #000;
     margin: .5rem;
 }
 
@@ -84,3 +127,26 @@
 .deck-sprite.card-3-11 { background-position: -925px  -410px; }
 .deck-sprite.card-3-12 { background-position: -1017px -410px; }
 .deck-sprite.card-3-13 { background-position: -1109px -410px; }
+
+.player {
+    padding: 1rem;
+    border: 1px solid white;
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.p-0 {
+    border-color: white;
+}
+
+.p-1 {
+    border-color: CornflowerBlue;
+}
+
+.p-2 {
+    border-color: LightCoral;
+}
+
+.p-3 {
+    border-color: Orange;
+}

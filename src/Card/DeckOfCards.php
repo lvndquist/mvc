@@ -29,6 +29,10 @@ class DeckOfCards
 
     public function draw(): Card
     {
+        /*
+        if ($this->isEmpty()) {
+            throw new \Exception("Empty deck!");
+        }*/
         return array_pop($this->cards);
     }
 
@@ -42,7 +46,7 @@ class DeckOfCards
 
     public function size(): int
     {
-        return count($this-cards);
+        return count($this->cards);
     }
 
 }

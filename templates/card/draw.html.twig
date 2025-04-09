@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Draw{% endblock %}
+
+{% block body %}
+    <main class = "small-margin">
+        <div class="deck-container">
+            <div class="side">
+                <div class="card{{ isEmpty == 1 ? '-empty' : '-back' }}"></div>
+                    <h1>{{ size }}</h1>
+            </div>
+
+            <div class="playing-cards">
+                {% for card in hands %}
+                    <div class="deck-sprite card-{{ card.toString() }}"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

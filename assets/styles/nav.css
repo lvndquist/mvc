@@ -1,6 +1,7 @@
 nav {
     background-color: #a387bb;
     padding: .6rem 0;
+    width: auto;
 }
 
 nav a {

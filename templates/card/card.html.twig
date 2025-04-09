@@ -10,6 +10,8 @@
             <li><a href = "{{path('card_deck')}}">/card/deck</a></li>
             <li><a href = "{{path('deck_shuffle')}}">/card/deck/shuffle</a></li>
             <li><a href = "{{path('deck_draw')}}">/card/deck/draw</a></li>
+            <li><a href = "{{path('deck_draw_number', {"number": 2})}}">/card/deck/draw/:number</a></li>
+            <li><a href = "{{path('deck_deal_players_cards', {"players": 4, "cards": 6})}}">/card/deck/deal/:players/:cards</a></li>
         </ul>
     </main>
 {% endblock %}

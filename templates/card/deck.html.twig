@@ -5,9 +5,11 @@
 {% block body %}
     <main class = "small-margin">
         <div class = "deck-container">
-            {% for card in deck %}
-                <div class="deck-sprite card-{{card.toString()}}"></div>
-            {% endfor %}
+            <div class = "playing-cards">
+                {% for card in deck %}
+                    <div class="deck-sprite card-{{card.toString()}}"></div>
+                {% endfor %}
+            </div>
         </div>
     </main>
 {% endblock %}
