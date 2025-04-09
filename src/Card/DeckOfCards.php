@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Card;
-use App\Card\Card;
+use App\Card\CardGraphic;
 
 class DeckOfCards
 {
@@ -12,7 +12,7 @@ class DeckOfCards
         $colors = [0, 1, 2, 3];
         foreach ($colors as $color) {
             for ($val = 1; $val < 14; $val++) {
-                $this->cards[] = new Card($val, $color);
+                $this->cards[] = new CardGraphic($val, $color);
             }
         }
     }
