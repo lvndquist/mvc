@@ -12,5 +12,14 @@
             <li><a href = "{{path('deck_draw_number', {"number": 2})}}">/card/deck/draw/:number</a>Draw &lt;number&gt; of cards from deck.</li>
             <li><a href = "{{path('deck_deal_players_cards', {"players": 4, "cards": 6})}}">/card/deck/deal/:players/:cards</a>Deal &lt;cards&gt; to &lt;players&gt;.</li>
         </ul>
+        <div class = "uml-container">
+            <img class = "uml-img" src="{{ asset('img/UML.png') }}" alt="">
+            <div>
+                <p>Det finns fyra klasser. <b>CardGraphic:</b> grafisk representation av ett kort, <b>Card</b>: basklass för ett kort, <b>CardHand</b>: en hand med kort, och <b>DeckOfCards</b>: en kortlek.</p>
+                <p><b>CardGraphic</b> utökar (extends) <b>Card</b>, vilket gör att vi lätt kan använda en grafisk representation av kort eller en text-baserad representation.</p>
+                <p>Mellan <b>Card</b> och <b>CardHand</b> gäller komposition, en stark relation där kort inte existerar utanför en hand.</p>
+                <p>Mellan <b>Card</b> och <b>DeckOfCards</b> gäller komposition, en stark relation där kort inte existerar utanför en kortlek.</p>
+            </div>
+        </div>
     </main>
 {% endblock %}

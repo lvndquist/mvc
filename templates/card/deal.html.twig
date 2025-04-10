@@ -6,7 +6,7 @@
     <main class = "small-margin">
         <div class="deck-container">
             <div class="side">
-                <div class="card{{ isEmpty == 1 ? '-empty' : '-back' }}"></div>
+                <div style="background-image: url({{ asset('img/backside.jpg') }})" class="card{{ isEmpty == 1 ? '-empty' : '-back' }}"></div>
                     <h1>{{ size }}</h1>
             </div>
 
@@ -14,7 +14,7 @@
                 {% for hand in hands %}
                     <div class = "player p-{{loop.index0}}">
                         {% for card in hand.getCards() %}
-                            <div class="deck-sprite card-{{ card.toString() }}"></div>
+                            <div style="background-image: url({{ asset('img/deck.png') }})" class="deck-sprite card-{{ card.toString() }}"></div>
                         {% endfor %}
                     </div>
                 {% endfor %}

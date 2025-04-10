@@ -41,7 +41,7 @@
     border-radius: 6px;
     width: 84px;
     height: 125px;
-    background: url("../images/deck.png") no-repeat;
+    /*background: url("../images/deck.png") no-repeat;*/
     background-size: 1200px auto;
     margin: .5rem;
 }
@@ -52,7 +52,7 @@
     border-radius: 6px;
     width: 84px;
     height: 125px;
-    background: url("../images/backside.jpg") no-repeat;
+    /*background: url("../images/backside.jpg") no-repeat;*/
     background-size: 88px auto;
     background-position: -2px -4.5px;
     margin: .5rem;
@@ -163,4 +163,18 @@ ul.card-list li {
     gap: 1rem;
     align-items: start;
     margin-bottom: 0.5rem;
+}
+
+.uml-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.uml-img {
+    width: 500px;
+    height: 600px;
+    border: 1px solid #000;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
