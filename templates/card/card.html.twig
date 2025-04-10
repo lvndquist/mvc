@@ -5,13 +5,12 @@
 {% block body %}
     <main>
         <h1>Card</h1>
-        <ul>
-            <li><a href = "{{path('card')}}">/card</a></li>
-            <li><a href = "{{path('card_deck')}}">/card/deck</a></li>
-            <li><a href = "{{path('deck_shuffle')}}">/card/deck/shuffle</a></li>
-            <li><a href = "{{path('deck_draw')}}">/card/deck/draw</a></li>
-            <li><a href = "{{path('deck_draw_number', {"number": 2})}}">/card/deck/draw/:number</a></li>
-            <li><a href = "{{path('deck_deal_players_cards', {"players": 4, "cards": 6})}}">/card/deck/deal/:players/:cards</a></li>
+        <ul class = "card-list">
+            <li><a href = "{{path('card_deck')}}">/card/deck</a> Show a complete card deck in order.</li>
+            <li><a href = "{{path('deck_shuffle')}}">/card/deck/shuffle</a> Show a complete card deck shuffled.</li>
+            <li><a href = "{{path('deck_draw')}}">/card/deck/draw</a> Draw a single card from the card deck.</li>
+            <li><a href = "{{path('deck_draw_number', {"number": 2})}}">/card/deck/draw/:number</a>Draw &lt;number&gt; of cards from deck.</li>
+            <li><a href = "{{path('deck_deal_players_cards', {"players": 4, "cards": 6})}}">/card/deck/deal/:players/:cards</a>Deal &lt;cards&gt; to &lt;players&gt;.</li>
         </ul>
     </main>
 {% endblock %}

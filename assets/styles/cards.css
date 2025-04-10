@@ -150,3 +150,17 @@
 .p-3 {
     border-color: Orange;
 }
+
+ul.card-list {
+    margin-top: 0;
+    list-style: none;
+    padding: 0;
+}
+
+ul.card-list li {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 1rem;
+    align-items: start;
+    margin-bottom: 0.5rem;
+}
