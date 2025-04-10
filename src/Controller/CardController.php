@@ -11,7 +11,6 @@ use App\Card\CardHand;
 
 class CardController extends AbstractController
 {
-
     #[Route("/card", name: "card")]
     public function card(): Response
     {
@@ -80,8 +79,8 @@ class CardController extends AbstractController
         }
         $isEmpty = $deck->isEmpty();
         if (!$isEmpty) {
-            for($i = 0; $i < $number; $i++) {
-                if(!$isEmpty) {
+            for ($i = 0; $i < $number; $i++) {
+                if (!$isEmpty) {
                     $card = $deck->draw();
                     $hands[0] -> addCard($card);
                     $isEmpty = $deck->isEmpty();
@@ -112,7 +111,7 @@ class CardController extends AbstractController
         $isEmpty = false;
         for ($j = 0; $j < $players; $j++) {
             for ($i = 0; $i < $cards; $i++) {
-                if(!$isEmpty) {
+                if (!$isEmpty) {
                     $card = $deck->draw();
                     $hands[$j] -> addCard($card);
                     $isEmpty = $deck->isEmpty();

@@ -9,12 +9,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionController extends AbstractController
 {
-
     #[Route("/session", name: "session", methods: ['GET'])]
     public function session(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
 
         $sessionData = $session -> all();
         $data = [
@@ -26,8 +24,7 @@ class SessionController extends AbstractController
     #[Route("/session/delete", name: "session_delete", methods: ['GET'])]
     public function deleteSession(
         SessionInterface $session
-    ): Response
-    {
+    ): Response {
         $session->clear();
 
         $this->addFlash(

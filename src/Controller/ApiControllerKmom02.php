@@ -7,13 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 use App\Card\DeckOfCards;
 use App\Card\CardHand;
 
 class ApiControllerKmom02 extends AbstractController
 {
-
     #[Route("/api/deck", name: "get_deck")]
     public function deck(): Response
     {
@@ -96,8 +94,8 @@ class ApiControllerKmom02 extends AbstractController
             $hands = $session->get("hands");
         }
         $isEmpty = $deck->isEmpty();
-        for($i = 0; $i < $number; $i++) {
-            if(!$isEmpty) {
+        for ($i = 0; $i < $number; $i++) {
+            if (!$isEmpty) {
                 $card = $deck->draw();
                 $hands[0] -> addCard($card);
                 $isEmpty = $deck->isEmpty();
@@ -134,7 +132,7 @@ class ApiControllerKmom02 extends AbstractController
         $isEmpty = false;
         for ($j = 0; $j < $players; $j++) {
             for ($i = 0; $i < $cards; $i++) {
-                if(!$isEmpty) {
+                if (!$isEmpty) {
                     $card = $deck->draw();
                     $hands[$j] -> addCard($card);
                     $player_hands[$j][$i] = $card->toString();

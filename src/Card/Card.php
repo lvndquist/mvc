@@ -47,4 +47,3 @@ class Card
         return $color . $value;
     }
 }
-

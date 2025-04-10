@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Card;
+
 use App\Card\CardGraphic;
 
 class DeckOfCards
