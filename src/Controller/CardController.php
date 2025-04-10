@@ -21,7 +21,7 @@ class CardController extends AbstractController
     #[Route("/card/deck", name: "card_deck")]
     public function cardDeck(): Response
     {
-        $deck = new DeckOfCards();
+        $deck = new DeckOfCards(true);
 
         $data = [
             "deck" => $deck->getCards()
@@ -103,7 +103,7 @@ class CardController extends AbstractController
     #[Route("/card/deck/deal/{players<\d+>}/{cards<\d+>}", name: "deck_deal_players_cards")]
     public function dealPlayersCards(int $players, int $cards, SessionInterface $session): Response
     {
-        $deck = new DeckOfCards();
+        $deck = new DeckOfCards(true);
         $deck->shuffle();
         $hands = [];
         for ($i = 0; $i < $players; $i++) {
@@ -134,7 +134,7 @@ class CardController extends AbstractController
 
     public function setSession(SessionInterface $session): void
     {
-        $deck = new DeckOfCards();
+        $deck = new DeckOfCards(true);
         $hands = [new CardHand()];
         $deck->shuffle();
         $session->set("deck", $deck);

@@ -8,10 +8,30 @@
         <ul class = "api-list">
             <li><a href = "{{path('quote')}}">/api/quote</a> Presents a random quote.</li>
             <li><a href = "{{path('get_deck')}}">/api/deck</a> Present a sorted card deck.</li>
-            <li><a href = "{{path('post_deck_shuffle')}}">/api/deck/shuffle</a> Shuffle card deck.</li>
-            <li><a href = "{{path('post_deck_draw')}}">/api/deck/draw</a> Draw a card from a card deck.</li>
-            <li><a href = "{{path('post_deck_draw_number', {"number": 2})}}">/api/deck/draw/:number</a> Draw &lt;number&gt; of cards from a card deck.</li>
-            <li><a href = "{{path('post_deck_deal_players_cards', {"players": 4, "cards": 6})}}">/api/deck/deal/:players/:cards</a> Deal number of &lt;cards&gt; to players> from a card deck.</li>
+            <li>
+                <form action="{{path('post_deck_shuffle')}}" method="POST">
+                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/shuffle</a>
+                </form>
+                Shuffle card deck.
+            </li>
+            <li>
+                <form action="{{path('post_deck_draw')}}" method="POST">
+                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/draw</a>
+                </form>
+                Draw a card from card deck.
+            </li>
+            <li>
+                <form action="{{path('post_deck_draw_number', {"number": 3})}}" method="POST">
+                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/draw/:number</a>
+                </form>
+                Draw &lt;number&gt; of cards from card deck.
+            </li>
+            <li>
+                <form action="{{path('post_deck_deal_players_cards', {"players": 4, "cards": 6})}}" method="POST">
+                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/deal/:players/:cards</a>
+                </form>
+                Deal number of &lt;cards&gt; to &lt;players&gt; from a card deck.
+            </li>
         </ul>
     </main>
 {% endblock %}
