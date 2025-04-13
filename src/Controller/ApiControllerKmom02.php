@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -100,9 +101,11 @@ class ApiControllerKmom02 extends AbstractController
         return $response;
     }
 
-    #[Route("/api/deck/draw/{number<\d+>}", name: "post_deck_draw_number", methods: ["POST"])]
-    public function drawNumber(SessionInterface $session, $number): Response
+    #[Route("/api/deck/draw/", name: "post_deck_draw_number", methods: ["POST"])]
+    public function drawNumber(SessionInterface $session, Request $request): Response
     {
+        $number = $request->request->get('num_cards');
+
         $deck = $session->get("deck");
         $hands = $session->get("hands");
         if (!$deck || !$hands) {

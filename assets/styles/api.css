@@ -11,3 +11,15 @@ ul.api-list li {
     align-items: start;
     margin-bottom: 0.5rem;
 }
+.url-input-container {
+    display: flex;
+
+}
+.url-input {
+    border: none;
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    text-decoration: underline;
+    color: blue;
+}

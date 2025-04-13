@@ -21,10 +21,11 @@
                 Draw a card from card deck.
             </li>
             <li>
-                <form action="{{path('post_deck_draw_number', {"number": 3})}}" method="POST">
-                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/draw/:number</a>
+                <form class = "url-input-container" action="{{path('post_deck_draw_number')}}" method="POST">
+                    <a href="javascript:;" onclick="this.parentNode.submit()">/api/deck/draw/</a>
+                    <input class = "url-input" type="number" name="num_cards" min="1" max="52" value="3">
                 </form>
-                Draw &lt;number&gt; of cards from card deck.
+                Draw &lt;number&gt; of cards from card deck. Note: you can change the number by clicking on it.
             </li>
             <li>
                 <form action="{{path('post_deck_deal_players_cards', {"players": 4, "cards": 6})}}" method="POST">
