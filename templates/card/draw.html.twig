@@ -6,7 +6,11 @@
     <main class = "small-margin">
         <div class="deck-container">
             <div class="side">
-                <div style="background-image: url({{ asset('img/backside.jpg') }})" class="card{{ isEmpty == 1 ? '-empty' : '-back' }}"></div>
+                {% if isEmpty == 1 %}
+                    <div class="card-empty"></div>
+                {% else %}
+                    <div style="background-image: url({{ asset('img/backside.jpg') }})" class="card-back"></div>
+                {% endif %}
                     <h1>{{ size }}</h1>
             </div>
 

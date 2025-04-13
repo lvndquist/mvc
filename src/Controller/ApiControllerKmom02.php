@@ -13,14 +13,31 @@ use App\Card\CardHand;
 class ApiControllerKmom02 extends AbstractController
 {
     #[Route("/api/deck", name: "get_deck")]
-    public function deck(): Response
+    public function deck(SessionInterface $session): Response
     {
-        $deck = new DeckOfCards(false);
+        $deck = $session->get("deck");
+
+        if (!$deck) {
+            $this->setSession($session);
+            $deck = $session->get("deck");
+        }
         $cards = [];
         foreach ($deck->getCards() as $card) {
-            $cards[] = $card->toString();
+            $color = $card->getColor();
+            $value = $card->getValue();
+            $cards[] = [$card, $color, $value];
         }
-        $response = new JsonResponse(["deck" => $cards]);
+        usort($cards, function($i, $j) {
+            if ($i[1] === $j[1]) {
+                return $i[2] <=> $j[2];
+            }
+            return $i[1] <=> $j[1];
+        });
+        $sortedDeck = [];
+        foreach ($cards as $card) {
+            $sortedDeck[] = $card[0]->toString();
+        }
+        $response = new JsonResponse(["deck" => $sortedDeck]);
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
         );
