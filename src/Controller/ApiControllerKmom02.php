@@ -27,7 +27,7 @@ class ApiControllerKmom02 extends AbstractController
             $value = $card->getValue();
             $cards[] = [$card, $color, $value];
         }
-        usort($cards, function($i, $j) {
+        usort($cards, function ($i, $j) {
             if ($i[1] === $j[1]) {
                 return $i[2] <=> $j[2];
             }
