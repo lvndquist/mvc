@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Game{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Tjugoett</h1>
+        <div>
+            <p>Tjugoett är ett kortspel som kan ses som den svenska varianten av det internationellt kända spelet Black Jack. Den främsta skillnaden mellan de två spelen ligger i hur korten värderas samt hur spelet mot bankiren fungerar. I tjugoett spelar bankiren nämligen mot en spelare i taget, till skillnad från Black Jack där bankiren spelar mot samtliga spelare samtidigt.</p>
+            <p>Spelets mål är att med hjälp av två eller fler kort nå summan 21, eller komma så nära som möjligt utan att överstiga den. Kortens värde är följande: ess räknas 1, kung är värd 13, dam 12 och knekt 11. Övriga nummerkort motsvarar sitt tryckta värde.</p>
+            <p><a href = "{{path('init')}}">Starta spelet</a></p>
+            <p><a href = "{{path('doc')}}">Dokumentation</a></p>
+        </div>
+    </main>
+{% endblock %}
