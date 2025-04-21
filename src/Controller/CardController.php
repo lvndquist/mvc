@@ -20,39 +20,51 @@ class CardController extends AbstractController
     #[Route("/card/deck", name: "card_deck")]
     public function cardDeck(SessionInterface $session): Response
     {
+        /** @var DeckOfCards|null $deck */
         $deck = $session->get("deck");
 
         if (!$deck) {
             $this->setSession($session);
             $deck = $session->get("deck");
         }
-        $cards = [];
-        foreach ($deck->getCards() as $card) {
-            $color = $card->getColor();
-            $value = $card->getValue();
-            $cards[] = [$card, $color, $value];
-        }
-        usort($cards, function ($i, $j) {
-            if ($i[1] === $j[1]) {
-                return $i[2] <=> $j[2];
+
+
+        if ($deck instanceof DeckOfCards) {
+            $cards = [];
+            foreach ($deck->getCards() as $card) {
+                $color = $card->getColor();
+                $value = $card->getValue();
+                $cards[] = [$card, $color, $value];
             }
-            return $i[1] <=> $j[1];
-        });
-        $sortedDeck = [];
-        foreach ($cards as $card) {
-            $sortedDeck[] = $card[0];
+            usort($cards, function ($card1, $card2) {
+                if ($card1[1] === $card2[1]) {
+                    return $card1[2] <=> $card2[2];
+                }
+                return $card1[1] <=> $card2[1];
+            });
+            $sortedDeck = [];
+            foreach ($cards as $card) {
+                $sortedDeck[] = $card[0];
+            }
+
+            $data = [
+                "deck" => $sortedDeck
+            ];
+            return $this->render('card/deck.html.twig', $data);
         }
 
-        $data = [
-            "deck" => $sortedDeck
-        ];
-        return $this->render('card/deck.html.twig', $data);
+        $this->addFlash(
+            'warning',
+            'Invalid deck.'
+        );
+        return $this->render('card/card.html.twig');
     }
 
     #[Route("/card/deck/shuffle", name: "deck_shuffle")]
     public function deckShuffle(SessionInterface $session): Response
     {
         $this->setSession($session);
+        /** @var DeckOfCards $deck */
         $deck = $session->get("deck");
         $data = [
             "deck" => $deck->getCards()
@@ -63,66 +75,96 @@ class CardController extends AbstractController
     #[Route("/card/deck/draw", name: "deck_draw")]
     public function deckDraw(SessionInterface $session): Response
     {
+        /** @var DeckOfCards|null $deck */
         $deck = $session->get("deck");
+        /** @var CardHand[]|null $hands*/
         $hands = $session->get("hands");
         if (!$deck || !$hands) {
             $this->setSession($session);
             $deck = $session->get("deck");
             $hands = $session->get("hands");
         }
-        $isEmpty = $deck->isEmpty();
-        if (!$isEmpty) {
-            $card = $deck->draw();
-            $hands[0] -> addCard($card);
+
+        if ($deck instanceof DeckOfCards
+            && is_array($hands)
+            && isset($hands[0])
+            && $hands[0] instanceof CardHand
+        ) {
             $isEmpty = $deck->isEmpty();
+            if (!$isEmpty) {
+                $card = $deck->draw();
+                $hands[0] -> addCard($card);
+                $isEmpty = $deck->isEmpty();
+            }
+
+            $data = [
+                "hands" => $hands[0]->getCards(),
+                "size" => $deck->size(),
+                "isEmpty" => $isEmpty
+            ];
+
+            $session->set("deck", $deck);
+            $session->set("hands", $hands);
+            return $this->render('card/draw.html.twig', $data);
         }
 
-        $data = [
-            "hands" => $hands[0]->getCards(),
-            "size" => $deck->size(),
-            "isEmpty" => $isEmpty
-        ];
-
-        $session->set("deck", $deck);
-        $session->set("hands", $hands);
-        return $this->render('card/draw.html.twig', $data);
+        $this->addFlash(
+            'warning',
+            'Invalid deck or hand.'
+        );
+        return $this->render('card/card.html.twig');
     }
 
     #[Route("/card/deck/draw/{number<\d+>}", name: "deck_draw_number")]
     public function deckDrawNumber(int $number, SessionInterface $session): Response
     {
+        /** @var DeckOfCards|null $deck */
         $deck = $session->get("deck");
+        /** @var CardHand[]|null $hands*/
         $hands = $session->get("hands");
         if (!$deck || !$hands) {
             $this->setSession($session);
             $deck = $session->get("deck");
             $hands = $session->get("hands");
         }
-        $isEmpty = $deck->isEmpty();
-        if (!$isEmpty) {
-            for ($i = 0; $i < $number; $i++) {
-                if (!$isEmpty) {
-                    $card = $deck->draw();
-                    $hands[0] -> addCard($card);
-                    $isEmpty = $deck->isEmpty();
+
+        if ($deck instanceof DeckOfCards
+            && is_array($hands)
+            && $hands[0] instanceof CardHand
+        ) {
+            $isEmpty = $deck->isEmpty();
+            if (!$isEmpty) {
+                for ($i = 0; $i < $number; $i++) {
+                    if (!$isEmpty) {
+                        $card = $deck->draw();
+                        $hands[0] -> addCard($card);
+                        $isEmpty = $deck->isEmpty();
+                    }
                 }
             }
+
+            $data = [
+                "hands" => $hands[0]->getCards(),
+                "size" => $deck->size(),
+                "isEmpty" => $isEmpty
+            ];
+
+            $session->set("deck", $deck);
+            $session->set("hands", $hands);
+            return $this->render('card/draw.html.twig', $data);
         }
 
-        $data = [
-            "hands" => $hands[0]->getCards(),
-            "size" => $deck->size(),
-            "isEmpty" => $isEmpty
-        ];
-
-        $session->set("deck", $deck);
-        $session->set("hands", $hands);
-        return $this->render('card/draw.html.twig', $data);
+        $this->addFlash(
+            'warning',
+            'Invalid deck or hand.'
+        );
+        return $this->render('card/card.html.twig');
     }
 
     #[Route("/card/deck/deal/{players<\d+>}/{cards<\d+>}", name: "deck_deal_players_cards")]
     public function dealPlayersCards(int $players, int $cards, SessionInterface $session): Response
     {
+        /** @var DeckOfCards $deck */
         $deck = new DeckOfCards(true);
         $deck->shuffle();
         $hands = [];

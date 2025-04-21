@@ -6,6 +6,8 @@ use App\Card\Card;
 
 class CardHand
 {
+
+    /** @var Card[] */
     private array $cards;
 
     public function __construct()
@@ -18,6 +20,7 @@ class CardHand
         $this->cards[] = $card;
     }
 
+    /** @return array<Card> */
     public function getCards(): array
     {
         return $this->cards;
@@ -27,13 +30,16 @@ class CardHand
     {
         $color = $card->getColor();
         $value = $card->getValue();
+        $status = false;
         foreach ($this->cards as $index => $currentCard) {
             if ($currentCard->getColor() === $color && $currentCard->getValue() === $value) {
-                unset($cards[$index]);
+                unset($this->cards[$index]);
+                $status = true;
                 break;
             }
         }
         $this->cards = array_values($this->cards);
+        return $status;
     }
 
 }

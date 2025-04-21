@@ -5,6 +5,7 @@
 {% block body %}
     <main>
         <h1>Card</h1>
+        {{ include('flash.html.twig') }}
         <ul class = "card-list">
             <li><a href = "{{path('card_deck')}}">/card/deck</a> Show a complete card deck in order.</li>
             <li><a href = "{{path('deck_shuffle')}}">/card/deck/shuffle</a> Show a complete card deck shuffled.</li>

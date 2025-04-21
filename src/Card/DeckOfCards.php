@@ -3,11 +3,16 @@
 namespace App\Card;
 
 use App\Card\CardGraphic;
+use Exception;
 
 class DeckOfCards
 {
+    /** @var Card[] */
     private array $cards;
 
+    /**
+     * @SuppressWarnings("PHPMD.ElseExpression")
+     */
     public function __construct(bool $graphic)
     {
         $colors = [0, 1, 2, 3];
@@ -27,6 +32,7 @@ class DeckOfCards
         shuffle($this->cards);
     }
 
+    /** @return array<Card> */
     public function getCards(): array
     {
         return $this->cards;
@@ -34,16 +40,17 @@ class DeckOfCards
 
     public function draw(): Card
     {
-        /*
         if ($this->isEmpty()) {
-            throw new \Exception("Empty deck!");
-        }*/
-        return array_pop($this->cards);
+            throw new Exception("Empty deck!");
+        }
+        /** @var Card $card */
+        $card = array_pop($this->cards);
+        return $card;
     }
 
     public function isEmpty(): bool
     {
-        if ($this->size($this->cards) === 0) {
+        if ($this->size() === 0) {
             return true;
         }
         return false;
