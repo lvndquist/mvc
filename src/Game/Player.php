@@ -3,24 +3,26 @@
 namespace App\Game;
 
 use App\Card\CardHand;
+use App\Card\Card;
+
 use Exception;
 
 class Player
 {
     /** @var CardHand */
-    private CardHand $cards;
+    private CardHand $hand;
 
     private int $score;
 
     public function __construct()
     {
-        $this->cards= new CardHand();
-        $this->score= 0;
+        $this->hand = new CardHand();
+        $this->score = 0;
     }
 
-    public function getCards(): CardHand
+    public function getHand(): array
     {
-        return $this->cards;
+        return $this->hand->getCards();
     }
 
     public function getScore(): int
@@ -28,12 +30,10 @@ class Player
         return $this->score;
     }
 
-    public function draw(): Card
+    public function addCard($card): void
     {
-        $card = $this->deck->draw();
-        $cardValue = $card->getValue();
-        $this->score += $cardValue;
-        $this->cards->addCard($card);
-        return $card;
+        $this->hand->addCard($card);
+        $this->score += $card->getValue();
     }
+
 }

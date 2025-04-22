@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Deal{% endblock %}
+
+{% block body %}
+    <main class = "small-margin">
+        {% if gameIsOver %}
+            <p>game is over</p>
+            <p>{{ winner == 0 ? 'Bank' : 'Player' }} wins!</p>
+        {% endif %}
+        <div class="game-container">
+            <div class="game-side">
+                {% if deck.isEmpty() == 1 %}
+                    <div class="card-empty"></div>
+                {% else %}
+                    <div style="background-image: url({{ asset('img/backside.jpg') }})" class="card-back"></div>
+                {% endif %}
+                    <h1>{{ deck.size() }}</h1>
+            </div>
+
+            <div class="playing-cards">
+                    <div class = "game-player p-0">
+                        {% for card in bank.getHand() %}
+                            <div style="background-image: url({{ asset('img/deck.png') }})" class="deck-sprite card-{{ card.toString() }}"></div>
+                        {% endfor %}
+                        <div class = "info-container bank-color"><p>Bank</p><p>{{bank.getScore()}}</p></div>
+                    </div>
+
+                    <div class = "game-player p-1">
+                        <div class = "info-container player-color"><p>Player</p><p>{{player.getScore()}}</p></div>
+                        {% for card in player.getHand() %}
+                            <div style="background-image: url({{ asset('img/deck.png') }})" class="deck-sprite card-{{ card.toString() }}"></div>
+                        {% endfor %}
+                    </div>
+            </div>
+
+            <form class = "controls-container" method="post" action="">
+                <input type="submit" name="draw" value="draw"
+                    onClick="this.form.action='{{ path('draw') }}';"
+                >
+
+                <input type="submit" name="stop" value="stop"
+                    onClick="this.form.action='{{ path('stop') }}';"
+                >
+            </form>
+
+        </div>
+    </main>
+{% endblock %}

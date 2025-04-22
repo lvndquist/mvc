@@ -136,19 +136,23 @@
 }
 
 .p-0 {
-    border-color: white;
+    border-color: white !important;
+    color: white;
 }
 
 .p-1 {
-    border-color: CornflowerBlue;
+    border-color: CornflowerBlue !important;
+    color: CornflowerBlue;
 }
 
 .p-2 {
-    border-color: LightCoral;
+    border-color: LightCoral !important;
+    color: LightCoral;
 }
 
 .p-3 {
-    border-color: Orange;
+    border-color: Orange !important;
+    color: Orange;
 }
 
 ul.card-list {

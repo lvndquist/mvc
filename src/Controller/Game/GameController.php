@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Card\DeckOfCards;
-use App\Card\CardHand;
+use App\Game\GameState;
 
 class GameController extends AbstractController
 {
@@ -24,24 +24,48 @@ class GameController extends AbstractController
     }
 
     #[Route("/game/init", name: "init")]
-    public function init(): Response
+    public function init(SessionInterface $session): Response
     {
-
+        $session->clear();
+        $gameState = new GameState();
+        $session->set("gameState", $gameState);
         return $this->redirectToRoute('board');
     }
 
     #[Route("/game/board", name: "board")]
-    public function board(): Response
+    public function board(SessionInterface $session): Response
     {
-        return $this->render('game/board.html.twig');
+        $gameState = $session->get("gameState");
+        $gameIsOver = $gameState->gameIsOver();
+        $winner = $gameState->getWinner();
+        $deck = $gameState->getDeck();
+        $bank = $gameState->getBank();
+        $player = $gameState->getPlayer();
+        $data = [
+            "gameState" => $gameState,
+            "gameIsOver" => $gameIsOver,
+            "winner" => $winner,
+            "deck" => $deck,
+            "bank" => $bank,
+            "player" => $player
+        ];
+
+        return $this->render('game/board.html.twig', $data);
     }
 
-    public function setSession(SessionInterface $session): void
+    #[Route("/game/draw", name: "draw")]
+    public function draw(SessionInterface $session): Response
     {
-        $deck = new DeckOfCards(true);
-        $hands = [new CardHand()];
-        $deck->shuffle();
-        $session->set("deck", $deck);
-        $session->set("hands", $hands);
+        $gameState = $session->get("gameState");
+        $gameState->playerDraw();
+        $session->set("gameState", $gameState);
+        return $this->redirectToRoute('board');
     }
+
+    #[Route("/game/stop", name: "stop")]
+    public function stop(): Response
+    {
+        return $this->redirectToRoute('board');
+    }
+
 }

@@ -5,3 +5,78 @@
     padding: 1rem;
     margin-bottom: 1rem;
 }
+
+.game-container {
+    background-color: #006400;
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    border-radius: 30px;
+    margin: 1rem auto 0rem auto;
+    min-width: 1150px;
+    max-width: 1150px;
+    min-height: 500px;
+}
+
+.game-side {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-right: .5rem;
+}
+
+.game-side h1 {
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.game-player {
+    min-height: 165px;
+    min-width: 700px;
+    max-width: 700px;
+    padding: .5rem 1rem 1rem 1rem;
+    border: 1px solid white;
+    border-radius: 10px;
+    margin: .5rem .5rem 1.5rem .5rem;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: .5rem;
+}
+
+.info-container p {
+    margin: 0;
+}
+
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: .5rem;
+    border-left: 1px solid white;
+    padding-left: 2rem;
+}
+
+.controls-container>input {
+    background-color: #a387bb;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: .2rem;
+}
+
+.player-color > p {
+    color: CornflowerBlue;
+}
+
+.bank-color > p {
+    color: white;
+}
+
