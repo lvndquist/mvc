@@ -34,6 +34,7 @@ class GameController extends AbstractController
     #[Route("/game/board", name: "board")]
     public function board(SessionInterface $session): Response
     {
+        /** @var GameState $gameState */
         $gameState = $session->get("gameState");
         $drawCounter = $gameState->getDrawCounter();
         $gameIsOver = $gameState->gameIsOver();
@@ -56,6 +57,7 @@ class GameController extends AbstractController
     #[Route("/game/draw", name: "draw")]
     public function draw(SessionInterface $session): Response
     {
+        /** @var GameState $gameState */
         $gameState = $session->get("gameState");
         $gameState->playerDraw();
         $session->set("gameState", $gameState);
@@ -65,6 +67,7 @@ class GameController extends AbstractController
     #[Route("/game/stop", name: "stop")]
     public function stop(SessionInterface $session): Response
     {
+        /** @var GameState $gameState */
         $gameState = $session->get("gameState");
         $gameState->playerStop();
         $session->set("gameState", $gameState);

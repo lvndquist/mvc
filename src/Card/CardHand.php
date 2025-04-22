@@ -6,7 +6,6 @@ use App\Card\Card;
 
 class CardHand
 {
-
     /** @var Card[] */
     private array $cards;
 

@@ -51,7 +51,8 @@ class GameState
         }
     }
 
-    public function setWinner(int $winner) {
+    public function setWinner(int $winner): void
+    {
         $this->gameWinner = $winner;
         $this->gameOver = true;
     }
@@ -64,7 +65,7 @@ class GameState
     public function bankPlay(): void
     {
         $bank = $this->bank;
-        while($bank->getScore() < 17) {
+        while ($bank->getScore() < 17) {
             $card = $this->deck->draw();
             $bank->addCard($card);
             $this->drawCounter += 1;
@@ -93,7 +94,7 @@ class GameState
         return $this->gameOver;
     }
 
-    public function getWinner()
+    public function getWinner(): int
     {
         return $this->gameWinner;
     }
