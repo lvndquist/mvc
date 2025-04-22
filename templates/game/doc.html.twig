@@ -7,7 +7,92 @@
     <main>
         <h1>Dokumentation</h1>
         <div class = "uml-container">
-            <img class = "flow-chart-img" src="{{ asset('img/kmom03_game.png') }}" alt="">
+            <div>
+                <h2>Flödesschema</h2>
+                <img class = "flow-chart-img" src="{{ asset('img/kmom03_game.png') }}" alt="">
+            </div>
+            <div>
+                <h2>Klasser</h2>
+                <p>Grunden utgörs av: <b>CardGraphic</b>, <b>CardHand</b>, <b>DeckOfCards</b>. Dessa används i sin tur i klasserna <b>GameState</b> och <b>Player</b></p>
+                <p><b>GameState</b> sköter den generella spellogiken, och <b>Player</b> representerar en spelare (även bank), dess kort och poäng.</p>
+            </div>
         </div>
+                <h2>Psuedokod</h2>
+                <pre class = "doc-code">
+class Player
+
+    Has a private hand of cards
+    Has a private score
+
+    Initialize player:
+        Give player a (empty) hand
+        Give player a (0) score
+
+    Get hand:
+        Get current cards in player hand
+
+    Get score:
+        Get current score
+
+    Add a card:
+        Add a card to the player hand
+        Add the card's value to the player's score
+
+class GameState
+
+    Has a deck of cards
+    Has a player
+    Has a bank
+    Counts how many times a card was drawn
+    Has a game over flag
+    Has the "winner"
+
+    Initalize game:
+        Create new deck of cards
+        Shuffle the deck of cards
+        Add player
+        Add bank
+        Draw counter starts at 0
+        Game is not over yet
+        Game has no winner yet
+
+    Player draw:
+        Draw a card from the deck and give it to the player
+        Increase draw counter
+        If player score > 21:
+            Bank wins
+
+    Player stop:
+        Let the bank play.
+
+    Bank play:
+        While bank score < 17:
+            Draw card.
+            Add the card to bank hand
+            Increase draw counter
+        Get bank score
+        Get player score
+        If bank score > 21:
+            Player wins
+        Else:
+            If player's score <= bank's score:
+                Bank wins
+            Else:
+                Player wins
+
+    Get draw counter:
+        Get the number of draws
+    Get game over:
+        Get game over flag
+    Get winner:
+        Get the winner
+    Get deck:
+        Get the deck that is used in the game
+    Get Bank:
+        Get the bank and its score/cards.
+    Get player:
+        Get the player and its score/cards.
+        </pre>
+
     </main>
 {% endblock %}

@@ -15,8 +15,8 @@ class GameState
     /** @var Player */
     private Player $player;
 
-    /** @var Bank */
-    private Bank $bank;
+    /** @var Player */
+    private Player $bank;
 
     //private int $numberOfPlayers;
 
@@ -34,7 +34,7 @@ class GameState
         $this->deck = $deck;
         $this->player = new Player();
 
-        $this->bank = new Bank();
+        $this->bank = new Player();
         $this->drawCounter = 0;
         $this->gameOver = false;
         $this->gameWinner = -1;
@@ -83,7 +83,7 @@ class GameState
         }
     }
 
-    public function getDrawCounter(): bool
+    public function getDrawCounter(): int
     {
         return $this->drawCounter;
     }
@@ -103,7 +103,7 @@ class GameState
         return $this->deck;
     }
 
-    public function getBank(): Bank
+    public function getBank(): Player
     {
         return $this->bank;
     }
