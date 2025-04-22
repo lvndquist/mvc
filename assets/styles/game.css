@@ -1,6 +1,6 @@
 .flow-chart-img {
-    width: 350px;
-    height: 350px;
+    width: 400px;
+    height: 337px;
     border: 1px solid #000;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -23,6 +23,7 @@
     flex-direction: column;
     text-align: center;
     margin-right: .5rem;
+    padding-top: 1rem;
 }
 
 .game-side h1 {
@@ -41,6 +42,14 @@
     margin: .5rem .5rem 1.5rem .5rem;
 }
 
+.game-cards {
+    /*justify-content: center;*/
+    margin: 0 auto;
+    height: auto;
+    width: auto;
+    padding-top: 1rem;
+}
+
 .info-container {
     display: flex;
     flex-direction: row;
@@ -55,12 +64,13 @@
 .controls-container {
     display: flex;
     flex-direction: column;
-    padding-top: .5rem;
+    padding-top: 1rem;
     border-left: 1px solid white;
     padding-left: 2rem;
+    text-align: center;
 }
 
-.controls-container>input {
+.controls-container > input {
     background-color: #a387bb;
     border: none;
     color: white;
@@ -72,6 +82,15 @@
     margin: .2rem;
 }
 
+.controls-container > input:hover {
+    cursor: pointer;
+}
+
+.controls-container > input:disabled {
+    cursor: default;
+    opacity: 0.7;
+}
+
 .player-color > p {
     color: CornflowerBlue;
 }
@@ -80,3 +99,11 @@
     color: white;
 }
 
+.winner-bg {
+    background-color: #2E8B57;
+}
+
+.end-text {
+    color: white;
+    margin: .2rem;
+}

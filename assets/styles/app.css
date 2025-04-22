@@ -33,6 +33,10 @@ main {
     margin: 0 10rem;
 }
 
+.center-vertical {
+    justify-content: center;
+}
+
 .small-margin {
     margin: 0 2rem;
 }

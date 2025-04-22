@@ -3,11 +3,7 @@
 {% block title %}Deal{% endblock %}
 
 {% block body %}
-    <main class = "small-margin">
-        {% if gameIsOver %}
-            <p>game is over</p>
-            <p>{{ winner == 0 ? 'Bank' : 'Player' }} wins!</p>
-        {% endif %}
+    <main class = "small-margin center-vertical">
         <div class="game-container">
             <div class="game-side">
                 {% if deck.isEmpty() == 1 %}
@@ -18,15 +14,15 @@
                     <h1>{{ deck.size() }}</h1>
             </div>
 
-            <div class="playing-cards">
-                    <div class = "game-player p-0">
+            <div class="game-cards">
+                    <div class = "game-player {{winner == 0 ? 'winner-bg' : ''}}">
+                        <div class = "info-container bank-color"><p>Bank</p><p>{{bank.getScore()}}</p></div>
                         {% for card in bank.getHand() %}
                             <div style="background-image: url({{ asset('img/deck.png') }})" class="deck-sprite card-{{ card.toString() }}"></div>
                         {% endfor %}
-                        <div class = "info-container bank-color"><p>Bank</p><p>{{bank.getScore()}}</p></div>
                     </div>
 
-                    <div class = "game-player p-1">
+                    <div class = "game-player p-1 {{winner == 1 ? 'winner-bg' : ''}}">
                         <div class = "info-container player-color"><p>Player</p><p>{{player.getScore()}}</p></div>
                         {% for card in player.getHand() %}
                             <div style="background-image: url({{ asset('img/deck.png') }})" class="deck-sprite card-{{ card.toString() }}"></div>
@@ -37,11 +33,22 @@
             <form class = "controls-container" method="post" action="">
                 <input type="submit" name="draw" value="draw"
                     onClick="this.form.action='{{ path('draw') }}';"
+                    {{ gameIsOver ? 'disabled' : '' }}
                 >
 
                 <input type="submit" name="stop" value="stop"
                     onClick="this.form.action='{{ path('stop') }}';"
+                    {{ drawCounter == 0 or gameIsOver ? 'disabled' : '' }}
                 >
+
+                <input type="submit" name="restart" value="restart"
+                    onClick="this.form.action='{{ path('restart') }}';"
+                    {{ drawCounter == 0 or not gameIsOver ? 'disabled' : '' }}
+                >
+
+                {% if gameIsOver %}
+                    <p class = "end-text">{{ winner == 0 ? 'Bank wins!' : 'You won!' }}</p>
+                {% endif %}
             </form>
 
         </div>

@@ -58,18 +58,34 @@ class GameState
 
     public function playerStop(): void
     {
+        $this->bankPlay();
     }
 
-    public function controlScores(): void
+    public function bankPlay(): void
     {
-        $playerScore = $this->player->getScore();
-        $bankScore = $this->bank->getScore();
-        if ($playerScore <= $bankScore) {
-            $this->gameWinner = 0;
-        } else {
-            $this->gameWinner = 1;
+        $bank = $this->bank;
+        while($bank->getScore() < 17) {
+            $card = $this->deck->draw();
+            $bank->addCard($card);
+            $this->drawCounter += 1;
         }
-        $this->gameOver = true;
+        $bankScore = $this->bank->getScore();
+        $playerScore = $this->player->getScore();
+
+        if ($bankScore > 21) {
+            $this->setWinner(1);
+        } else {
+            if ($playerScore <= $bankScore) {
+                $this->setWinner(0);
+            } else {
+                $this->setWinner(1);
+            }
+        }
+    }
+
+    public function getDrawCounter(): bool
+    {
+        return $this->drawCounter;
     }
 
     public function gameIsOver(): bool

@@ -26,7 +26,7 @@ class GameController extends AbstractController
     #[Route("/game/init", name: "init")]
     public function init(SessionInterface $session): Response
     {
-        $session->clear();
+        $session->remove("gameState");
         $gameState = new GameState();
         $session->set("gameState", $gameState);
         return $this->redirectToRoute('board');
@@ -36,13 +36,14 @@ class GameController extends AbstractController
     public function board(SessionInterface $session): Response
     {
         $gameState = $session->get("gameState");
+        $drawCounter = $gameState->getDrawCounter();
         $gameIsOver = $gameState->gameIsOver();
         $winner = $gameState->getWinner();
         $deck = $gameState->getDeck();
         $bank = $gameState->getBank();
         $player = $gameState->getPlayer();
         $data = [
-            "gameState" => $gameState,
+            "drawCounter" => $drawCounter,
             "gameIsOver" => $gameIsOver,
             "winner" => $winner,
             "deck" => $deck,
@@ -63,9 +64,18 @@ class GameController extends AbstractController
     }
 
     #[Route("/game/stop", name: "stop")]
-    public function stop(): Response
+    public function stop(SessionInterface $session): Response
     {
+        $gameState = $session->get("gameState");
+        $gameState->playerStop();
+        $session->set("gameState", $gameState);
         return $this->redirectToRoute('board');
+    }
+
+    #[Route("/game/restart", name: "restart")]
+    public function restart(): Response
+    {
+        return $this->redirectToRoute('init');
     }
 
 }
