@@ -36,6 +36,9 @@ class GameController extends AbstractController
     {
         /** @var GameState $gameState */
         $gameState = $session->get("gameState");
+        if (!$gameState) {
+            return $this->redirectToRoute('init');
+        }
         $drawCounter = $gameState->getDrawCounter();
         $gameIsOver = $gameState->gameIsOver();
         $winner = $gameState->getWinner();

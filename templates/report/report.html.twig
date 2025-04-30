@@ -48,9 +48,12 @@
 
             <section id = "kmom03">
                 <h2>Kmom03</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dui mauris, tempus ut scelerisque id, molestie pretium magna. Cras bibendum ante sed elementum ornare. In blandit elit ac felis faucibus, ut posuere justo porttitor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum a egestas lorem. Phasellus lacinia finibus neque, quis finibus risus convallis molestie. Donec eget ultrices velit. In ante massa, vestibulum mollis sagittis at, tincidunt id dolor. Sed vehicula magna eu mauris malesuada semper.</p>
-                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin dui nibh, cursus ac ante ac, maximus sagittis eros. Cras congue posuere augue nec gravida. Aenean venenatis placerat magna vestibulum blandit. Suspendisse ac augue fringilla, efficitur velit imperdiet, euismod turpis. Nam varius nisi ullamcorper, euismod eros sit amet, tincidunt orci. Vestibulum justo ex, condimentum sit amet sodales at, venenatis vel dui. Vivamus gravida egestas turpis mattis euismod. Maecenas eget lorem tortor. Duis posuere dui consectetur, pretium urna in, laoreet libero. Integer vestibulum odio a arcu commodo dictum.</p>
-
+                <p>Att göra ett flödesdiagram kändes rätt användbart, det tvingade mig att fundera lite extra på hur man kunde gå till väga. Psuedokoden kändes kanske lite mindre användbar eftersom logiken i klasserna redan var rätt simpel, så det kändes lite överflödigt. Har man lite mer komplex logik kan jag dock se att det blir användbart.</p>
+                <p>Jag använde de kortklasser som jag definierade i kmom02 för att implementera spelet. Jag valde att skapa en <code>GameState</code> klass för att hålla själva spelet och majoriteten av logiken. <code>Player</code> klassen innehåller spelare, och används i <code>GameState</code>. Till en början tänkte jag att jag ville ha en klass för spelare och en för bank men det kändes som att det blev lite överflödigt då banken egentligen bara är en spelare också.</p>
+                <p>Jag gjorde ett flödesdiagram som representerar GameState och dess logik. Jag försökte begränsa koden i min kontroller, till att i princip bara hantera sessionen och sköta rendering/omdirigering.</p>
+                <p>21 som spel är ju ganska simpelt så det finns väl inte jättemycket förbättringar utom att implementera de valfria delarna. I det fallet hade jag nog gärna separerat banken som en klass för att hålla <code>GameState</code> fortsatt lättläst.</p>
+                <p>Symphony känns mer och mer okej att jobba med, men jag har en fortsatt känsla av att det finns lite väl mycket overhead för en ganska simpel webbsida.</p>
+                <p><b>TIL: </b>Skulle nog säga flödesdiagram, då det var första gången jag gjorde ett, iallafall i programmeringssyfte.</p>
             </section>
 
             <section id = "kmom04">
