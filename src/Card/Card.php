@@ -2,27 +2,49 @@
 
 namespace App\Card;
 
+/**
+ * Class representing a Card.
+ */
 class Card
 {
+    /**
+     * The card's value.
+     */
     protected int $value;
+
+    /**
+     * The card's color.
+     */
     protected int $color;
 
+    /**
+     * Initiate the card object.
+     */
     public function __construct(int $value, int $color)
     {
         $this->value = $value;
         $this->color = $color;
     }
 
+    /**
+     * Get the value of the card.
+     */
     public function getValue(): int
     {
         return $this->value;
     }
 
+    /**
+     * Get the color of the card.
+     */
     public function getColor(): int
     {
         return $this->color;
     }
 
+    /**
+     * Convert card's value and color to a string.
+     */
     public function toString(): string
     {
         $colors = ['♠', '♥','♦','♣'];

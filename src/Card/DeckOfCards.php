@@ -5,12 +5,19 @@ namespace App\Card;
 use App\Card\CardGraphic;
 use Exception;
 
+/**
+ * Class representing a deck of cards.
+ */
 class DeckOfCards
 {
-    /** @var Card[] */
+    /**
+     *  Array of cards representing the card deck.
+     *  @var Card[]
+     */
     private array $cards;
 
     /**
+     * Initialize the card deck.
      * @SuppressWarnings("PHPMD.ElseExpression")
      */
     public function __construct(bool $graphic)
@@ -27,17 +34,26 @@ class DeckOfCards
         }
     }
 
+    /**
+     * Randomize the cards in the deck.
+     */
     public function shuffle(): void
     {
         shuffle($this->cards);
     }
 
-    /** @return array<Card> */
+    /**
+     *  Get all cards in the deck.
+     *  @return array<Card>
+     */
     public function getCards(): array
     {
         return $this->cards;
     }
 
+    /**
+     * Draw a card from the deck.
+     */
     public function draw(): Card
     {
         if ($this->isEmpty()) {
@@ -48,6 +64,9 @@ class DeckOfCards
         return $card;
     }
 
+    /**
+     * Check if the deck is empty or not.
+     */
     public function isEmpty(): bool
     {
         if ($this->size() === 0) {
@@ -56,6 +75,9 @@ class DeckOfCards
         return false;
     }
 
+    /**
+     * Get the size of the deck.
+     */
     public function size(): int
     {
         return count($this->cards);
