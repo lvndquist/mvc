@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Card;
-use App\Card\CardGraphic;
 
+use App\Card\CardGraphic;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,11 +10,10 @@ use PHPUnit\Framework\TestCase;
  */
 class CardGraphicTest extends TestCase
 {
-
     /**
      * Construct graphic card object
      */
-    public function testCreateCardGraphic()
+    public function testCreateCardGraphic(): void
     {
         $card = new CardGraphic(1, 0);
         $this->assertInstanceOf("\App\Card\Card", $card);
@@ -30,7 +29,7 @@ class CardGraphicTest extends TestCase
     /**
      * Convert grapic card to string.
      */
-    public function testToString()
+    public function testToString(): void
     {
         $card = new CardGraphic(1, 0);
         $string = $card->toString();

@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Card;
-use App\Card\Card;
 
+use App\Card\Card;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,11 +10,10 @@ use PHPUnit\Framework\TestCase;
  */
 class CardTest extends TestCase
 {
-
     /**
      * Construct card object
      */
-    public function testCreateCard()
+    public function testCreateCard(): void
     {
         $card = new Card(1, 0);
         $this->assertInstanceOf("\App\Card\Card", $card);
@@ -30,7 +29,7 @@ class CardTest extends TestCase
     /**
      * Convert card to string.
      */
-    public function testToString()
+    public function testToString(): void
     {
         $card = new Card(1, 0);
         $string = $card->toString();

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Game;
+
 use PHPUnit\Framework\TestCase;
 use App\Card\DeckOfCards;
 use App\Game\Player;
@@ -10,11 +11,10 @@ use App\Game\Player;
  */
 class GameStateTest extends TestCase
 {
-
     /**
      * Construct GameState object
      */
-    public function testCreateGameState()
+    public function testCreateGameState(): void
     {
         $game = new GameState();
         $this->assertInstanceOf("\App\Game\GameState", $game);
@@ -88,15 +88,10 @@ class GameStateTest extends TestCase
         if ($bankScore > 21) {
             $expWinner = 1;
             $this->assertEquals($expWinner, $winner);
-        } else {
-            if ($playerScore <= $bankScore) {
-                $expWinner = 0;
-                $this->assertEquals($expWinner, $winner);
-            } else {
-                $expWinner = 1;
-                $this->assertEquals($expWinner, $winner);
-            }
+            return;
         }
+        $expWinner = ($playerScore <= $bankScore) ? 0 : 1;
+        $this->assertEquals($expWinner, $winner);
         $this->assertTrue($gameOver);
     }
 

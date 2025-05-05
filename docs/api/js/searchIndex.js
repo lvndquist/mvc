@@ -3,127 +3,127 @@ Search.appendIndex(
                 {
             "fqsen": "\\App\\Card\\Card",
             "name": "Card",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020a\u0020Card.",
             "url": "classes/App-Card-Card.html"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initiate\u0020the\u0020card\u0020object.",
             "url": "classes/App-Card-Card.html#method___construct"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetValue\u0028\u0029",
             "name": "getValue",
-            "summary": "",
+            "summary": "Get\u0020the\u0020value\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-Card.html#method_getValue"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AgetColor\u0028\u0029",
             "name": "getColor",
-            "summary": "",
+            "summary": "Get\u0020the\u0020color\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-Card.html#method_getColor"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003AtoString\u0028\u0029",
             "name": "toString",
-            "summary": "",
+            "summary": "Convert\u0020card\u0027s\u0020value\u0020and\u0020color\u0020to\u0020a\u0020string.",
             "url": "classes/App-Card-Card.html#method_toString"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003A\u0024value",
             "name": "value",
-            "summary": "",
+            "summary": "The\u0020card\u0027s\u0020value.",
             "url": "classes/App-Card-Card.html#property_value"
         },                {
             "fqsen": "\\App\\Card\\Card\u003A\u003A\u0024color",
             "name": "color",
-            "summary": "",
+            "summary": "The\u0020card\u0027s\u0020color.",
             "url": "classes/App-Card-Card.html#property_color"
         },                {
             "fqsen": "\\App\\Card\\CardGraphic",
             "name": "CardGraphic",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020a\u0020graphic\u0020card.",
             "url": "classes/App-Card-CardGraphic.html"
         },                {
             "fqsen": "\\App\\Card\\CardGraphic\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initiate\u0020the\u0020grapic\u0020card\u0020object.",
             "url": "classes/App-Card-CardGraphic.html#method___construct"
         },                {
             "fqsen": "\\App\\Card\\CardGraphic\u003A\u003AtoString\u0028\u0029",
             "name": "toString",
-            "summary": "",
+            "summary": "Get\u0020the\u0020string\u0020representation\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-CardGraphic.html#method_toString"
         },                {
             "fqsen": "\\App\\Card\\CardGraphic\u003A\u003A\u0024representation",
             "name": "representation",
-            "summary": "",
+            "summary": "The\u0020string\u0020representation\u0020of\u0020the\u0020card.",
             "url": "classes/App-Card-CardGraphic.html#property_representation"
         },                {
             "fqsen": "\\App\\Card\\CardHand",
             "name": "CardHand",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020a\u0020hand\u0020of\u0020cards.",
             "url": "classes/App-Card-CardHand.html"
         },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initiate\u0020the\u0020card\u0020hand\u0020object.",
             "url": "classes/App-Card-CardHand.html#method___construct"
         },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003AaddCard\u0028\u0029",
             "name": "addCard",
-            "summary": "",
+            "summary": "Add\u0020a\u0020card\u0020to\u0020the\u0020hand.",
             "url": "classes/App-Card-CardHand.html#method_addCard"
         },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003AgetCards\u0028\u0029",
             "name": "getCards",
-            "summary": "",
+            "summary": "Get\u0020the\u0020cards\u0020in\u0020the\u0020hand.",
             "url": "classes/App-Card-CardHand.html#method_getCards"
         },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003AremoveCard\u0028\u0029",
             "name": "removeCard",
-            "summary": "",
+            "summary": "Remove\u0020a\u0020card\u0020from\u0020the\u0020hand.",
             "url": "classes/App-Card-CardHand.html#method_removeCard"
         },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003A\u0024cards",
             "name": "cards",
-            "summary": "",
+            "summary": "Array\u0020of\u0020cards\u0020representing\u0020a\u0020hand\u0020of\u0020cards.",
             "url": "classes/App-Card-CardHand.html#property_cards"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards",
             "name": "DeckOfCards",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020a\u0020deck\u0020of\u0020cards.",
             "url": "classes/App-Card-DeckOfCards.html"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initialize\u0020the\u0020card\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method___construct"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003Ashuffle\u0028\u0029",
             "name": "shuffle",
-            "summary": "",
+            "summary": "Randomize\u0020the\u0020cards\u0020in\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_shuffle"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AgetCards\u0028\u0029",
             "name": "getCards",
-            "summary": "",
+            "summary": "Get\u0020all\u0020cards\u0020in\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_getCards"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003Adraw\u0028\u0029",
             "name": "draw",
-            "summary": "",
+            "summary": "Draw\u0020a\u0020card\u0020from\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_draw"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AisEmpty\u0028\u0029",
             "name": "isEmpty",
-            "summary": "",
+            "summary": "Check\u0020if\u0020the\u0020deck\u0020is\u0020empty\u0020or\u0020not.",
             "url": "classes/App-Card-DeckOfCards.html#method_isEmpty"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003Asize\u0028\u0029",
             "name": "size",
-            "summary": "",
+            "summary": "Get\u0020the\u0020size\u0020of\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_size"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003A\u0024cards",
             "name": "cards",
-            "summary": "",
+            "summary": "Array\u0020of\u0020cards\u0020representing\u0020the\u0020card\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#property_cards"
         },                {
             "fqsen": "\\App\\Controller\\ApiControllerKmom01",
@@ -308,127 +308,132 @@ Search.appendIndex(
         },                {
             "fqsen": "\\App\\Game\\GameState",
             "name": "GameState",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020the\u0020state\u0020of\u0020a\u002021\u0020card\u0020game.",
             "url": "classes/App-Game-GameState.html"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initiate\u0020the\u0020GameState\u0020object.",
             "url": "classes/App-Game-GameState.html#method___construct"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AplayerDraw\u0028\u0029",
             "name": "playerDraw",
-            "summary": "",
+            "summary": "Player\u0020draw\u0020a\u0020card\u0020from\u0020the\u0020deck.\u0020Puts\u0020the\u0020card\u0020into\nplayers\u0020hand.\u0020If\u0020score\u0020is\u0020\u003E\u002021\u0020bank\u0020wins\u0020automatically.",
             "url": "classes/App-Game-GameState.html#method_playerDraw"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AsetWinner\u0028\u0029",
             "name": "setWinner",
-            "summary": "",
+            "summary": "Set\u0020the\u0020winner\u0020of\u0020the\u0020game\u0020and\u0020set\u0020flag\u0020to\u0020indicate\nthat\u0020the\u0020game\u0020is\u0020over.",
             "url": "classes/App-Game-GameState.html#method_setWinner"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AplayerStop\u0028\u0029",
             "name": "playerStop",
-            "summary": "",
+            "summary": "Player\u0020has\u0020finished\u0020their\u0020turns,\u0020let\u0020the\u0020bank\u0020play.",
             "url": "classes/App-Game-GameState.html#method_playerStop"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AbankPlay\u0028\u0029",
             "name": "bankPlay",
-            "summary": "",
+            "summary": "Bank\u0020plays.\u0020Simulates\u0020drawing\u0020cards.\u0020Bank\u0020draws\u0020cards\u0020as\u0020long\nas\u0020its\u0020score\u0020is\u0020below\u002017.\u0020When\u0020bank\u0020is\u0020done,\u0020the\u0020winner\u0020is\u0020decided.",
             "url": "classes/App-Game-GameState.html#method_bankPlay"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgetDrawCounter\u0028\u0029",
             "name": "getDrawCounter",
-            "summary": "",
+            "summary": "Get\u0020the\u0020number\u0020of\u0020draws.",
             "url": "classes/App-Game-GameState.html#method_getDrawCounter"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgameIsOver\u0028\u0029",
             "name": "gameIsOver",
-            "summary": "",
+            "summary": "Get\u0020the\u0020gameOver\u0020flag.",
             "url": "classes/App-Game-GameState.html#method_gameIsOver"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgetWinner\u0028\u0029",
             "name": "getWinner",
-            "summary": "",
+            "summary": "Get\u0020the\u0020game\u0020winner\u003A\u00200\u0020is\u0020bank,\u00201\u0020is\u0020player,\u0020\u002D1\u0020is\u0020undecided.",
             "url": "classes/App-Game-GameState.html#method_getWinner"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgetDeck\u0028\u0029",
             "name": "getDeck",
-            "summary": "",
+            "summary": "Get\u0020the\u0020game\u0020deck.",
             "url": "classes/App-Game-GameState.html#method_getDeck"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgetBank\u0028\u0029",
             "name": "getBank",
-            "summary": "",
+            "summary": "Get\u0020the\u0020bank\u0020object.",
             "url": "classes/App-Game-GameState.html#method_getBank"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003AgetPlayer\u0028\u0029",
             "name": "getPlayer",
-            "summary": "",
+            "summary": "Get\u0020the\u0020player\u0020object.",
             "url": "classes/App-Game-GameState.html#method_getPlayer"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024deck",
             "name": "deck",
-            "summary": "",
+            "summary": "Deck\u0020of\u0020cards\u0020used\u0020in\u0020the\u0020game.",
             "url": "classes/App-Game-GameState.html#property_deck"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024player",
             "name": "player",
-            "summary": "",
+            "summary": "The\u0020player\u0020of\u0020the\u0020game.",
             "url": "classes/App-Game-GameState.html#property_player"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024bank",
             "name": "bank",
-            "summary": "",
+            "summary": "The\u0020bank\u0020of\u0020the\u0020game.",
             "url": "classes/App-Game-GameState.html#property_bank"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024drawCounter",
             "name": "drawCounter",
-            "summary": "",
+            "summary": "Counts\u0020the\u0020number\u0020of\u0020draws\u0020made.",
             "url": "classes/App-Game-GameState.html#property_drawCounter"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024gameOver",
             "name": "gameOver",
-            "summary": "",
+            "summary": "Flag\u0020for\u0020tracking\u0020if\u0020the\u0020game\u0020has\u0020ended\u0020or\u0020not.",
             "url": "classes/App-Game-GameState.html#property_gameOver"
         },                {
             "fqsen": "\\App\\Game\\GameState\u003A\u003A\u0024gameWinner",
             "name": "gameWinner",
-            "summary": "",
+            "summary": "The\u0020game\u0027s\u0020winner.\u00200\u0020means\u0020bank\u0020won.\u00201\u0020means\u0020player\u0020won.",
             "url": "classes/App-Game-GameState.html#property_gameWinner"
         },                {
             "fqsen": "\\App\\Game\\Player",
             "name": "Player",
-            "summary": "",
+            "summary": "Class\u0020representing\u0020a\u0020player.",
             "url": "classes/App-Game-Player.html"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "",
+            "summary": "Initialize\u0020the\u0020player\u0020object.",
             "url": "classes/App-Game-Player.html#method___construct"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003AgetHand\u0028\u0029",
             "name": "getHand",
-            "summary": "",
+            "summary": "Gets\u0020all\u0020cards\u0020in\u0020the\u0020player\u0027s\u0020hand.",
             "url": "classes/App-Game-Player.html#method_getHand"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003AgetScore\u0028\u0029",
             "name": "getScore",
-            "summary": "",
+            "summary": "Gets\u0020the\u0020score\u0020of\u0020the\u0020player.",
             "url": "classes/App-Game-Player.html#method_getScore"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003AaddCard\u0028\u0029",
             "name": "addCard",
-            "summary": "",
+            "summary": "Adds\u0020a\u0020card\u0020to\u0020the\u0020player\u0027s\u0020hand.",
             "url": "classes/App-Game-Player.html#method_addCard"
+        },                {
+            "fqsen": "\\App\\Game\\Player\u003A\u003AsetScore\u0028\u0029",
+            "name": "setScore",
+            "summary": "Sets\u0020the\u0020score\u0020of\u0020the\u0020player.",
+            "url": "classes/App-Game-Player.html#method_setScore"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003A\u0024hand",
             "name": "hand",
-            "summary": "",
+            "summary": "Player\u0027s\u0020hand\u0020containing\u0020their\u0020cards.",
             "url": "classes/App-Game-Player.html#property_hand"
         },                {
             "fqsen": "\\App\\Game\\Player\u003A\u003A\u0024score",
             "name": "score",
-            "summary": "",
+            "summary": "Player\u0027s\u0020score.",
             "url": "classes/App-Game-Player.html#property_score"
         },                {
             "fqsen": "\\App\\Kernel",

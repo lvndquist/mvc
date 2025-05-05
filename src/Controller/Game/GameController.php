@@ -34,9 +34,8 @@ class GameController extends AbstractController
     #[Route("/game/board", name: "board")]
     public function board(SessionInterface $session): Response
     {
-        /** @var GameState $gameState */
         $gameState = $session->get("gameState");
-        if (!$gameState) {
+        if (!$gameState instanceof GameState) {
             return $this->redirectToRoute('init');
         }
         $drawCounter = $gameState->getDrawCounter();

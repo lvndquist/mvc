@@ -114,13 +114,10 @@ class GameState
 
         if ($bankScore > 21) {
             $this->setWinner(1);
-        } else {
-            if ($playerScore <= $bankScore) {
-                $this->setWinner(0);
-            } else {
-                $this->setWinner(1);
-            }
+            return;
         }
+        $this->setWinner($playerScore <= $bankScore ? 0 : 1);
+        return;
     }
 
     /**

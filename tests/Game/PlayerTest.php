@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Game;
-use App\Card\Card;
 
+use App\Card\Card;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -10,11 +10,10 @@ use PHPUnit\Framework\TestCase;
  */
 class PlayerTest extends TestCase
 {
-
     /**
      * Construct player object without arguments.
      */
-    public function testCreatePlayer()
+    public function testCreatePlayer(): void
     {
         $player = new Player();
         $this->assertInstanceOf("\App\Game\Player", $player);
@@ -30,7 +29,7 @@ class PlayerTest extends TestCase
     /**
      * Add card to player's hand.
      */
-    public function testAddCard()
+    public function testAddCard(): void
     {
         $player = new Player();
         $card = new Card(1, 0);

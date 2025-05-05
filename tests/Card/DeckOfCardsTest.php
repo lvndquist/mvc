@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Card;
+
 use App\Card\DeckOfCards;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -10,11 +11,10 @@ use PHPUnit\Framework\TestCase;
  */
 class DeckOfCardsTest extends TestCase
 {
-
     /**
      * Construct card object
      */
-    public function testCreateDeckOfCards()
+    public function testCreateDeckOfCards(): void
     {
         $deck = new DeckOfCards(false);
         $this->assertInstanceOf("\App\Card\DeckOfCards", $deck);
@@ -25,7 +25,7 @@ class DeckOfCardsTest extends TestCase
     /**
      * Draw card from fresh deck.
      */
-    public function testDrawValid()
+    public function testDrawValid(): void
     {
         $deck = new DeckOfCards(false);
         $card = $deck->draw();
@@ -40,10 +40,10 @@ class DeckOfCardsTest extends TestCase
     /**
      * Draw card from empty deck.
      */
-    public function testDrawException()
+    public function testDrawException(): void
     {
         $deck = new DeckOfCards(false);
-        for($i = 0; $i < 52; $i++){
+        for ($i = 0; $i < 52; $i++) {
             $deck->draw();
         }
         $this->expectException(Exception::class);
