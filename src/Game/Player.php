@@ -36,4 +36,9 @@ class Player
         $this->score += $card->getValue();
     }
 
+    public function setScore(int $scoreToSet): void
+    {
+        $this->score = $scoreToSet;
+    }
+
 }

@@ -33,3 +33,5 @@ yarn-error.log
 /tools/**/vendor/
 /tools/**/composer.lock
 .php-cs-fixer.cache
+
+.phpdoc/
