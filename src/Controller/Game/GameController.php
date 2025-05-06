@@ -34,10 +34,12 @@ class GameController extends AbstractController
     #[Route("/game/board", name: "board")]
     public function board(SessionInterface $session): Response
     {
+        /** @var GameState $gameState */
         $gameState = $session->get("gameState");
+        /*
         if (!$gameState instanceof GameState) {
             return $this->redirectToRoute('init');
-        }
+        }*/
         $drawCounter = $gameState->getDrawCounter();
         $gameIsOver = $gameState->gameIsOver();
         $winner = $gameState->getWinner();
@@ -52,7 +54,7 @@ class GameController extends AbstractController
             "bank" => $bank,
             "player" => $player
         ];
-
+        $session->set("gameState", $gameState);
         return $this->render('game/board.html.twig', $data);
     }
 
