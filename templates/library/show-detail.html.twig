@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Library</h1>
+        <div class = "library-detail-containter">
+            <img class = "library-img" src="{{ asset(book.imageUrl) ~ ".jpeg" }}" alt="">
+            <table class="library-details">
+                <tr>
+                    <th>ID</th>
+                    <td>{{ book.id }}</td>
+                </tr>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ book.title }}</td>
+                </tr>
+                <tr>
+                    <th>Author</th>
+                    <td>{{ book.author }}</td>
+                </tr>
+                <tr>
+                    <th>ISBN</th>
+                    <td>{{ book.isbn }}</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Index</h1>
+
+        <ul class = "library-link-list">
+            <li><a href = "{{path('book_create')}}">/library/create</a> Add a book.</li>
+            <li><a href = "{{path('library_show_all')}}">/library/show</a> Show all books.</li>
+            <li><a href = "{{ path("book_by_id", { "id": 1 }) }}">/library/show/1</a> Show a book with some id.</li>
+        </ul>
+    </main>
+{% endblock %}

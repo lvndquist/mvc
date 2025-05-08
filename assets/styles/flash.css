@@ -4,7 +4,9 @@
     background-color: #cce5ff;
     border-color: #b8daff;
     margin-top: .5rem;
+    margin-bottom: .5rem;
 }
+
 .flash-notice:before {
     content: "ⓘ";
 }

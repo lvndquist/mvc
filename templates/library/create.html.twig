@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Add a book</h1>
+        <div class = "width-50">
+            {{ include('flash.html.twig') }}
+            <form class = "add-book" method="post" action="{{ path("post_book_create") }}">
+                <input class = "book-data" type="text" name="title" placeholder = "Title" required>
+                <input class = "book-data" type="text" name="author" placeholder = "Author" required>
+                <input class = "book-data" type="text" name="isbn" placeholder = "ISBN" required>
+                <input class = "book-data" type="text" name="img_url" placeholder = "Image URL">
+                <input class = "book-add-btn" type="submit" name="do_it" value="Create">
+            </form>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Library</h1>
+        <table class = "library-all-books">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Title</td>
+                    <td>Author</td>
+                    <td>ISBN</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for book in books%}
+                <tr>
+                    <td><a href = "{{ path("book_by_id", { "id": book.id }) }}">{{book.id}}</a></td>
+                    <td>{{book.title}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.isbn}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

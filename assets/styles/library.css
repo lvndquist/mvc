@@ -1,0 +1,95 @@
+ul.library-link-list {
+    margin-top: 0;
+    list-style: none;
+    padding: 0;
+}
+
+ul.library-link-list li {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: start;
+    margin-bottom: 0.5rem;
+}
+
+
+.add-book {
+    display: flex;
+    flex-direction: column;
+}
+
+.book-data {
+    padding: .5rem;
+    margin-bottom: .75rem;
+    font-size: 1rem;
+}
+
+.book-add-btn {
+    width: 562px;
+    padding: .5rem;
+    font-size: 1rem;
+}
+
+.library-all-books {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.library-all-books thead {
+    background-color: #a387bb;
+    color: white;
+}
+
+.library-all-books th,
+.library-all-books td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.library-all-books tbody tr:hover {
+    background-color: #f7fafc;
+    transition: background-color 0.2s ease;
+}
+
+.library-detail-containter {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.library-details {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+    max-height: 120px;
+}
+
+.library-details th {
+    text-align: left;
+    width: 20%;
+    font-weight: bold;
+}
+
+.library-details tr,
+.library-details th,
+.library-details td {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.library-details th,
+.library-details td {
+    text-align: left;
+}
+
+.library-details td {
+    padding-left: 1rem;
+}
+
+.library-img {
+    width: 140px;
+    height: 200px;
+}

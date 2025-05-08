@@ -4,6 +4,7 @@
 @import "api.css";
 @import "game.css";
 @import "doc.css";
+@import "library.css";
 
 
 /*body {
@@ -144,4 +145,8 @@ footer p {
 .session-delete {
     display: inline;
     width: 130px;
+}
+
+.width-50 {
+    width: 50%;
 }
