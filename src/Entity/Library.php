@@ -11,6 +11,7 @@ class Library
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    /** @phpstan-ignore-next-line */
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -23,7 +24,7 @@ class Library
     private ?string $author = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $image_url = null;
+    private ?string $imageUrl = null;
 
     public function getId(): ?int
     {
@@ -68,12 +69,12 @@ class Library
 
     public function getImageUrl(): ?string
     {
-        return $this->image_url;
+        return $this->imageUrl;
     }
 
-    public function setImageUrl(string $image_url): static
+    public function setImageUrl(string $imageUrl): static
     {
-        $this->image_url = $image_url;
+        $this->imageUrl = $imageUrl;
 
         return $this;
     }

@@ -34,6 +34,8 @@
                 Deal number of &lt;cards&gt; to &lt;players&gt; from a card deck.
             </li>
             <li><a href = "{{path('get_game')}}">/api/game</a> Presents card game information.</li>
+            <li><a href = "{{path('api_books')}}">/api/library</a> Get all books in the library.</li>
+            <li><a href = "{{path('book_by_isbn', {"isbn": 9789171370143})}}">/api/library/book/{isbn}</a> Get book by ISBN.</li>
         </ul>
     </main>
 {% endblock %}

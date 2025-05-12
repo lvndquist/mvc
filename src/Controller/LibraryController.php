@@ -6,11 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-
 use App\Entity\Library;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\LibraryRepository;
-
 
 final class LibraryController extends AbstractController
 {
@@ -31,10 +29,10 @@ final class LibraryController extends AbstractController
         Request $request,
         ManagerRegistry $doctrine
     ): Response {
-        $title = $request->request->get('title');
-        $author = $request->request->get('author');
-        $isbn = $request->request->get('isbn');
-        $url = $request->request->get('img_url');
+        $title = (string) $request->request->get('title');
+        $author = (string) $request->request->get('author');
+        $isbn = (string) $request->request->get('isbn');
+        $url = (string) $request->request->get('img_url');
 
         $entityManager = $doctrine->getManager();
         $book = new Library();
@@ -124,10 +122,10 @@ final class LibraryController extends AbstractController
             return $this->redirectToRoute('library_show_all');
         }
 
-        $title = $request->request->get('title');
-        $author = $request->request->get('author');
-        $isbn = $request->request->get('isbn');
-        $url = $request->request->get('url');
+        $title = (string) $request->request->get('title');
+        $author = (string) $request->request->get('author');
+        $isbn = (string) $request->request->get('isbn');
+        $url = (string) $request->request->get('url');
 
         $book->setTitle($title);
         $book->setAuthor($author);
@@ -162,7 +160,6 @@ final class LibraryController extends AbstractController
     #[Route('/library/delete/{id}', name: 'post_delete_book_by_id', methods: ["POST"])]
     public function deleteBook(
         ManagerRegistry $doctrine,
-        Request $request,
         int $id
     ): Response {
         $entityManager = $doctrine->getManager();
