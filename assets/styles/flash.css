@@ -17,6 +17,7 @@
     background-color: #fff3cd;
     border-color: #ffeeba;
     margin-top: .5rem;
+    margin-bottom: .5rem;
 }
 .flash-warning:before {
     content: "⚠";

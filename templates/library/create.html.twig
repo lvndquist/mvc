@@ -4,8 +4,11 @@
 
 {% block body %}
     <main>
-        <h1>Add a book</h1>
-        <div class = "width-50">
+        <h1>
+            <a class = "back-arrow" href = "{{path('library_show_all')}}"><i class="fa-solid fa-chevron-left"></i></a>
+            Add a book
+        </h1>
+                <div class = "width-50">
             {{ include('flash.html.twig') }}
             <form class = "add-book" method="post" action="{{ path("post_book_create") }}">
                 <input class = "book-data" type="text" name="title" placeholder = "Title" required>

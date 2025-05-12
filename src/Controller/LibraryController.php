@@ -55,7 +55,7 @@ final class LibraryController extends AbstractController
             "Saved new book with id '" . $book->getId() . "'"
         );
 
-        return $this->redirectToRoute('book_create');
+        return $this->redirectToRoute('library_show_all');
     }
 
     #[Route('/library/show/{id}', name: 'book_by_id')]
@@ -87,5 +87,108 @@ final class LibraryController extends AbstractController
         return $this->render('library/show-all.html.twig', $data);
     }
 
+    #[Route('/library/update/{id}', name: 'update_book_by_id', methods: ["GET"])]
+    public function update(
+        LibraryRepository $libraryRepository,
+        int $id
+    ): Response {
+        $book = $libraryRepository
+            ->find($id);
 
+        $data = [
+            "book" => $book
+        ];
+
+        return $this->render('library/update.html.twig', $data);
+    }
+
+    #[Route('/library/update/{id}', name: 'post_update_book_by_id', methods: ["POST"])]
+    public function updateBook(
+        ManagerRegistry $doctrine,
+        Request $request,
+        int $id
+    ): Response {
+        $entityManager = $doctrine->getManager();
+        $book = $entityManager->getRepository(Library::class)->find($id);
+
+        if (!$book) {
+            /*
+            throw $this->createNotFoundException(
+                'No book found for id '.$id
+            );
+            */
+            $this->addFlash(
+                'warning',
+                "Could not update book with id '" . $id . "'"
+            );
+            return $this->redirectToRoute('library_show_all');
+        }
+
+        $title = $request->request->get('title');
+        $author = $request->request->get('author');
+        $isbn = $request->request->get('isbn');
+        $url = $request->request->get('url');
+
+        $book->setTitle($title);
+        $book->setAuthor($author);
+        $book->setIsbn($isbn);
+        $book->setImageUrl($url);
+
+        $entityManager->flush();
+
+        $this->addFlash(
+            'notice',
+            "Updated book with id '" . $id . "'"
+        );
+
+        return $this->redirectToRoute('library_show_all');
+    }
+
+    #[Route('/library/delete/{id}', name: 'delete_book_by_id', methods: ["GET"])]
+    public function delete(
+        LibraryRepository $libraryRepository,
+        int $id
+    ): Response {
+        $book = $libraryRepository
+            ->find($id);
+
+        $data = [
+            "book" => $book
+        ];
+
+        return $this->render('library/delete.html.twig', $data);
+    }
+
+    #[Route('/library/delete/{id}', name: 'post_delete_book_by_id', methods: ["POST"])]
+    public function deleteBook(
+        ManagerRegistry $doctrine,
+        Request $request,
+        int $id
+    ): Response {
+        $entityManager = $doctrine->getManager();
+        $book = $entityManager->getRepository(Library::class)->find($id);
+
+        if (!$book) {
+            /*
+            throw $this->createNotFoundException(
+                'No book found for id '.$id
+            ); */
+
+            $this->addFlash(
+                'warning',
+                "Could not remove book with id '" . $id . "'"
+            );
+            return $this->redirectToRoute('library_show_all');
+        }
+
+        $entityManager->remove($book);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'notice',
+            "Removed book with id '" . $id . "'"
+        );
+
+        return $this->redirectToRoute('library_show_all');
+    }
 }

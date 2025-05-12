@@ -5,6 +5,9 @@
 {% block body %}
     <main>
         <h1>Library</h1>
+        {{ include('flash.html.twig') }}
+
+        <a href = "{{path('book_create')}}">Add book</a>
         <table class = "library-all-books">
             <thead>
                 <tr>
@@ -12,6 +15,7 @@
                     <td>Title</td>
                     <td>Author</td>
                     <td>ISBN</td>
+                    <td class = "center">Action</td>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +25,10 @@
                     <td>{{book.title}}</td>
                     <td>{{book.author}}</td>
                     <td>{{book.isbn}}</td>
+                    <td class = "center">
+                        <a href = "{{ path("update_book_by_id", { "id": book.id }) }}"><i class="fa-solid fa-pencil icon"></i></a>
+                        <a href = "{{ path("delete_book_by_id", { "id": book.id }) }}"><i class="fa-solid fa-trash icon"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

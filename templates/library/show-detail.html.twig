@@ -4,7 +4,10 @@
 
 {% block body %}
     <main>
-        <h1>Library</h1>
+        <h1>
+            <a class = "back-arrow" href = "{{path('library_show_all')}}"><i class="fa-solid fa-chevron-left"></i></a>
+            Details
+        </h1>
         <div class = "library-detail-containter">
             <img class = "library-img" src="{{ asset(book.imageUrl) ~ ".jpeg" }}" alt="">
             <table class="library-details">

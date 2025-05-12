@@ -29,6 +29,13 @@ ul.library-link-list li {
     font-size: 1rem;
 }
 
+.book-delete-btn {
+    width: 358px;
+    padding: .5rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
 .library-all-books {
     width: 100%;
     border-collapse: collapse;
@@ -92,4 +99,14 @@ ul.library-link-list li {
 .library-img {
     width: 140px;
     height: 200px;
+}
+
+.icon {
+    color: #a387bb;
+}
+
+.back-arrow {
+    color: #a387bb;
+    font-size: 1.3rem;
+    margin-bottom: .5rem;
 }

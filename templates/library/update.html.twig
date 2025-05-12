@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Library{% endblock %}
+
+{% block body %}
+    <main>
+        <h1>
+            <a class = "back-arrow" href = "{{path('library_show_all')}}"><i class="fa-solid fa-chevron-left"></i></a>
+            Update
+        </h1>
+        <div class = "library-detail-containter">
+            <img class = "library-img" src="{{ asset(book.imageUrl) ~ ".jpeg" }}" alt="">
+            <form class = "add-book" method="post" action="{{ path("post_update_book_by_id", { "id": book.id }) }}">
+                <input class = "book-data" type="text" name="title" placeholder = "Title" value = "{{ book.title }}" required>
+                <input class = "book-data" type="text" name="author" placeholder = "Author" value = "{{ book.author }}" required>
+                <input class = "book-data" type="text" name="isbn" placeholder = "ISBN" value = "{{ book.isbn }}" required>
+                <input class = "book-data" type="text" name="url" placeholder = "Image URL" value = "{{ book.imageUrl }}">
+                <input class = "book-add-btn" type="submit" name="do_it" value="Update">
+            </form>
+        </div>
+    </main>
+{% endblock %}

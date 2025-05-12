@@ -10,6 +10,8 @@
             <li><a href = "{{path('book_create')}}">/library/create</a> Add a book.</li>
             <li><a href = "{{path('library_show_all')}}">/library/show</a> Show all books.</li>
             <li><a href = "{{ path("book_by_id", { "id": 1 }) }}">/library/show/1</a> Show a book with some id.</li>
+            <li><a href = "{{ path("update_book_by_id", { "id": 1 }) }}">/library/update/1</a> Update a book with some id.</li>
+            <li><a href = "{{ path("delete_book_by_id", { "id": 1 }) }}">/library/delete/1</a> Delete a book with some id.</li>
         </ul>
     </main>
 {% endblock %}
