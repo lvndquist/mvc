@@ -22,6 +22,7 @@ class ApiControllerKmom05 extends AbstractController
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT
         );
+        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
         return $response;
     }
 
@@ -37,6 +38,7 @@ class ApiControllerKmom05 extends AbstractController
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT
         );
+        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
         return $response;
     }
 }

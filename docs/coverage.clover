@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747344763">
-  <project timestamp="1747344763">
+<coverage generated="1747346525">
+  <project timestamp="1747346525">
     <file name="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Card/Card.php">
       <class name="App\Card\Card" namespace="global">
         <metrics complexity="4" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="23" elements="27" coveredelements="27"/>
@@ -254,7 +254,7 @@
     </file>
     <file name="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Controller/ApiControllerKmom05.php">
       <class name="App\Controller\ApiControllerKmom05" namespace="global">
-        <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="16" coveredelements="0"/>
+        <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="18" coveredelements="0"/>
       </class>
       <line num="15" type="method" name="books" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="19" type="stmt" count="0"/>
@@ -264,15 +264,17 @@
       <line num="23" type="stmt" count="0"/>
       <line num="24" type="stmt" count="0"/>
       <line num="25" type="stmt" count="0"/>
-      <line num="28" type="method" name="bookByIsbn" visibility="public" complexity="1" crap="2" count="0"/>
-      <line num="34" type="stmt" count="0"/>
+      <line num="26" type="stmt" count="0"/>
+      <line num="29" type="method" name="bookByIsbn" visibility="public" complexity="1" crap="2" count="0"/>
       <line num="35" type="stmt" count="0"/>
       <line num="36" type="stmt" count="0"/>
       <line num="37" type="stmt" count="0"/>
       <line num="38" type="stmt" count="0"/>
       <line num="39" type="stmt" count="0"/>
       <line num="40" type="stmt" count="0"/>
-      <metrics loc="43" ncloc="43" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="0" elements="16" coveredelements="0"/>
+      <line num="41" type="stmt" count="0"/>
+      <line num="42" type="stmt" count="0"/>
+      <metrics loc="45" ncloc="45" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="0" elements="18" coveredelements="0"/>
     </file>
     <file name="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Controller/CardController.php">
       <class name="App\Controller\CardController" namespace="global">
@@ -671,10 +673,10 @@
       <line num="112" type="stmt" count="5"/>
       <line num="113" type="stmt" count="5"/>
       <line num="115" type="stmt" count="5"/>
-      <line num="116" type="stmt" count="2"/>
-      <line num="117" type="stmt" count="2"/>
-      <line num="119" type="stmt" count="3"/>
-      <line num="120" type="stmt" count="3"/>
+      <line num="116" type="stmt" count="1"/>
+      <line num="117" type="stmt" count="1"/>
+      <line num="119" type="stmt" count="4"/>
+      <line num="120" type="stmt" count="4"/>
       <line num="126" type="method" name="getDrawCounter" visibility="public" complexity="1" crap="1" count="2"/>
       <line num="128" type="stmt" count="2"/>
       <line num="134" type="method" name="gameIsOver" visibility="public" complexity="1" crap="1" count="7"/>
@@ -727,6 +729,6 @@
       <line num="34" type="stmt" count="0"/>
       <metrics loc="61" ncloc="31" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="0" elements="8" coveredelements="0"/>
     </file>
-    <metrics files="18" loc="1563" ncloc="1331" classes="17" methods="83" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="535" coveredstatements="97" elements="618" coveredelements="129"/>
+    <metrics files="18" loc="1565" ncloc="1333" classes="17" methods="83" coveredmethods="32" conditionals="0" coveredconditionals="0" statements="537" coveredstatements="97" elements="620" coveredelements="129"/>
   </project>
 </coverage>
