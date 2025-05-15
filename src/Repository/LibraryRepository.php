@@ -16,6 +16,23 @@ class LibraryRepository extends ServiceEntityRepository
         parent::__construct($registry, Library::class);
     }
 
+    /**
+     * Find all books having a specified isbn with SQL.
+     * @return list<array<string, mixed>>
+     */
+    public function findByIsbn(string $isbn): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT * FROM library AS l
+            WHERE l.isbn = :value
+        ';
+
+        $resultSet = $conn->executeQuery($sql, ['value' => $isbn]);
+
+        return $resultSet->fetchAllAssociative();
+    }
     //    /**
     //     * @return Library[] Returns an array of Library objects
     //     */
