@@ -29,11 +29,11 @@ class ApiControllerKmom05 extends AbstractController
     #[Route("api/library/book/{isbn}", name: "book_by_isbn")]
     public function bookByIsbn(
         LibraryRepository $libraryRepository,
-        int $isbn
+        string $isbn
     ): Response {
 
         $books = $libraryRepository
-            ->findByIsbn((string) $isbn);
+            ->findByIsbn($isbn);
         $response = $this->json($books);
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT
