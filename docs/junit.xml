@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="22" assertions="47" errors="0" warnings="0" failures="0" skipped="0" time="0.014333">
+    <testsuite name="Project Test Suite" tests="22" assertions="47" errors="0" warnings="0" failures="0" skipped="0" time="0.014333">
+      <testsuite name="App\Card\CardGraphicTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardGraphicTest.php" tests="2" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.005460">
+        <testcase name="testCreateCardGraphic" class="App\Card\CardGraphicTest" classname="App.Card.CardGraphicTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardGraphicTest.php" line="16" assertions="3" time="0.005223"/>
+        <testcase name="testToString" class="App\Card\CardGraphicTest" classname="App.Card.CardGraphicTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardGraphicTest.php" line="32" assertions="1" time="0.000237"/>
+      </testsuite>
+      <testsuite name="App\Card\CardHandTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardHandTest.php" tests="3" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.001105">
+        <testcase name="testCreateHand" class="App\Card\CardHandTest" classname="App.Card.CardHandTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardHandTest.php" line="16" assertions="2" time="0.000697"/>
+        <testcase name="testAddingCard" class="App\Card\CardHandTest" classname="App.Card.CardHandTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardHandTest.php" line="27" assertions="2" time="0.000216"/>
+        <testcase name="testRemovingCard" class="App\Card\CardHandTest" classname="App.Card.CardHandTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardHandTest.php" line="44" assertions="1" time="0.000192"/>
+      </testsuite>
+      <testsuite name="App\Card\CardTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardTest.php" tests="2" assertions="4" errors="0" warnings="0" failures="0" skipped="0" time="0.000335">
+        <testcase name="testCreateCard" class="App\Card\CardTest" classname="App.Card.CardTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardTest.php" line="16" assertions="3" time="0.000170"/>
+        <testcase name="testToString" class="App\Card\CardTest" classname="App.Card.CardTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/CardTest.php" line="32" assertions="1" time="0.000164"/>
+      </testsuite>
+      <testsuite name="App\Card\DeckOfCardsTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/DeckOfCardsTest.php" tests="3" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.002630">
+        <testcase name="testCreateDeckOfCards" class="App\Card\DeckOfCardsTest" classname="App.Card.DeckOfCardsTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/DeckOfCardsTest.php" line="17" assertions="2" time="0.001382"/>
+        <testcase name="testDrawValid" class="App\Card\DeckOfCardsTest" classname="App.Card.DeckOfCardsTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/DeckOfCardsTest.php" line="28" assertions="2" time="0.000277"/>
+        <testcase name="testDrawException" class="App\Card\DeckOfCardsTest" classname="App.Card.DeckOfCardsTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Card/DeckOfCardsTest.php" line="43" assertions="1" time="0.000970"/>
+      </testsuite>
+      <testsuite name="App\Game\GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" tests="10" assertions="24" errors="0" warnings="0" failures="0" skipped="0" time="0.004456">
+        <testcase name="testCreateGameState" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="17" assertions="7" time="0.001153"/>
+        <testcase name="testPlayerDraw" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="46" assertions="3" time="0.000416"/>
+        <testcase name="testSetWinner" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="66" assertions="1" time="0.000342"/>
+        <testcase name="testPlayerStop" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="79" assertions="2" time="0.000596"/>
+        <testcase name="testSetScore" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="102" assertions="1" time="0.000328"/>
+        <testcase name="testPlayerWin" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="114" assertions="2" time="0.000340"/>
+        <testcase name="testEqualScore" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="131" assertions="2" time="0.000325"/>
+        <testcase name="testBankHighScore" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="148" assertions="2" time="0.000318"/>
+        <testcase name="testPlayerHighScore" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="165" assertions="2" time="0.000320"/>
+        <testcase name="testPlayerDrawMany" class="App\Game\GameStateTest" classname="App.Game.GameStateTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/GameStateTest.php" line="182" assertions="2" time="0.000318"/>
+      </testsuite>
+      <testsuite name="App\Game\PlayerTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/PlayerTest.php" tests="2" assertions="5" errors="0" warnings="0" failures="0" skipped="0" time="0.000348">
+        <testcase name="testCreatePlayer" class="App\Game\PlayerTest" classname="App.Game.PlayerTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/PlayerTest.php" line="16" assertions="3" time="0.000179"/>
+        <testcase name="testAddCard" class="App\Game\PlayerTest" classname="App.Game.PlayerTest" file="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/tests/Game/PlayerTest.php" line="32" assertions="2" time="0.000169"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
