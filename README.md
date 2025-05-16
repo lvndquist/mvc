@@ -1,4 +1,8 @@
 # MVC
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lvndquist/mvc/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/lvndquist/mvc/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/lvndquist/mvc/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/lvndquist/mvc/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/lvndquist/mvc/badges/build.png?b=main)](https://scrutinizer-ci.com/g/lvndquist/mvc/build-status/main)
+
 
 ![Symfony Logo](https://symfony.com/images/logos/header-logo.svg)
 
