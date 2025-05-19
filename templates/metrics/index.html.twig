@@ -14,9 +14,29 @@
         <p><b>Coupling</b>. Coupling handlar om hur olika delar av kod beror på andra delar av kod. Generellt vill man ha låg koppling, då det gör att koden blir lättare att testa och att den är mer flexibel och återanvändbar. Man kan skilja på inkommande kopplingar (afferent coupling (AC)) och utgående kopplingar (efferent coupling (EC)). Hög AC innebär att många andra klasser anropar klassen, vilket tyder på att den är central, viktig och känslig för ändringar. Hög EC innebär att en klass använder och är beroende av många andra externa klasser, vilket tyder på att klassen kan vara svår att testa och underhålla. Denna statistik är generellt nyttig för att få ett grep om vad som har stor vikt i ett projekt. Till exempel från report-projektet kan man se att "App\Card\Card" har högsta AC på 4, vilket tyder på att den har stor vikt för andra klasser. Man kan även se att App\Controller\ApiControllerKmom02 har ett högt EC vilket tyder på att denna klass är starkt beroende av andra klasser och man kanske bör fundera på om den bör vara så komplex.</p>
         <p><b>CRAP</b>. CRAP (Change Risk Anti-Pattern) är ett sammansatt index av komplexitet och täckning där man vill försöka identifiera riskabel kod. Formeln för att beräkna ett CRAP-värde är: comp^2 * (1 - coverage)^3 + comp, där comp = komplexiteten. Eftersom minsta komplexitet man kan ha är 1, så kommer det lägsta möjliga CRAP-värde enligt formeln vara 1. Generellt vill man inte hamna över 30 i CRAP-värde. Som ett exempel har GameState-klassen ett CRAP-värde på 15, där täckningen är 100%. Det betyder att det höga värdet beror på komplexiteten. </p>
         <h2>PhpMetrics</h2>
-        <p>Från PhpMetrics kan man se att det finns två klasser som har särskillt hög komplexitet. Dessa är CardController-klassen och ApiControllerKmom02-klassen. Båda har dessutom höga utgående kopplingar, alltså att de beror på många olika utomstående klasser. Allt tyder på att dessa klasser skulle behöva ses över.</p>
+        <p>Från PhpMetrics kan man se att det finns två klasser som har särskillt hög komplexitet. Dessa är CardController-klassen och ApiControllerKmom02-klassen. Båda har dessutom höga utgående kopplingar, alltså att de beror på många olika utomstående klasser. De båda har även ett högt antal "logical lines of code". Allt tyder på att dessa klasser skulle behöva ses över.</p>
+        <p>För att öka coverage överlag, kan det vara bra att lägga in mer testning. Till exempel skulle Library-klassen kunna testas.</p>
+        <p>Bilden nedan visar underhållbarhet/komplexitet. Där stora röda cirklar är svåra att underhålla. </p>
+        <img class = "lucky-img" src="{{ asset('img/maintainability.png') }}" alt="">
+        <p>De två stora röda cirklarna som syns i bilden är ApiControllerKmom02-klassen och CardController-klassen.</p>
+
         <h2>Scrutinizer</h2>
+        <div class = "badges">
+            <a href="https://scrutinizer-ci.com/g/lvndquist/mvc/?branch=main">
+                <img src="https://scrutinizer-ci.com/g/lvndquist/mvc/badges/quality-score.png?b=main" alt="Scrutinizer Code Quality">
+            </a>
+
+            <a href="https://scrutinizer-ci.com/g/lvndquist/mvc/?branch=main">
+                <img src="https://scrutinizer-ci.com/g/lvndquist/mvc/badges/coverage.png?b=main" alt="Code Coverage">
+            </a>
+
+            <a href="https://scrutinizer-ci.com/g/lvndquist/mvc/build-status/main">
+                <img src="https://scrutinizer-ci.com/g/lvndquist/mvc/badges/build.png?b=main" alt="Build Status">
+            </a>
+        </div>
+        <p>Scrutinizer ger ett kod-betyg på 9.74. Sett till koden, så är det samma problem som kunde identifieras med PhpMetrics, det vill säga hög komplexitet i ApiControllerKmom02-klassen och CardController-klassen. Dessutom är täckningen relativt låg på 20.7%. Ett visst antal problem/issues identifieras också så som oanvänd kod.</p>
         <h2>Förbättringar</h2>
+
         <h2>Diskussion</h2>
     </main>
 {% endblock %}

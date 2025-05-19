@@ -6,3 +6,9 @@
 .metrics-ul li {
     padding: .2rem;
 }
+
+.badges {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
