@@ -36,7 +36,16 @@
         </div>
         <p>Scrutinizer ger ett kod-betyg på 9.74. Sett till koden, så är det samma problem som kunde identifieras med PhpMetrics, det vill säga hög komplexitet i ApiControllerKmom02-klassen och CardController-klassen. Dessutom är täckningen relativt låg på 20.7%. Ett visst antal problem/issues identifieras också så som oanvänd kod.</p>
         <h2>Förbättringar</h2>
-
+        <p>Jag tänker först och främst att jag börjar med de enklare sakerna som issues som rapporteras via scrutinizer.</p>
+        <p>Därefter behöver komplexiteten i ApiControllerKmom02-klassen och CardController-klassen minskas, vilket förmodligen kommer innebära att ännu en klass tillkommer för att hantera kort utanför Controller-klasserna.</p>
+        <p>Efter det kan det vara värt att lägga in lite mer tester för att få lite bättre täckning överlag, förmodligen testar jag Library-klassen till en början.</p>
+        <h3>Innan & efter</h3>
+        <p>Täckta rader: 129 till ...</p>
+        <p>Totala rader: 622 till ...</p>
+        <p>Täckning: 20.7% till ...</p>
+        <p>CardController komplexitet: 31 till ...</p>
+        <p>ApiControllerKmom02 komplexitet: 31 till ...</p>
+        <p>Genomsnittlig cyklomatisk komplexitet per klass: 4.89 till ...</p>
         <h2>Diskussion</h2>
     </main>
 {% endblock %}
