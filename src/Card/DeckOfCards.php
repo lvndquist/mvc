@@ -102,12 +102,8 @@ class DeckOfCards
             }
             return $card1[1] <=> $card2[1];
         });
-        $sortedDeck = [];
-        foreach ($cards as $card) {
-            $sortedDeck[] = $card[0];
-        }
 
-        return $sortedDeck;
+        return array_map(fn($item) => $item[0], $cards);
     }
 
     /**

@@ -25,9 +25,12 @@ class ApiControllerKmom02 extends AbstractController
         }
 
         if ($deck instanceof DeckOfCards) {
-            $deck->sort();
-            $deckString = $deck->toString();
-            $response = new JsonResponse(["deck" => $deckString]);
+            $sortedDeck = $deck->sort();
+            $cards = [];
+            foreach ($sortedDeck as $card) {
+                $cards[] = $card->toString();
+            }
+            $response = new JsonResponse(["deck" => $cards]);
             $response->setEncodingOptions(
                 $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
             );

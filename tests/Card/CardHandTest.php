@@ -51,4 +51,21 @@ class CardHandTest extends TestCase
         $this->assertEmpty($cards);
     }
 
+
+    /**
+     * Convert hand to string.
+     */
+    public function testToString(): void
+    {
+        $card1 = new Card(1, 0);
+        $card2 = new Card(2, 0);
+        $hand = new CardHand();
+        $hand->addCard($card1);
+        $hand->addCard($card2);
+        $string = $hand->toString();
+        $expArray = ["♠A", "♠2"];
+
+        $this->assertEquals($expArray, $string);
+    }
+
 }
