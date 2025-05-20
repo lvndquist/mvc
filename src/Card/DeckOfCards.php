@@ -111,7 +111,7 @@ class DeckOfCards
     }
 
     /**
-     * Get the size of the deck.
+     * Draw multiple number of cards from deck.
      */
     public function drawMultiple(int $number, CardHand $hand)
     {
@@ -121,4 +121,15 @@ class DeckOfCards
         }
     }
 
+    /**
+     * Get string representation for deck.
+     */
+    public function toString(): array
+    {
+        $cards = [];
+        foreach ($this->getCards() as $card) {
+            $cards[] = $card->toString();
+        }
+        return $cards;
+    }
 }

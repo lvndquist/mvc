@@ -25,12 +25,9 @@ class ApiControllerKmom02 extends AbstractController
         }
 
         if ($deck instanceof DeckOfCards) {
-
-            $sortedDeck = $deck->sort();
-            foreach ($cards as $card) {
-                $sortedDeck[] = $card[0]->toString();
-            }
-            $response = new JsonResponse(["deck" => $sortedDeck]);
+            $deck->sort();
+            $deckString = $deck->toString();
+            $response = new JsonResponse(["deck" => $deckString]);
             $response->setEncodingOptions(
                 $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
             );
@@ -48,11 +45,7 @@ class ApiControllerKmom02 extends AbstractController
         $this->setSession($session);
         /** @var DeckOfCards $deck */
         $deck = $session->get("deck");
-        $cards = [];
-
-        foreach ($deck->getCards() as $card) {
-            $cards[] = $card->toString();
-        }
+        $cards = $deck->toString();
         $response = new JsonResponse(["deck" => $cards]);
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
@@ -64,7 +57,6 @@ class ApiControllerKmom02 extends AbstractController
     #[Route("/api/deck/draw", name: "post_deck_draw", methods: ["POST"])]
     public function draw(SessionInterface $session): Response
     {
-
         /** @var DeckOfCards|null $deck */
         $deck = $session->get("deck");
         /** @var CardHand[]|null $hands*/
@@ -81,19 +73,11 @@ class ApiControllerKmom02 extends AbstractController
             && $hands[0] instanceof CardHand
         ) {
             $isEmpty = $deck->isEmpty();
-
             if (!$isEmpty) {
                 $card = $deck->draw();
                 $hands[0] -> addCard($card);
-                $isEmpty = $deck->isEmpty();
             }
-
-            $cards = [];
-            foreach ($hands[0]->getCards() as $card) {
-                $cards[] = $card->toString();
-            }
-
-            $response = new JsonResponse(["size" => $deck->size(), "hand" => $cards]);
+            $response = new JsonResponse(["size" => $deck->size(), "hand" => $hands[0]->toString()]);
             $response->setEncodingOptions(
                 $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
             );
@@ -128,11 +112,8 @@ class ApiControllerKmom02 extends AbstractController
             && $hands[0] instanceof CardHand
         ) {
             $deck->drawMultiple($number, $hands[0]);
-            $isEmpty = $deck->isEmpty();
 
-            $cards = $hands[0]->toString();
-
-            $response = new JsonResponse(["size" => $deck->size(), "hand" => $cards]);
+            $response = new JsonResponse(["size" => $deck->size(), "hand" => $hands[0]->toString()]);
             $response->setEncodingOptions(
                 $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
             );

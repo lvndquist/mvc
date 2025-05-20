@@ -59,6 +59,9 @@ class CardHand
         return $status;
     }
 
+    /**
+     * Get string representation of hand.
+     */
     public function toString(): array
     {
         $cards = [];

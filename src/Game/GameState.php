@@ -3,7 +3,6 @@
 namespace App\Game;
 
 use App\Card\DeckOfCards;
-use App\Game\Bank;
 use App\Game\Player;
 use Exception;
 
