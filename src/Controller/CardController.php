@@ -28,24 +28,8 @@ class CardController extends AbstractController
             $deck = $session->get("deck");
         }
 
-
         if ($deck instanceof DeckOfCards) {
-            $cards = [];
-            foreach ($deck->getCards() as $card) {
-                $color = $card->getColor();
-                $value = $card->getValue();
-                $cards[] = [$card, $color, $value];
-            }
-            usort($cards, function ($card1, $card2) {
-                if ($card1[1] === $card2[1]) {
-                    return $card1[2] <=> $card2[2];
-                }
-                return $card1[1] <=> $card2[1];
-            });
-            $sortedDeck = [];
-            foreach ($cards as $card) {
-                $sortedDeck[] = $card[0];
-            }
+            $sortedDeck = $deck->sort();
 
             $data = [
                 "deck" => $sortedDeck
@@ -132,16 +116,8 @@ class CardController extends AbstractController
             && is_array($hands)
             && $hands[0] instanceof CardHand
         ) {
+            $deck->drawMultiple($number, $hands[0]);
             $isEmpty = $deck->isEmpty();
-            if (!$isEmpty) {
-                for ($i = 0; $i < $number; $i++) {
-                    if (!$isEmpty) {
-                        $card = $deck->draw();
-                        $hands[0] -> addCard($card);
-                        $isEmpty = $deck->isEmpty();
-                    }
-                }
-            }
 
             $data = [
                 "hands" => $hands[0]->getCards(),
@@ -168,20 +144,13 @@ class CardController extends AbstractController
         $deck = new DeckOfCards(true);
         $deck->shuffle();
         $hands = [];
-        for ($i = 0; $i < $players; $i++) {
-            $hands[] = new CardHand();
-        }
-        $isEmpty = false;
         for ($j = 0; $j < $players; $j++) {
-            for ($i = 0; $i < $cards; $i++) {
-                if (!$isEmpty) {
-                    $card = $deck->draw();
-                    $hands[$j] -> addCard($card);
-                    $isEmpty = $deck->isEmpty();
-                }
-            }
+            $hand = new CardHand();
+            $deck->drawMultiple($cards, $hand);
+            $hands[$j] = $hand;
         }
 
+        $isEmpty = $deck->isEmpty();
         $data = [
             "hands" => $hands,
             "size" => $deck->size(),

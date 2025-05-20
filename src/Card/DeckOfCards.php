@@ -3,6 +3,7 @@
 namespace App\Card;
 
 use App\Card\CardGraphic;
+use App\Card\CardHand;
 use Exception;
 
 /**
@@ -81,6 +82,43 @@ class DeckOfCards
     public function size(): int
     {
         return count($this->cards);
+    }
+
+    /**
+     * Get the size of the deck.
+     * @return array<Card>
+     */
+    public function sort(): array
+    {
+        $cards = [];
+        foreach ($this->cards as $card) {
+            $color = $card->getColor();
+            $value = $card->getValue();
+            $cards[] = [$card, $color, $value];
+        }
+        usort($cards, function ($card1, $card2) {
+            if ($card1[1] === $card2[1]) {
+                return $card1[2] <=> $card2[2];
+            }
+            return $card1[1] <=> $card2[1];
+        });
+        $sortedDeck = [];
+        foreach ($cards as $card) {
+            $sortedDeck[] = $card[0];
+        }
+
+        return $sortedDeck;
+    }
+
+    /**
+     * Get the size of the deck.
+     */
+    public function drawMultiple(int $number, CardHand $hand)
+    {
+        for ($i = 0; $i < $number && !$this->isEmpty(); $i++) {
+            $card = $this->draw();
+            $hand -> addCard($card);
+        }
     }
 
 }

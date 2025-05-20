@@ -59,4 +59,13 @@ class CardHand
         return $status;
     }
 
+    public function toString(): array
+    {
+        $cards = [];
+        foreach ($this->getCards() as $card) {
+            $cards[] = $card->toString();
+        }
+        return $cards;
+    }
+
 }

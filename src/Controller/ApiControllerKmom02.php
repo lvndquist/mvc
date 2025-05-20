@@ -26,20 +26,7 @@ class ApiControllerKmom02 extends AbstractController
 
         if ($deck instanceof DeckOfCards) {
 
-            $cards = [];
-
-            foreach ($deck->getCards() as $card) {
-                $color = $card->getColor();
-                $value = $card->getValue();
-                $cards[] = [$card, $color, $value];
-            }
-            usort($cards, function ($card1, $card2) {
-                if ($card1[1] === $card2[1]) {
-                    return $card1[2] <=> $card2[2];
-                }
-                return $card1[1] <=> $card2[1];
-            });
-            $sortedDeck = [];
+            $sortedDeck = $deck->sort();
             foreach ($cards as $card) {
                 $sortedDeck[] = $card[0]->toString();
             }
@@ -140,19 +127,10 @@ class ApiControllerKmom02 extends AbstractController
             && is_array($hands)
             && $hands[0] instanceof CardHand
         ) {
+            $deck->drawMultiple($number, $hands[0]);
             $isEmpty = $deck->isEmpty();
-            for ($i = 0; $i < $number; $i++) {
-                if (!$isEmpty) {
-                    $card = $deck->draw();
-                    $hands[0] -> addCard($card);
-                    $isEmpty = $deck->isEmpty();
-                }
-            }
 
-            $cards = [];
-            foreach ($hands[0]->getCards() as $card) {
-                $cards[] = $card->toString();
-            }
+            $cards = $hands[0]->toString();
 
             $response = new JsonResponse(["size" => $deck->size(), "hand" => $cards]);
             $response->setEncodingOptions(
@@ -173,23 +151,12 @@ class ApiControllerKmom02 extends AbstractController
     {
         $deck = new DeckOfCards(false);
         $deck->shuffle();
-        $hands = [];
         $playerHands = [];
-        for ($i = 0; $i < $players; $i++) {
-            $hands[] = new CardHand();
-        }
-        $isEmpty = false;
         for ($j = 0; $j < $players; $j++) {
-            for ($i = 0; $i < $cards; $i++) {
-                if (!$isEmpty) {
-                    $card = $deck->draw();
-                    $hands[$j] -> addCard($card);
-                    $playerHands[$j][$i] = $card->toString();
-                    $isEmpty = $deck->isEmpty();
-                }
-            }
+            $hand = new CardHand();
+            $deck->drawMultiple($cards, $hand);
+            $playerHands[$j] = $hand->toString();
         }
-
         $response = new JsonResponse(["size" => $deck->size(), "players" => $playerHands]);
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
