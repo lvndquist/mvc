@@ -76,7 +76,7 @@ class DeckOfCardsTest extends TestCase
         $deck = new DeckOfCards(false);
         $hand = new CardHand();
         $deck->drawMultiple(2, $hand);
-        $handCards= $hand->getCards();
+        $handCards = $hand->getCards();
         $value1 = $handCards[0]->getValue();
         $color1 = $handCards[0]->getColor();
         $value2 = $handCards[1]->getValue();

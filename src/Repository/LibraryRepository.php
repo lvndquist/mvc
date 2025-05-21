@@ -18,7 +18,7 @@ class LibraryRepository extends ServiceEntityRepository
 
     /**
      * Find all books having a specified isbn with SQL.
-     * @return list<array<string, mixed>>
+     * @return array<int, array<string, mixed>>
      */
     public function findByIsbn(string $isbn): array
     {

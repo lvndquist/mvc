@@ -81,6 +81,11 @@ Search.appendIndex(
             "summary": "Remove\u0020a\u0020card\u0020from\u0020the\u0020hand.",
             "url": "classes/App-Card-CardHand.html#method_removeCard"
         },                {
+            "fqsen": "\\App\\Card\\CardHand\u003A\u003AtoString\u0028\u0029",
+            "name": "toString",
+            "summary": "Get\u0020string\u0020representation\u0020of\u0020hand.",
+            "url": "classes/App-Card-CardHand.html#method_toString"
+        },                {
             "fqsen": "\\App\\Card\\CardHand\u003A\u003A\u0024cards",
             "name": "cards",
             "summary": "Array\u0020of\u0020cards\u0020representing\u0020a\u0020hand\u0020of\u0020cards.",
@@ -120,6 +125,21 @@ Search.appendIndex(
             "name": "size",
             "summary": "Get\u0020the\u0020size\u0020of\u0020the\u0020deck.",
             "url": "classes/App-Card-DeckOfCards.html#method_size"
+        },                {
+            "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003Asort\u0028\u0029",
+            "name": "sort",
+            "summary": "Get\u0020the\u0020size\u0020of\u0020the\u0020deck.",
+            "url": "classes/App-Card-DeckOfCards.html#method_sort"
+        },                {
+            "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AdrawMultiple\u0028\u0029",
+            "name": "drawMultiple",
+            "summary": "Draw\u0020multiple\u0020number\u0020of\u0020cards\u0020from\u0020deck.",
+            "url": "classes/App-Card-DeckOfCards.html#method_drawMultiple"
+        },                {
+            "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003AtoString\u0028\u0029",
+            "name": "toString",
+            "summary": "Get\u0020string\u0020representation\u0020for\u0020deck.",
+            "url": "classes/App-Card-DeckOfCards.html#method_toString"
         },                {
             "fqsen": "\\App\\Card\\DeckOfCards\u003A\u003A\u0024cards",
             "name": "cards",
@@ -330,6 +350,16 @@ Search.appendIndex(
             "name": "deleteBook",
             "summary": "",
             "url": "classes/App-Controller-LibraryController.html#method_deleteBook"
+        },                {
+            "fqsen": "\\App\\Controller\\MetricsController",
+            "name": "MetricsController",
+            "summary": "",
+            "url": "classes/App-Controller-MetricsController.html"
+        },                {
+            "fqsen": "\\App\\Controller\\MetricsController\u003A\u003Ametrics\u0028\u0029",
+            "name": "metrics",
+            "summary": "",
+            "url": "classes/App-Controller-MetricsController.html#method_metrics"
         },                {
             "fqsen": "\\App\\Controller\\ReportController",
             "name": "ReportController",

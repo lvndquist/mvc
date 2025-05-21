@@ -103,13 +103,13 @@ class DeckOfCards
             return $card1[1] <=> $card2[1];
         });
 
-        return array_map(fn($item) => $item[0], $cards);
+        return array_map(fn ($item) => $item[0], $cards);
     }
 
     /**
      * Draw multiple number of cards from deck.
      */
-    public function drawMultiple(int $number, CardHand $hand)
+    public function drawMultiple(int $number, CardHand $hand): void
     {
         for ($i = 0; $i < $number && !$this->isEmpty(); $i++) {
             $card = $this->draw();
@@ -119,6 +119,7 @@ class DeckOfCards
 
     /**
      * Get string representation for deck.
+     * @return string[] array of strings for each card in the deck
      */
     public function toString(): array
     {

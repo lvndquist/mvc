@@ -61,6 +61,7 @@ class CardHand
 
     /**
      * Get string representation of hand.
+     * @return string[] array of strings for each card in the hand
      */
     public function toString(): array
     {

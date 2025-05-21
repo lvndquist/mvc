@@ -97,7 +97,7 @@ class ApiControllerKmom02 extends AbstractController
     #[Route("/api/deck/draw/", name: "post_deck_draw_number", methods: ["POST"])]
     public function drawNumber(SessionInterface $session, Request $request): Response
     {
-        $number = $request->request->get('num_cards');
+        $number = (int) $request->request->get('num_cards');
 
         /** @var DeckOfCards|null $deck */
         $deck = $session->get("deck");
