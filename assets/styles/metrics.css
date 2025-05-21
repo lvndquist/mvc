@@ -12,3 +12,7 @@
     flex-direction: row;
     gap: 1rem;
 }
+
+.end {
+    padding-bottom: 4rem;
+}

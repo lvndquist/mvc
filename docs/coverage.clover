@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1747858340">
-  <project timestamp="1747858340">
+<coverage generated="1747860952">
+  <project timestamp="1747860952">
     <file name="/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Card/Card.php">
       <class name="App\Card\Card" namespace="global">
         <metrics complexity="4" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="23" elements="27" coveredelements="27"/>
@@ -656,10 +656,10 @@
       <line num="111" type="stmt" count="5"/>
       <line num="112" type="stmt" count="5"/>
       <line num="114" type="stmt" count="5"/>
-      <line num="115" type="stmt" count="2"/>
-      <line num="116" type="stmt" count="2"/>
-      <line num="118" type="stmt" count="3"/>
-      <line num="119" type="stmt" count="3"/>
+      <line num="115" type="stmt" count="1"/>
+      <line num="116" type="stmt" count="1"/>
+      <line num="118" type="stmt" count="4"/>
+      <line num="119" type="stmt" count="4"/>
       <line num="125" type="method" name="getDrawCounter" visibility="public" complexity="1" crap="1" count="2"/>
       <line num="127" type="stmt" count="2"/>
       <line num="133" type="method" name="gameIsOver" visibility="public" complexity="1" crap="1" count="7"/>

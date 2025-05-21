@@ -40,12 +40,15 @@
         <p>Därefter behöver komplexiteten i ApiControllerKmom02-klassen och CardController-klassen minskas, vilket förmodligen kommer innebära att ännu en klass tillkommer för att hantera kort utanför Controller-klasserna.</p>
         <p>Efter det kan det vara värt att lägga in lite mer tester för att få lite bättre täckning överlag, förmodligen testar jag Library-klassen till en början.</p>
         <h3>Innan & efter</h3>
-        <p>Täckta rader: 129 till ...</p>
-        <p>Totala rader: 622 till ...</p>
-        <p>Täckning: 20.7% till ...</p>
-        <p>CardController komplexitet: 31 till ...</p>
-        <p>ApiControllerKmom02 komplexitet: 31 till ...</p>
-        <p>Genomsnittlig cyklomatisk komplexitet per klass: 4.89 till ...</p>
+        <p><b>Täckta rader:</b> 129 till 132</p>
+        <p><b>Totala rader:</b> 622 till 509</p>
+        <p><b>Täckning:</b> 20.7% till 30%</p>
+        <p><b>CardController komplexitet:</b> 31 till 16</p>
+        <p><b>ApiControllerKmom02 komplexitet:</b> 31 till 16</p>
+        <p><b>Genomsnittlig cyklomatisk komplexitet per klass:</b> 4.89 till 4.00</p>
+        <p>Det blev lite bättre efter ändringarna, men vad gäller komplexiteten så kändes det mest som att jag flyttade logiken till en annan plats och gjorde den klassen mer komlplex, men det är väl lite så det kan bli om man inte effektiviserar logiken riktigt. Jag fick bort de issues som jag kände att jag kunde rå på, men det finns fortfarande två issues i kernel.php och .php-cs-fixer.dist.php som jag inte kände för att hålla på i. En testfil tillkom för att testa Library-klassen, vilket höjde täckningen med några procentenheter.</p>
         <h2>Diskussion</h2>
+        <p>Det kändes lite sådär att gå tillbaka ända till kmom02 för att fixa där, och jag tror att det bästa är att man försöker analysera så ofta som möjligt, när man känner att man är klar med en klass till exempel. Det blir ju lite riskabelt att gå tillbaka långt och ändra saker som kanske används i andra saker, och då riskera att förstöra där, speciellt i det här fallet när jag inte har testfall för alla kontroller-klasser.</p>
+        <p class = "end">Det bästa är väl om man redan är medveten om "clean code", och försöker jobba på ett sätt där man redan från början strukturerar och funderar på hur koden bör fungera - på ett rent sätt. Om man redan från start tar i hänsyn sådant som komplexitet och täckning så slipper man gå tillbaka senare och skriva om koden. Det kanske tar lite längre tid att programmera på det här sättet, men samtidigt sparar man på att skriva om massa kod i efterhand för att få den "clean".</p>
     </main>
 {% endblock %}
