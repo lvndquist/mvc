@@ -2,8 +2,8 @@
 
 namespace App\Proj;
 
-use App\Card\CardHand;
-use App\Card\Card;
+use App\Proj\Hand;
+use App\Proj\Card;
 use Exception;
 
 /**
@@ -15,7 +15,7 @@ class Player
      * Player's hand containing their cards.
      * @var CardHand
      */
-    private CardHand $hand;
+    private Hand $hand;
 
     /**
      * Player's name.
@@ -47,7 +47,7 @@ class Player
      */
     public function __construct(string $name, int $money)
     {
-        $this->hand = new CardHand();
+        $this->hand = new Hand();
         $this->name = $name;
         $this->money = $money;
         $this->currentBet = 0;

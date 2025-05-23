@@ -20,7 +20,7 @@ class Card
     /**
      * The card's color by letter.
      */
-    protected int $colorLetter;
+    protected string $colorLetter;
 
     /**
      * Initiate the card object.

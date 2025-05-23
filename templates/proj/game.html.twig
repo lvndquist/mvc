@@ -16,54 +16,26 @@
             </div>
 
             <div class="player-section">
-                <div class="poker-player">
-                    <div class="poker-player-name">Player 1</div>
-                    <div class="poker-player-cards">
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/backside.jpg)" class="poker-card-back"></div>
+                {% for player in players %}
+                    {% set playerIndex = loop.index0 %}
+                    <div class="poker-player">
+                        <div class="poker-player-name">{{player.name}}</div>
+                        <div class="poker-player-cards">
+                        {% for card in player.hand %}
+                            <div class="poker-card">
+                                {% if playerIndex == 0 %}
+                                    <div style="background-image: url({{ asset('img/deck.png') }})" class="poker-deck-sprite card-{{ card.toString() }}"></div>
+                                {% else %}
+                                    <div style="background-image: url({{ asset('img/backside.jpg') }})" class="poker-card-back"></div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                         </div>
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-14"></div>
-                        </div>
+                        <div class="poker-player-money">$5000</div>
                     </div>
-                    <div class="poker-player-money">$5000</div>
-                </div>
-                <div class="poker-player">
-                    <div class="poker-player-name">Player 1</div>
-                    <div class="poker-player-cards">
-                        <div class="poker-card active-player">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-2"></div>
-                        </div>
-                        <div class="poker-card active-player">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-3"></div>
-                        </div>
-                    </div>
-                    <div class="poker-player-money">$5000</div>
-                </div>
-                <div class="poker-player">
-                    <div class="poker-player-name">Player 1</div>
-                    <div class="poker-player-cards">
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-4"></div>
-                        </div>
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-5"></div>
-                        </div>
-                    </div>
-                    <div class="poker-player-money">$5000</div>
-                </div>
-                <div class="poker-player">
-                    <div class="poker-player-name">Player 1</div>
-                    <div class="poker-player-cards">
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-6"></div>
-                        </div>
-                        <div class="poker-card">
-                            <div style="background-image: url(/img/deck.png)" class="poker-deck-sprite card-3-7"></div>
-                        </div>
-                    </div>
-                    <div class="poker-player-money">$5000</div>
-                </div>
+
+                {% endfor %}
+
 
             </div>
             <div class="controls">

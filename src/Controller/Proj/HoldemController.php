@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use App\Proj\Game;
+
 class HoldemController extends AbstractController
 {
     #[Route("/proj", name: "proj")]
@@ -27,13 +29,20 @@ class HoldemController extends AbstractController
     {
         $name = (string) $request->request->get('name');
         $startingMoney = (int) $request->request->get('money');
+        $game = new Game($startingMoney, $name);
+        $session->set("game", $game);
         return $this->redirectToRoute('holdem');
     }
 
     #[Route("/proj/game", name: "holdem")]
     public function holdem(SessionInterface $session): Response
     {
-        return $this->render('proj/game.html.twig');
+        /** @var Game|null $game */
+        $game = $session->get("game");
+        $data = [
+            "players" => $game->getPlayers()
+        ];
+        return $this->render('proj/game.html.twig', $data);
     }
 
 }
