@@ -1,0 +1,16 @@
+{% extends "proj-base.html.twig" %}
+
+{% block title %}Project{% endblock %}
+
+{% block body %}
+    <main class = "proj-main">
+        <div class = "start-container">
+            <h1 class = "start-title">Welcome to texas hold'em!</h1>
+            <form class = "start-form" method="post" action="{{ path("start_game") }}">
+                <input class = "start-input" type="text" name="name" placeholder = "Name" required value = "Player">
+                <input class = "start-input" type="number" name="money" placeholder = "Starting money" required value = 5000>
+                <input class = "start-btn" type="submit" name="do_it" value="Start">
+            </form>
+        <div>
+    </main>
+{% endblock %}

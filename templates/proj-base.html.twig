@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="{{ asset('img/glider.svg') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    </head>
+    <body class = "proj-body">
+        <div class = "nav-container">
+            <nav class = "proj-nav">
+                <a href="{{ path('report') }}" class="{% if app.request.attributes.get('_route') == 'report' %}active{% endif %}">Report</a>
+                <a href="{{ path('proj') }}" class="{% if app.request.attributes.get('_route') == 'proj' %}active{% endif %}">Project</a>
+                <a href="{{ path('about') }}" class="{% if app.request.attributes.get('_route') == 'about' %}active{% endif %}">About</a>
+            </nav>
+        </div>
+        {% block body %}{% endblock %}
+
+    </body>
+</html>

@@ -28,6 +28,7 @@
             <a href="{{ path('game') }}" class="{% if app.request.attributes.get('_route') == 'game' %}active{% endif %}">21</a>
             <a href="{{ path('library') }}" class="{% if app.request.attributes.get('_route') == 'library' %}active{% endif %}">Library</a>
             <a href="{{ path('metrics') }}" class="{% if app.request.attributes.get('_route') == 'metrics' %}active{% endif %}">Metrics</a>
+            <a href="{{ path('proj') }}" class="{% if app.request.attributes.get('_route') == 'proj' %}active{% endif %}">Project</a>
         </nav>
 
         {% block body %}{% endblock %}
