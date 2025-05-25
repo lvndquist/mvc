@@ -76,12 +76,17 @@
 }
 
 .start-form input[type="number"]::-webkit-inner-spin-button,
-.start-form input[type="number"]::-webkit-outer-spin-button {
+.start-form input[type="number"]::-webkit-outer-spin-button,
+.control-form input[type="number"]::-webkit-inner-spin-button,
+.control-form input[type="number"]::-webkit-outer-spin-button
+{
     -webkit-appearance: none;
     margin: 0;
 }
 
-.start-form input[type="number"] {
+.start-form input[type="number"],
+.control-form input[type="number"]
+{
     -moz-appearance: textfield;
 }
 
@@ -137,6 +142,7 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 4rem;
+    min-height: 150px;
 }
 
 .poker-player {
@@ -159,6 +165,10 @@
     color: #10B981;
 }
 
+.active-dent {
+    margin-top: 1rem;
+}
+
 .active-player {
     border-color: lightblue;
 }
@@ -167,21 +177,7 @@
     display: flex;
     justify-content: center;
     gap: 20px;
-    padding-top: 2rem;
-}
-
-.action-btn {
-    background-color: #3B82F6;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-.action-btn:hover {
-    background-color: #2563EB;
+    padding-top: 1rem;
 }
 
 .poker-deck-sprite {
@@ -262,3 +258,32 @@
 .poker-deck-sprite.card-3-12 { background-position: -754px  -304px; }
 .poker-deck-sprite.card-3-13 { background-position: -822px -304px; }
 .poker-deck-sprite.card-3-14 { background-position: -6px -304px; }
+
+.control-form {
+
+}
+
+.fold-btn,
+.call-btn,
+.raise-btn,
+.check-btn,
+.raise-input
+{
+    padding: 12px;
+    margin: 10px 0;
+    background-color: #2A2A2A;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.raise-input {
+    width: 4rem;
+    text-align: center;
+}
+
+.folded {
+    opacity: 40%;
+}

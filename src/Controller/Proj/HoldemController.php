@@ -39,10 +39,34 @@ class HoldemController extends AbstractController
     {
         /** @var Game|null $game */
         $game = $session->get("game");
+        $game->updateGameState();
+        $players = $game->getPlayers();
         $data = [
-            "players" => $game->getPlayers()
+            "players" => $players,
+            "currPlayerIndex" => $game->getCurrPlayerIndex(),
+            "pot" => $game->getPot(),
+            "userBet" => $players[0]->getCurrentBet(),
+            "gameBet" => $game->getCurrentBet()
         ];
         return $this->render('proj/game.html.twig', $data);
     }
 
+    #[Route('/proj/user-input', name: 'user_input', methods: ['POST'])]
+    public function userInput(Request $request, SessionInterface $session): Response
+    {
+        /** @var Game|null $game */
+        $game = $session->get("game");
+        if ($request->request->has("fold")) {
+            $game->playerFold(0);
+        } elseif ($request->request->has("call")) {
+            $game->playerCall(0);
+        } elseif ($request->request->has("raise")) {
+            $amount = $request->request->getInt("money");
+            $game->playerRaise(0, $amount);
+        } elseif ($request->request->has("check")) {
+            $game->playerCheck(0);
+        }
+        $session->set("game", $game);
+        return $this->redirectToRoute('holdem');
+    }
 }

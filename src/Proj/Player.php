@@ -35,12 +35,17 @@ class Player
     /**
      * Player folded.
      */
-    private bool $folded;
+    private bool $isFolded;
 
     /**
      * Player all in.
      */
     private bool $allIn;
+
+    /**
+     * Player played.
+     */
+    private bool $played;
 
     /**
      * Initialize the player object.
@@ -51,8 +56,9 @@ class Player
         $this->name = $name;
         $this->money = $money;
         $this->currentBet = 0;
-        $this->folded = false;
+        $this->isFolded = false;
         $this->allIn = false;
+        $this->played = false;
     }
 
     /**
@@ -105,6 +111,14 @@ class Player
     }
 
     /**
+     * Has player played?
+     */
+    public function hasPlayed(): bool
+    {
+        return $this->played;
+    }
+
+    /**
      * Adds a card to the player's hand.
      */
     public function addCard(Card $card): void
@@ -145,6 +159,14 @@ class Player
     }
 
     /**
+     * Set played flag of player.
+     */
+    public function setPlayed(bool $val)
+    {
+        $this->played = $val;
+    }
+
+    /**
      * Make a bet.
      */
     public function makeBet(int $amount)
@@ -155,5 +177,6 @@ class Player
         }
         $this->money -= $amount;
         $this->currentBet += $amount;
+        $this->played = true;
     }
 }

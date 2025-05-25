@@ -5,7 +5,7 @@
 {% block body %}
     <main class = "proj-main">
         <div class="poker-table">
-            <div class="pot">Pot: $1000</div>
+            <div class="pot">Pot: ${{ pot }}</div>
 
             <div class="community-cards">
                 <div class="poker-card"></div>
@@ -18,11 +18,13 @@
             <div class="player-section">
                 {% for player in players %}
                     {% set playerIndex = loop.index0 %}
-                    <div class="poker-player">
+                    {% set activePlayer = loop.index0 == currPlayerIndex %}
+                    {% set folded = player.folded %}
+                    <div class="poker-player {{ folded ? "folded" : "" }} {{ activePlayer ? "active-dent" : ""}}">
                         <div class="poker-player-name">{{player.name}}</div>
                         <div class="poker-player-cards">
                         {% for card in player.hand %}
-                            <div class="poker-card">
+                            <div class="poker-card {{ activePlayer ? 'active-player' : '' }}">
                                 {% if playerIndex == 0 %}
                                     <div style="background-image: url({{ asset('img/deck.png') }})" class="poker-deck-sprite card-{{ card.toString() }}"></div>
                                 {% else %}
@@ -31,17 +33,21 @@
                             </div>
                         {% endfor %}
                         </div>
-                        <div class="poker-player-money">$5000</div>
+                        <div class="poker-player-money">${{player.getMoney()}}</div>
                     </div>
-
                 {% endfor %}
-
-
             </div>
             <div class="controls">
-                <button class="action-btn">Fold</button>
-                <button class="action-btn">Call</button>
-                <button class="action-btn">Raise</button>
+                <form class = "control-form" method="post" action="{{ path("user_input") }}">
+                    <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
+                    {% if userBet == gameBet %}
+                        <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
+                    {% else %}
+                        <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
+                    {% endif %}
+                    <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
+                    <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
+                </form>
             </div>
         </div>
     </main>
