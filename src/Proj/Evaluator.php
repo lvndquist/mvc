@@ -65,6 +65,25 @@ class Evaluator
             return ["Straight", $this->handRanks["straight"], $this->getStraightCards($cards)];
         }
 
+        // Three of a kind
+        if (in_array(3, $valueCount)) {
+            return ["Three of a kind", $this->handRanks["threeOfAKind"], $this->getThreeOfAKindCards($cards, $valueCount)];
+        }
+
+        $pairs = $this->getPairs($cards, $valueCount);
+
+        // Two pair
+        if (count($pairs) === 4) {
+            return ["Two pair", $this->handRanks["twoPair"], $pairs];
+        }
+
+        // Pair
+        if (count($pairs) === 2) {
+            return ["Pair", $this->handRanks["pair"], $pairs];
+        }
+
+        // High card
+        return ["High card", $this->handRanks["highCard"], $cards[0]];
     }
 
     /**
@@ -185,6 +204,51 @@ class Evaluator
         }
 
         return false;
+    }
+
+    /**
+     * Get pairs.
+     */
+    public function getPairs(array $cards, array $valueCount): array
+    {
+        $pairs = [];
+        $targets = [];
+        foreach ($valueCount as $value => $count) {
+            if ($count === 2) {
+                $targets[] = $value;
+            }
+        }
+
+        foreach ($cards as $card) {
+            if (in_array($card->getValue(), $targets)) {
+                $pairs[] = $card;
+            }
+        }
+        return $pairs;
+    }
+
+    /**
+     * Get three of a kind cards.
+     */
+    public function getThreeOfAKindCards(array $cards, array $valueCount): array
+    {
+        $threeOfAKindCards = [];
+        $target = null;
+
+        foreach ($valueCount as $value => $count) {
+            if ($count === 3) {
+                $target = $value;
+                break;
+            }
+        }
+
+        foreach ($cards as $card) {
+            if ($card->getValue() === $target) {
+                $threeOfAKindCards[] = $card;
+            }
+        }
+
+        return $threeOfAKindCards;
     }
 
     /**
