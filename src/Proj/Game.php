@@ -79,7 +79,7 @@ class Game
         $player = $this->players[$this->currPlayerIndex];
 
         if ($player->isComputer() && !$player->hasPlayed()) {
-            $this->computerPlay();
+            $this->basicComputerPlay();
         } else {
         if (!$player->hasPlayed()) {
             return;
@@ -100,9 +100,9 @@ class Game
     }
 
     /**
-     * Computer play.
+     * Basic computer play. Basically no logic and does choices randomly.
      */
-    public function computerPlay(): void
+    public function basicComputerPlay(): void
     {
         $player =  $this->players[$this->currPlayerIndex];
 
