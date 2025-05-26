@@ -2,12 +2,12 @@
 <html lang="en">
  <head>
   <meta charset="UTF-8">
-  <title>Dashboard for /Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Card</title>
+  <title>Dashboard for /Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src/Controller/Proj</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../_css/bootstrap.min.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/nv.d3.min.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/style.css?v=9.2.32" rel="stylesheet" type="text/css">
-  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+  <link href="../../_css/bootstrap.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/nv.d3.min.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/style.css?v=9.2.32" rel="stylesheet" type="text/css">
+  <link href="../../_css/custom.css" rel="stylesheet" type="text/css">
  </head>
  <body>
   <header>
@@ -16,8 +16,9 @@
      <div class="col-md-12">
       <nav aria-label="breadcrumb">
        <ol class="breadcrumb">
-         <li class="breadcrumb-item"><a href="../index.html">/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src</a></li>
-         <li class="breadcrumb-item"><a href="index.html">Card</a></li>
+         <li class="breadcrumb-item"><a href="../../index.html">/Users/jonatan/Desktop/BTH/dbwebb-kurser/mvc/me/report/src</a></li>
+         <li class="breadcrumb-item"><a href="../index.html">Controller</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Proj</a></li>
          <li class="breadcrumb-item active">(Dashboard)</li>
 
        </ol>
@@ -58,6 +59,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="HoldemController.php.html#13">App\Controller\Proj\HoldemController</a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -74,6 +76,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="HoldemController.php.html#13">App\Controller\Proj\HoldemController</a></td><td class="text-right">110</td></tr>
 
        </tbody>
       </table>
@@ -111,6 +114,11 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="HoldemController.php.html#15"><abbr title="App\Controller\Proj\HoldemController::index">index</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="HoldemController.php.html#21"><abbr title="App\Controller\Proj\HoldemController::about">about</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="HoldemController.php.html#27"><abbr title="App\Controller\Proj\HoldemController::start">start</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="HoldemController.php.html#37"><abbr title="App\Controller\Proj\HoldemController::holdem">holdem</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="HoldemController.php.html#59"><abbr title="App\Controller\Proj\HoldemController::userInput">userInput</abbr></a></td><td class="text-right">0%</td></tr>
 
        </tbody>
       </table>
@@ -127,6 +135,7 @@
         </tr>
        </thead>
        <tbody>
+       <tr><td><a href="HoldemController.php.html#59"><abbr title="App\Controller\Proj\HoldemController::userInput">userInput</abbr></a></td><td class="text-right">42</td></tr>
 
        </tbody>
       </table>
@@ -140,9 +149,9 @@
     </p>
    </footer>
   </div>
-  <script src="../_js/jquery.min.js?v=9.2.32" type="text/javascript"></script>
-  <script src="../_js/d3.min.js?v=9.2.32" type="text/javascript"></script>
-  <script src="../_js/nv.d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/jquery.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/d3.min.js?v=9.2.32" type="text/javascript"></script>
+  <script src="../../_js/nv.d3.min.js?v=9.2.32" type="text/javascript"></script>
   <script type="text/javascript">
 $(document).ready(function() {
   nv.addGraph(function() {
@@ -155,7 +164,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#classCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,4], "Class Coverage"))
+      .datum(getCoverageDistributionData([1,0,0,0,0,0,0,0,0,0,0,0], "Class Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -173,7 +182,7 @@ $(document).ready(function() {
       .yAxis.tickFormat(d3.format('d'));
 
     d3.select('#methodCoverageDistribution svg')
-      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,0,0,0,20], "Method Coverage"))
+      .datum(getCoverageDistributionData([5,0,0,0,0,0,0,0,0,0,0,0], "Method Coverage"))
       .transition().duration(500).call(chart);
 
     nv.utils.windowResize(chart.update);
@@ -223,7 +232,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Cyclomatic Complexity');
 
     d3.select('#classComplexity svg')
-      .datum(getComplexityData([[100,4,"<a href=\"Card.php.html#8\">App\\Card\\Card<\/a>"],[100,2,"<a href=\"CardGraphic.php.html#8\">App\\Card\\CardGraphic<\/a>"],[100,9,"<a href=\"CardHand.php.html#10\">App\\Card\\CardHand<\/a>"],[100,19,"<a href=\"DeckOfCards.php.html#12\">App\\Card\\DeckOfCards<\/a>"]], 'Class Complexity'))
+      .datum(getComplexityData([[0,10,"<a href=\"HoldemController.php.html#13\">App\\Controller\\Proj\\HoldemController<\/a>"]], 'Class Complexity'))
       .transition()
       .duration(500)
       .call(chart);
@@ -247,7 +256,7 @@ $(document).ready(function() {
     chart.yAxis.axisLabel('Method Complexity');
 
     d3.select('#methodComplexity svg')
-      .datum(getComplexityData([[100,1,"<a href=\"Card.php.html#23\">App\\Card\\Card::__construct<\/a>"],[100,1,"<a href=\"Card.php.html#32\">App\\Card\\Card::getValue<\/a>"],[100,1,"<a href=\"Card.php.html#40\">App\\Card\\Card::getColor<\/a>"],[100,1,"<a href=\"Card.php.html#48\">App\\Card\\Card::toString<\/a>"],[100,1,"<a href=\"CardGraphic.php.html#18\">App\\Card\\CardGraphic::__construct<\/a>"],[100,1,"<a href=\"CardGraphic.php.html#27\">App\\Card\\CardGraphic::toString<\/a>"],[100,1,"<a href=\"CardHand.php.html#21\">App\\Card\\CardHand::__construct<\/a>"],[100,1,"<a href=\"CardHand.php.html#29\">App\\Card\\CardHand::addCard<\/a>"],[100,1,"<a href=\"CardHand.php.html#38\">App\\Card\\CardHand::getCards<\/a>"],[100,4,"<a href=\"CardHand.php.html#46\">App\\Card\\CardHand::removeCard<\/a>"],[100,2,"<a href=\"CardHand.php.html#66\">App\\Card\\CardHand::toString<\/a>"],[100,4,"<a href=\"DeckOfCards.php.html#24\">App\\Card\\DeckOfCards::__construct<\/a>"],[100,1,"<a href=\"DeckOfCards.php.html#41\">App\\Card\\DeckOfCards::shuffle<\/a>"],[100,1,"<a href=\"DeckOfCards.php.html#50\">App\\Card\\DeckOfCards::getCards<\/a>"],[100,2,"<a href=\"DeckOfCards.php.html#58\">App\\Card\\DeckOfCards::draw<\/a>"],[100,2,"<a href=\"DeckOfCards.php.html#71\">App\\Card\\DeckOfCards::isEmpty<\/a>"],[100,1,"<a href=\"DeckOfCards.php.html#82\">App\\Card\\DeckOfCards::size<\/a>"],[100,3,"<a href=\"DeckOfCards.php.html#91\">App\\Card\\DeckOfCards::sort<\/a>"],[100,3,"<a href=\"DeckOfCards.php.html#112\">App\\Card\\DeckOfCards::drawMultiple<\/a>"],[100,2,"<a href=\"DeckOfCards.php.html#124\">App\\Card\\DeckOfCards::toString<\/a>"]], 'Method Complexity'))
+      .datum(getComplexityData([[0,1,"<a href=\"HoldemController.php.html#15\">App\\Controller\\Proj\\HoldemController::index<\/a>"],[0,1,"<a href=\"HoldemController.php.html#21\">App\\Controller\\Proj\\HoldemController::about<\/a>"],[0,1,"<a href=\"HoldemController.php.html#27\">App\\Controller\\Proj\\HoldemController::start<\/a>"],[0,1,"<a href=\"HoldemController.php.html#37\">App\\Controller\\Proj\\HoldemController::holdem<\/a>"],[0,6,"<a href=\"HoldemController.php.html#59\">App\\Controller\\Proj\\HoldemController::userInput<\/a>"]], 'Method Complexity'))
       .transition()
       .duration(500)
       .call(chart);
