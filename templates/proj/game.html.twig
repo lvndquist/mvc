@@ -40,7 +40,7 @@
             <div class="controls">
                 <form class = "control-form" method="post" action="{{ path("user_input") }}">
                     <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
-                    {% if userBet == gameBet %}
+                    {% if canCheck %}
                         <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
                     {% else %}
                         <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>

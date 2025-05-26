@@ -48,13 +48,19 @@ class Player
     private bool $played;
 
     /**
+     * Player is computer.
+     */
+    private bool $computer;
+
+    /**
      * Initialize the player object.
      */
-    public function __construct(string $name, int $money)
+    public function __construct(string $name, int $money, bool $computer)
     {
         $this->hand = new Hand();
         $this->name = $name;
         $this->money = $money;
+        $this->computer = $computer;
         $this->currentBet = 0;
         $this->isFolded = false;
         $this->allIn = false;
@@ -108,6 +114,14 @@ class Player
     public function isAllIn(): bool
     {
         return $this->isAllIn;
+    }
+
+    /**
+     * Check if player is computer.
+     */
+    public function isComputer(): bool
+    {
+        return $this->computer;
     }
 
     /**

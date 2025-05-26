@@ -45,8 +45,8 @@ class HoldemController extends AbstractController
             "players" => $players,
             "currPlayerIndex" => $game->getCurrPlayerIndex(),
             "pot" => $game->getPot(),
-            "userBet" => $players[0]->getCurrentBet(),
-            "gameBet" => $game->getCurrentBet()
+            "canCheck" => $game->canCheck(),
+            "dealerCards" => $game->getDealerCards()
         ];
         return $this->render('proj/game.html.twig', $data);
     }
@@ -56,6 +56,7 @@ class HoldemController extends AbstractController
     {
         /** @var Game|null $game */
         $game = $session->get("game");
+
         if ($request->request->has("fold")) {
             $game->playerFold(0);
         } elseif ($request->request->has("call")) {
