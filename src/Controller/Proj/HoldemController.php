@@ -41,6 +41,7 @@ class HoldemController extends AbstractController
         $game = $session->get("game");
         $game->updateGameState();
         $players = $game->getPlayers();
+        $computerTurn = $players[$game->getCurrPlayerIndex()]->isComputer();
         $dealerCards = $game->getDealerCards();
         $data = [
             "players" => $players,
@@ -48,7 +49,9 @@ class HoldemController extends AbstractController
             "pot" => $game->getPot(),
             "canCheck" => $game->canCheck($game->getCurrPlayerIndex()),
             "dealerCards" => $dealerCards->getCards(),
-            "log" => $game->getLog()
+            "log" => $game->getLog(),
+            "computerTurn" => $computerTurn,
+            "phase" => $game->getPhase()
         ];
         return $this->render('proj/game.html.twig', $data);
     }
@@ -67,7 +70,7 @@ class HoldemController extends AbstractController
             $amount = $request->request->getInt("money");
             $game->playerRaise(0, $amount);
         } elseif ($request->request->has("check")) {
-            if ($game->canCheck()) {
+            if ($game->canCheck(0)) {
                 $game->playerCheck(0);
             }
         }

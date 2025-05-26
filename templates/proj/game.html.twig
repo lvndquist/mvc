@@ -4,16 +4,6 @@
 
 {% block body %}
     <main class = "proj-main">
-        <div class = "log-container">
-            {% for entry in log %}
-                <p class = "log-entry">
-                    {{ entry.player }}: {{ entry.action }}
-                    {% if entry.amount is not null %}
-                        ${{ entry.amount ? entry.amount : ""}}
-                    {% endif %}
-                </p>
-            {% endfor %}
-        </div>
 
         <div class="poker-table">
             <div class="pot">Pot: ${{ pot }}</div>
@@ -25,7 +15,6 @@
                         {% if card %}
                             <div style="background-image: url({{ asset('img/deck.png') }})" class="poker-deck-sprite card-{{ card.toString() }}"></div>
                         {% else %}
-                            {{i}}
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -54,18 +43,42 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="controls">
-                <form class = "control-form" method="post" action="{{ path("user_input") }}">
-                    <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
-                    {% if not canCheck %}
-                        <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
-                    {% else %}
-                        <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
-                    {% endif %}
-                    <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
-                    <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
-                </form>
+            <div class = "bottom-section">
+                <div class="controls">
+                    <form class = "control-form {{computerTurn ? "disabled-inputs" : ""}}" method="post" action="{{ path("user_input") }}">
+                        <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
+                        {% if not canCheck %}
+                            <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
+                        {% else %}
+                            <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
+                        {% endif %}
+                        <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
+                        <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
+                    </form>
+                </div>
+
+                <div class = "log-container">
+                    {% for entry in log | reverse %}
+                        <p class = "log-entry">
+                            <span class = "log-text-section-player">{{ entry.player }} </span> <span class = "log-text-section-action">{{ entry.action }}</span>
+                            {% if entry.amount is not null %}
+                                <span class = "log-text-section-amount">${{ entry.amount }}<span>
+                            {% else %}
+                                <span class = "log-text-section-amount">-<span>
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
             </div>
+
         </div>
     </main>
+
+        <script>
+        {% if computerTurn %}
+            setTimeout(function() {
+                window.location.href = "{{ path("holdem") }}"
+            }, 2000);
+        {% endif %}
+        </script>
 {% endblock %}

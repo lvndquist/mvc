@@ -78,12 +78,12 @@ class Game
     {
         $player = $this->players[$this->currPlayerIndex];
 
-        if ($player->isComputer()) {
+        if ($player->isComputer() && !$player->hasPlayed()) {
             $this->computerPlay();
         } else {
-            if (!$player->hasPlayed()) {
-                return;
-            }
+        if (!$player->hasPlayed()) {
+            return;
+        }
         }
 
         if ($this->allPlayed() || $this->onePlayerLeft()) {
