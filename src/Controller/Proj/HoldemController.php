@@ -41,12 +41,14 @@ class HoldemController extends AbstractController
         $game = $session->get("game");
         $game->updateGameState();
         $players = $game->getPlayers();
+        $dealerCards = $game->getDealerCards();
         $data = [
             "players" => $players,
             "currPlayerIndex" => $game->getCurrPlayerIndex(),
             "pot" => $game->getPot(),
-            "canCheck" => $game->canCheck(),
-            "dealerCards" => $game->getDealerCards()
+            "canCheck" => $game->canCheck($game->getCurrPlayerIndex()),
+            "dealerCards" => $dealerCards->getCards(),
+            "log" => $game->getLog()
         ];
         return $this->render('proj/game.html.twig', $data);
     }
@@ -65,7 +67,9 @@ class HoldemController extends AbstractController
             $amount = $request->request->getInt("money");
             $game->playerRaise(0, $amount);
         } elseif ($request->request->has("check")) {
-            $game->playerCheck(0);
+            if ($game->canCheck()) {
+                $game->playerCheck(0);
+            }
         }
         $session->set("game", $game);
         return $this->redirectToRoute('holdem');

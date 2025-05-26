@@ -4,15 +4,31 @@
 
 {% block body %}
     <main class = "proj-main">
+        <div class = "log-container">
+            {% for entry in log %}
+                <p class = "log-entry">
+                    {{ entry.player }}: {{ entry.action }}
+                    {% if entry.amount is not null %}
+                        ${{ entry.amount ? entry.amount : ""}}
+                    {% endif %}
+                </p>
+            {% endfor %}
+        </div>
+
         <div class="poker-table">
             <div class="pot">Pot: ${{ pot }}</div>
 
-            <div class="community-cards">
-                <div class="poker-card"></div>
-                <div class="poker-card"></div>
-                <div class="poker-card"></div>
-                <div class="poker-card"></div>
-                <div class="poker-card"></div>
+            <div class="dealer-cards">
+                {% for i in 0..4 %}
+                    {% set card = dealerCards[i] ?? null %}
+                    <div class="poker-card">
+                        {% if card %}
+                            <div style="background-image: url({{ asset('img/deck.png') }})" class="poker-deck-sprite card-{{ card.toString() }}"></div>
+                        {% else %}
+                            {{i}}
+                        {% endif %}
+                    </div>
+                {% endfor %}
             </div>
 
             <div class="player-section">
@@ -34,13 +50,14 @@
                         {% endfor %}
                         </div>
                         <div class="poker-player-money">${{player.getMoney()}}</div>
+                        <div class="poker-player-bet">${{player.getCurrentBet()}}</div>
                     </div>
                 {% endfor %}
             </div>
             <div class="controls">
                 <form class = "control-form" method="post" action="{{ path("user_input") }}">
                     <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
-                    {% if canCheck %}
+                    {% if not canCheck %}
                         <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
                     {% else %}
                         <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>

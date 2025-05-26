@@ -46,14 +46,22 @@ class Game
         $this->currentBet = 0;
         $this->winner = -1;
         $this->playLog = [];
+        $this->dealerCards = new Hand();
 
         $this->dealToPlayers();
 
         $this->players[3]->makeBet($this->smallBlind);
+        $this->currentBet += $this->smallBlind;
+        $this->writeToLog(3, "small blind", $this->smallBlind);
         $this->players[2]->makeBet($this->bigBlind);
+        $this->currentBet += $this->bigBlind;
+        $this->writeToLog(2, "big blind", $this->bigBlind);
         $this->pot += ($this->smallBlind + $this->bigBlind);
     }
 
+    /**
+     * Deal two cards to each player.
+     */
     public function dealToPlayers()
     {
         for ($j = 0; $j < 2; $j++) {
@@ -99,7 +107,7 @@ class Game
         $player =  $this->players[$this->currPlayerIndex];
 
         // no bet, computer should raise or check
-        if ($this->canCheck()) {
+        if ($this->canCheck($this->currPlayerIndex)) {
             $decision = rand(0, 1);
             if ($decision === 0) {
                 $this->playerCheck($this->currPlayerIndex);
@@ -133,6 +141,7 @@ class Game
         foreach ($this->players as $player) {
             $player->setPlayed(false);
         }
+        $this->currPlayerIndex = $this->numPlayers - 1;
     }
 
     /**
@@ -220,6 +229,7 @@ class Game
 
         $player->makeBet($raiseAmount);
         $this->pot += $raiseAmount;
+        $this->currentBet = $total;
         $this->writeToLog($playerIndex, "raise", $raiseAmount);
         $player->hasPlayed(true);
     }
@@ -249,7 +259,7 @@ class Game
     public function writeToLog(int $playerIndex, string $action, ?int $amount = null): void
     {
         $entry = [
-            "player" => $this->player[playerIndex]->getName(),
+            "player" => $this->players[$playerIndex]->getName(),
             "playerIndex" => $playerIndex,
             "action" => $action,
             "amount" => $amount
