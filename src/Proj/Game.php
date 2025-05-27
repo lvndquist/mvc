@@ -6,6 +6,7 @@ use App\Proj\CardGraphic;
 use App\Proj\Hand;
 use App\Proj\Deck;
 use App\Proj\Player;
+use App\Proj\Evaluator;
 use Exception;
 
 /**
@@ -26,7 +27,11 @@ class Game
     private int $bigBlind = 40;
     private array $playLog;
 
-    public function __construct(int $startingMoney, string $playerName)
+    private bool $useHelp;
+    private bool $useFullLog;
+    private bool $useOpenCards;
+
+    public function __construct(int $startingMoney, string $playerName, bool $useHelp, bool $useFullLog, bool $useOpenCards)
     {
         $this->deck = new Deck(true);
         $this->deck->shuffle();
@@ -34,11 +39,11 @@ class Game
         for ($i = 0; $i < $this->numPlayers; $i++) {
             $name = "Player " . $i + 1;
             $computer = $i !== 0;
-
+            $smart = $i % 2 !== 0;
             if ($i == 0) {
                 $name = $playerName;
             }
-            $this->players[] = new Player($name, $startingMoney, $computer);
+            $this->players[] = new Player($name, $startingMoney, $computer, $smart);
         }
         $this->pot = 0;
         $this->currPlayerIndex = 1;
@@ -47,16 +52,14 @@ class Game
         $this->winner = -1;
         $this->playLog = [];
         $this->dealerCards = new Hand();
+        $this->useHelp = $useHelp;
+        $this->useFullLog = $useFullLog;
+        $this->useOpenCards = $useOpenCards;
 
         $this->dealToPlayers();
 
-        $this->players[3]->makeBet($this->smallBlind);
-        $this->currentBet += $this->smallBlind;
-        $this->writeToLog(3, "small blind", $this->smallBlind);
-        $this->players[2]->makeBet($this->bigBlind);
-        $this->currentBet += $this->bigBlind;
-        $this->writeToLog(2, "big blind", $this->bigBlind);
-        $this->pot += ($this->smallBlind + $this->bigBlind);
+        $this->playerBlind(3, "small blind", $this->smallBlind);
+        $this->playerBlind(2, "big blind", $this->bigBlind);
     }
 
     /**
@@ -77,14 +80,8 @@ class Game
     public function updateGameState(): void
     {
         $player = $this->players[$this->currPlayerIndex];
+        $this->setEvaluation($player);
 
-        if ($player->isComputer() && !$player->hasPlayed()) {
-            $this->basicComputerPlay();
-        } else {
-        if (!$player->hasPlayed()) {
-            return;
-        }
-        }
 
         if ($this->allPlayed() || $this->onePlayerLeft()) {
             if ($this->onePlayerLeft()) {
@@ -95,6 +92,18 @@ class Game
             $this->nextPhase();
             return;
         }
+        if ($player->isFolded()) {
+            $this->nextPlayer();
+            return;
+        }
+        if ($player->isComputer() && !$player->hasPlayed() && !$player->isFolded()) {
+            if ($player->isSmart()) {
+                $this->smartComputerPlay();
+            } else {
+                $this->basicComputerPlay();
+            }
+        }
+
         $this->nextPlayer();
         return;
     }
@@ -105,14 +114,13 @@ class Game
     public function basicComputerPlay(): void
     {
         $player =  $this->players[$this->currPlayerIndex];
-
+        $raiseAmount = rand(1, 5) * 100;
         // no bet, computer should raise or check
         if ($this->canCheck($this->currPlayerIndex)) {
             $decision = rand(0, 1);
             if ($decision === 0) {
                 $this->playerCheck($this->currPlayerIndex);
             } else {
-                $raiseAmount = 100;
                 $this->playerRaise($this->currPlayerIndex, $raiseAmount);
             }
         } else {
@@ -123,12 +131,26 @@ class Game
             } elseif ($decision === 1) {
                 $this->playerCall($this->currPlayerIndex);
             } else {
-                $raiseAmount = 100;
                 $this->playerRaise($this->currPlayerIndex, $raiseAmount);
             }
         }
         $player->hasPlayed(true);
         return;
+    }
+
+    /**
+     * Smart computer play. Makes choices based on what cards are on the table/in players hand.
+     */
+    public function smartComputerPlay(): void
+    {
+        $this->basicComputerPlay();
+    }
+
+    public function setEvaluation(Player $player) {
+        $allCards = array_merge($player->getHand(), $this->getDealerCards());
+        $evaluator = new Evaluator();
+        [$handString, $score, $cards] = $evaluator->evaluateCards($allCards);
+        $player->setEvaluation($handString, $score, $cards);
     }
 
     /**
@@ -186,10 +208,6 @@ class Game
         return ($count === 1);
     }
 
-    public function dealerDraw(): void
-    {
-    }
-
     public function handleWin(): void
     {
     }
@@ -201,7 +219,14 @@ class Game
     {
         $player = $this->players[$playerIndex];
         $player->setFolded(true);
-        $this->writeToLog($playerIndex, "fold");
+        $handString = $player->getEvaluatedString();
+
+        if ($this->useFullLog) {
+            $this->writeToLog($playerIndex, "fold", null, $handString);
+        } else {
+            $this->writeToLog($playerIndex, "fold");
+        }
+
         $player->hasPlayed(true);
     }
 
@@ -211,10 +236,18 @@ class Game
     public function playerCall(int $playerIndex)
     {
         $player = $this->players[$playerIndex];
+        $handString = $player->getEvaluatedString();
+
         $callAmount = $this->currentBet - $player->getCurrentBet();
         $player->makeBet($callAmount);
         $this->pot += $callAmount;
-        $this->writeToLog($playerIndex, "call", $callAmount);
+
+        if ($this->useFullLog) {
+            $this->writeToLog($playerIndex, "call", $callAmount, $handString);
+        } else {
+            $this->writeToLog($playerIndex, "call", $callAmount);
+        }
+
         $player->hasPlayed(true);
     }
 
@@ -224,13 +257,20 @@ class Game
     public function playerRaise(int $playerIndex, int $amount): void
     {
         $player = $this->players[$playerIndex];
+        $handString = $player->getEvaluatedString();
+
         $total = $this->currentBet + $amount;
         $raiseAmount = $total - $player->getCurrentBet();
 
         $player->makeBet($raiseAmount);
         $this->pot += $raiseAmount;
         $this->currentBet = $total;
-        $this->writeToLog($playerIndex, "raise", $raiseAmount);
+        if ($this->useFullLog) {
+            $this->writeToLog($playerIndex, "raise", $raiseAmount, $handString);
+        } else {
+            $this->writeToLog($playerIndex, "raise", $raiseAmount);
+        }
+
         $player->hasPlayed(true);
     }
 
@@ -240,7 +280,35 @@ class Game
     public function playerCheck(int $playerIndex): void
     {
         $player = $this->players[$playerIndex];
-        $this->writeToLog($playerIndex, "check");
+        $handString = $player->getEvaluatedString();
+
+        if ($this->useFullLog) {
+            $this->writeToLog($playerIndex, "check", null, $handString);
+        } else {
+            $this->writeToLog($playerIndex, "check");
+        }
+
+        $player->setPlayed(true);
+    }
+
+    /**
+     * Put down blind
+     */
+    public function playerBlind(int $playerIndex, string $blind, int $amount): void
+    {
+        $player = $this->players[$playerIndex];
+        $this->setEvaluation($player);
+        $handString = $player->getEvaluatedString();
+        $player->makeBet($amount);
+        $this->currentBet += $amount;
+
+        if ($this->useFullLog) {
+            $this->writeToLog($playerIndex, $blind, $amount, $handString);
+        } else {
+            $this->writeToLog($playerIndex, $blind, $amount);
+        }
+
+        $this->pot += $amount;
         $player->setPlayed(true);
     }
 
@@ -256,13 +324,14 @@ class Game
     /**
      * Write to log.
      */
-    public function writeToLog(int $playerIndex, string $action, ?int $amount = null): void
+    public function writeToLog(int $playerIndex, string $action, ?int $amount = null, ?string $optional = null): void
     {
         $entry = [
             "player" => $this->players[$playerIndex]->getName(),
             "playerIndex" => $playerIndex,
             "action" => $action,
-            "amount" => $amount
+            "amount" => $amount,
+            "optional" => $optional
         ];
         $this->playLog[] = $entry;
     }
@@ -294,9 +363,9 @@ class Game
     /**
      * Get dealer cards.
      */
-    public function getDealerCards(): Hand
+    public function getDealerCards(): array
     {
-        return $this->dealerCards;
+        return $this->dealerCards->getCards();
     }
 
     /**
@@ -364,5 +433,53 @@ class Game
     public function getWinner(): int
     {
         return $this->winner;
+    }
+
+    /**
+     * Get useHelpflag.
+     */
+    public function getUseHelp(): bool
+    {
+        return $this->useHelp;
+    }
+
+    /**
+     * Get useFullLog flag.
+     */
+    public function getUseFullLog(): bool
+    {
+        return $this->useFullLog;
+    }
+
+    /**
+     * Get useOpenCards flag.
+     */
+    public function getUseOpenCards(): bool
+    {
+        return $this->useOpenCards;
+    }
+
+    /**
+     * Set useHelp flag.
+     */
+    public function setUseHelp(bool $val): void
+    {
+        $this->useHelp = $val;
+    }
+
+    /**
+     * Set useFullLog flag.
+     */
+    public function setUseFullLog(bool $val): void
+    {
+        $this->useFullLog = $val;
+    }
+
+    /**
+     * Set useOpenCards flag.
+     */
+    public function setUseOpenCards(bool $val): void
+    {
+        $this->useOpenCards = $val;
     }
 }

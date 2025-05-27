@@ -83,7 +83,7 @@ class Evaluator
         }
 
         // High card
-        return ["High card", $this->handRanks["highCard"], $cards[0]];
+        return ["High card", $this->handRanks["highCard"], [$cards[0]]];
     }
 
     /**

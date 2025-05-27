@@ -303,7 +303,6 @@
     margin-left: 1rem;
     padding-left: 1rem;
     margin-top: 1.4rem;
-    width: 25%;
 }
 
 .log-entry {
@@ -311,9 +310,14 @@
     margin: 0;
     padding: 1px 0;
     display: flex;
-    justify-content: space-between;
+    justify-content:left;
+    width: 450px;
 }
 
+.small-log-entry-width
+{
+    width: 250px !important;
+}
 
 .log-text-section-player,
 .log-text-section-amount,
@@ -332,4 +336,19 @@
 .disabled-inputs {
     opacity: 0.6;
     cursor: default;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    gap: 1rem;
+    padding: .3rem;
+}
+
+.options-container label {
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: .25rem;
 }

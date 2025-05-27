@@ -9,6 +9,20 @@
             <form class = "start-form" method="post" action="{{ path("start_game") }}">
                 <input class = "start-input" type="text" name="name" placeholder = "Name" required value = "Player">
                 <input class = "start-input" type="number" name="money" placeholder = "Starting money" required min = 500 value = 5000>
+                <div class = "options-container">
+                    <label>
+                        <input type="checkbox" name="open_cards" value="1">
+                        Open cards
+                    </label>
+                    <label>
+                        <input type="checkbox" name="help_log" value="1">
+                        Show help
+                    </label>
+                    <label>
+                        <input type="checkbox" name="full_log" value="1">
+                        Full log
+                    </label>
+                </div>
                 <input class = "start-btn" type="submit" name="do_it" value="Start">
             </form>
         <div>

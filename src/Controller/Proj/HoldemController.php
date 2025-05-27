@@ -29,8 +29,14 @@ class HoldemController extends AbstractController
     {
         $name = (string) $request->request->get('name');
         $startingMoney = (int) $request->request->get('money');
-        $game = new Game($startingMoney, $name);
+        $setOpenCards = $request->request->has('open_cards');
+        $setHelpLog = $request->request->has('help_log');
+        $setFullLog = $request->request->has('full_log');
+
+        $game = new Game($startingMoney, $name, $setHelpLog, $setFullLog, $setOpenCards);
+
         $session->set("game", $game);
+
         return $this->redirectToRoute('holdem');
     }
 
@@ -41,17 +47,26 @@ class HoldemController extends AbstractController
         $game = $session->get("game");
         $game->updateGameState();
         $players = $game->getPlayers();
+        foreach ($players as $player) {
+            $game->setEvaluation($player);
+        }
         $computerTurn = $players[$game->getCurrPlayerIndex()]->isComputer();
         $dealerCards = $game->getDealerCards();
+        $currIndex = $game->getCurrPlayerIndex();
+        $useHelp = $game->getUseHelp();
         $data = [
             "players" => $players,
-            "currPlayerIndex" => $game->getCurrPlayerIndex(),
+            "currPlayerIndex" => $currIndex,
             "pot" => $game->getPot(),
-            "canCheck" => $game->canCheck($game->getCurrPlayerIndex()),
-            "dealerCards" => $dealerCards->getCards(),
+            "canCheck" => $game->canCheck($currIndex),
+            "dealerCards" => $dealerCards,
             "log" => $game->getLog(),
             "computerTurn" => $computerTurn,
-            "phase" => $game->getPhase()
+            "phase" => $game->getPhase(),
+            "openCards" => $game->getUseOpenCards(),
+            "useFullLog" => $game->getUseFullLog(),
+            "useHelp" => $useHelp,
+            "help" => $currIndex === 0 && $useHelp ? $players[0]->getEvaluatedString() : ""
         ];
         return $this->render('proj/game.html.twig', $data);
     }

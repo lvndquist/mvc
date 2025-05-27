@@ -53,18 +53,38 @@ class Player
     private bool $computer;
 
     /**
+     * Computer plays smarter
+     */
+    private bool $smart;
+
+    /**
+     * Evaluation of player's combined cards
+     */
+    private array $evaluation;
+
+    /**
      * Initialize the player object.
      */
-    public function __construct(string $name, int $money, bool $computer)
+    public function __construct(string $name, int $money, bool $computer, bool $smart)
     {
         $this->hand = new Hand();
         $this->name = $name;
         $this->money = $money;
         $this->computer = $computer;
+        $this->smart = $smart;
         $this->currentBet = 0;
         $this->isFolded = false;
         $this->allIn = false;
         $this->played = false;
+        $this->evaluation = [];
+    }
+
+    /**
+     * Get smart flag of player.
+     */
+    public function isSmart(): bool
+    {
+        return $this->smart;
     }
 
     /**
@@ -133,6 +153,23 @@ class Player
     }
 
     /**
+     * Get evaluation
+     */
+    public function getEvaluation(): array
+    {
+        return $this->evaluation;
+    }
+
+    /**
+     * Get the string representation of the best cards that player can play.
+     */
+    public function getEvaluatedString(): string
+    {
+        return $this->evaluation["handString"];
+    }
+
+
+    /**
      * Adds a card to the player's hand.
      */
     public function addCard(Card $card): void
@@ -143,7 +180,7 @@ class Player
     /**
      * Set money of player.
      */
-    public function setMoney(int $money)
+    public function setMoney(int $money): void
     {
         $this->money = $money;
     }
@@ -151,7 +188,7 @@ class Player
     /**
      * Set current bet of player.
      */
-    public function setCurrentBet(int $bet)
+    public function setCurrentBet(int $bet): void
     {
         $this->currentBet = $bet;
     }
@@ -159,7 +196,7 @@ class Player
     /**
      * Set folded flag of player.
      */
-    public function setFolded(bool $val)
+    public function setFolded(bool $val): void
     {
         $this->isFolded = $val;
     }
@@ -167,7 +204,7 @@ class Player
     /**
      * Set all in flag of player.
      */
-    public function setAllIn(bool $val)
+    public function setAllIn(bool $val): void
     {
         $this->isAllIn = $val;
     }
@@ -175,15 +212,35 @@ class Player
     /**
      * Set played flag of player.
      */
-    public function setPlayed(bool $val)
+    public function setPlayed(bool $val): void
     {
         $this->played = $val;
     }
 
     /**
+     * Set smart flag of player.
+     */
+    public function setSmart(bool $val): void
+    {
+        $this->smart = $val;
+    }
+
+    /**
+     * Set evaluation.
+     */
+    public function setEvaluation(string $handString, int $score, array $cards): void
+    {
+        $this->evaluation = [
+            "handString" => $handString,
+            "score" => $score,
+            "cards" => $cards
+        ];
+    }
+
+    /**
      * Make a bet.
      */
-    public function makeBet(int $amount)
+    public function makeBet(int $amount): void
     {
         if ($amount >= $this->money) {
             $this->allIn = true;
