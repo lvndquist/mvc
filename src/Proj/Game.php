@@ -28,10 +28,10 @@ class Game
     private array $playLog;
 
     private bool $useHelp;
-    private bool $useFullLog;
+    private bool $useFullHelp;
     private bool $useOpenCards;
 
-    public function __construct(int $startingMoney, string $playerName, bool $useHelp, bool $useFullLog, bool $useOpenCards)
+    public function __construct(int $startingMoney, string $playerName, bool $useHelp, bool $useFullHelp, bool $useOpenCards)
     {
         $this->deck = new Deck(true);
         $this->deck->shuffle();
@@ -53,7 +53,7 @@ class Game
         $this->playLog = [];
         $this->dealerCards = new Hand();
         $this->useHelp = $useHelp;
-        $this->useFullLog = $useFullLog;
+        $this->useFullHelp = $useFullHelp;
         $this->useOpenCards = $useOpenCards;
 
         $this->dealToPlayers();
@@ -94,6 +94,9 @@ class Game
         }
         if ($player->isFolded()) {
             $this->nextPlayer();
+            return;
+        }
+        if (!$player->hasPlayed() && $this->currPlayerIndex == 0) {
             return;
         }
         if ($player->isComputer() && !$player->hasPlayed() && !$player->isFolded()) {
@@ -219,13 +222,7 @@ class Game
     {
         $player = $this->players[$playerIndex];
         $player->setFolded(true);
-        $handString = $player->getEvaluatedString();
-
-        if ($this->useFullLog) {
-            $this->writeToLog($playerIndex, "fold", null, $handString);
-        } else {
-            $this->writeToLog($playerIndex, "fold");
-        }
+        $this->writeToLog($playerIndex, "fold");
 
         $player->hasPlayed(true);
     }
@@ -236,17 +233,12 @@ class Game
     public function playerCall(int $playerIndex)
     {
         $player = $this->players[$playerIndex];
-        $handString = $player->getEvaluatedString();
 
         $callAmount = $this->currentBet - $player->getCurrentBet();
         $player->makeBet($callAmount);
         $this->pot += $callAmount;
 
-        if ($this->useFullLog) {
-            $this->writeToLog($playerIndex, "call", $callAmount, $handString);
-        } else {
-            $this->writeToLog($playerIndex, "call", $callAmount);
-        }
+        $this->writeToLog($playerIndex, "call", $callAmount);
 
         $player->hasPlayed(true);
     }
@@ -265,11 +257,7 @@ class Game
         $player->makeBet($raiseAmount);
         $this->pot += $raiseAmount;
         $this->currentBet = $total;
-        if ($this->useFullLog) {
-            $this->writeToLog($playerIndex, "raise", $raiseAmount, $handString);
-        } else {
-            $this->writeToLog($playerIndex, "raise", $raiseAmount);
-        }
+        $this->writeToLog($playerIndex, "raise", $raiseAmount);
 
         $player->hasPlayed(true);
     }
@@ -280,13 +268,8 @@ class Game
     public function playerCheck(int $playerIndex): void
     {
         $player = $this->players[$playerIndex];
-        $handString = $player->getEvaluatedString();
 
-        if ($this->useFullLog) {
-            $this->writeToLog($playerIndex, "check", null, $handString);
-        } else {
-            $this->writeToLog($playerIndex, "check");
-        }
+        $this->writeToLog($playerIndex, "check");
 
         $player->setPlayed(true);
     }
@@ -297,16 +280,9 @@ class Game
     public function playerBlind(int $playerIndex, string $blind, int $amount): void
     {
         $player = $this->players[$playerIndex];
-        $this->setEvaluation($player);
-        $handString = $player->getEvaluatedString();
         $player->makeBet($amount);
         $this->currentBet += $amount;
-
-        if ($this->useFullLog) {
-            $this->writeToLog($playerIndex, $blind, $amount, $handString);
-        } else {
-            $this->writeToLog($playerIndex, $blind, $amount);
-        }
+        $this->writeToLog($playerIndex, $blind, $amount);
 
         $this->pot += $amount;
         $player->setPlayed(true);
@@ -444,11 +420,11 @@ class Game
     }
 
     /**
-     * Get useFullLog flag.
+     * Get useFullHelp flag.
      */
-    public function getUseFullLog(): bool
+    public function getUseFullHelp(): bool
     {
-        return $this->useFullLog;
+        return $this->useFullHelp;
     }
 
     /**
@@ -468,11 +444,11 @@ class Game
     }
 
     /**
-     * Set useFullLog flag.
+     * Set useFullHelp flag.
      */
-    public function setUseFullLog(bool $val): void
+    public function setUseFullHelp(bool $val): void
     {
-        $this->useFullLog = $val;
+        $this->useFullHelp = $val;
     }
 
     /**

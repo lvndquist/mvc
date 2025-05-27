@@ -26,6 +26,16 @@
                     {% set activePlayer = loop.index0 == currPlayerIndex %}
                     {% set folded = player.folded %}
                     <div class="poker-player {{ folded ? "folded" : "" }} {{ activePlayer ? "active-dent" : ""}}">
+                        {% if useHelp and playerIndex == 0 and not useFullHelp %}
+                            <div class = "poker-player-help">
+                                {{help}}
+                            </div>
+                        {% endif %}
+                        {% if useFullHelp %}
+                            <div class = "poker-player-help">
+                                {{ player.getEvaluatedString() }}
+                            </div>
+                        {% endif %}
                         <div class="poker-player-name">{{player.name}}</div>
                         <div class="poker-player-cards">
                         {% for card in player.hand %}
@@ -40,11 +50,6 @@
                         </div>
                         <div class="poker-player-money">${{player.getMoney()}}</div>
                         <div class="poker-player-bet">${{player.getCurrentBet()}}</div>
-                        {% if useHelp and playerIndex == 0 %}
-                            <div class = "poker-player-help">
-                                {{help}}
-                            </div>
-                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
@@ -64,17 +69,13 @@
 
                 <div class = "log-container">
                     {% for entry in log | reverse %}
-                        <p class = "log-entry {{ useFullLog ? "" : "small-log-entry-width" }}">
+                        <p class = "log-entry">
                             <span class = "log-text-section-player">{{ entry.player }} </span>
                             <span class = "log-text-section-action">{{ entry.action }}</span>
                             {% if entry.amount is not null %}
                                 <span class = "log-text-section-amount">${{ entry.amount }}</span>
                             {% else %}
                                 <span class = "log-text-section-amount">-</span>
-                            {% endif %}
-                            {% if useFullLog %}
-                                <span class = "log-text-section-amount">{{ entry.optional }}</span>
-                            {% else %}
                             {% endif %}
                         </p>
                     {% endfor %}

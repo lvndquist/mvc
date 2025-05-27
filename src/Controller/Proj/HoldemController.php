@@ -64,7 +64,7 @@ class HoldemController extends AbstractController
             "computerTurn" => $computerTurn,
             "phase" => $game->getPhase(),
             "openCards" => $game->getUseOpenCards(),
-            "useFullLog" => $game->getUseFullLog(),
+            "useFullHelp" => $game->getUseFullHelp(),
             "useHelp" => $useHelp,
             "help" => $currIndex === 0 && $useHelp ? $players[0]->getEvaluatedString() : ""
         ];
