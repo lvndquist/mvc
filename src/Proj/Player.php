@@ -168,6 +168,14 @@ class Player
         return $this->evaluation["handString"];
     }
 
+    /**
+     * Get the score of the best cards that player can play.
+     */
+    public function getEvaluatedScore(): string
+    {
+        return $this->evaluation["score"];
+    }
+
 
     /**
      * Adds a card to the player's hand.

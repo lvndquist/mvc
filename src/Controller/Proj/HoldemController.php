@@ -34,7 +34,13 @@ class HoldemController extends AbstractController
         $setFullLog = $request->request->has('full_log');
 
         $game = new Game($startingMoney, $name, $setHelpLog, $setFullLog, $setOpenCards);
-
+        $session->set("settings", [
+            "money" => $startingMoney,
+            "name" => $name,
+            "helpLog" => $setHelpLog,
+            "fullLog" => $setFullLog,
+            "openCards" => $setOpenCards
+        ]);
         $session->set("game", $game);
 
         return $this->redirectToRoute('holdem');
@@ -56,6 +62,7 @@ class HoldemController extends AbstractController
         $useHelp = $game->getUseHelp();
         $data = [
             "players" => $players,
+            "winner" => $game->getWinner(),
             "currPlayerIndex" => $currIndex,
             "pot" => $game->getPot(),
             "canCheck" => $game->canCheck($currIndex),
@@ -88,6 +95,10 @@ class HoldemController extends AbstractController
             if ($game->canCheck(0)) {
                 $game->playerCheck(0);
             }
+        } elseif ($request->request->has("continue")) {
+        } elseif ($request->request->has("reset")) {
+            $settings = $session->get("settings");
+            $game = new Game($settings["money"], $settings["name"], $settings["helpLog"], $settings["fullLog"], $settings["openCards"]);
         }
         $session->set("game", $game);
         return $this->redirectToRoute('holdem');

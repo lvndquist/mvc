@@ -142,7 +142,7 @@
 .player-section {
     display: flex;
     justify-content: space-around;
-    min-height: 150px;
+    min-height: 250px;
 }
 
 .poker-player {
@@ -263,10 +263,6 @@
 .poker-deck-sprite.card-3-13 { background-position: -822px -304px; }
 .poker-deck-sprite.card-3-14 { background-position: -6px -304px; }
 
-.control-form {
-
-}
-
 .fold-btn,
 .call-btn,
 .raise-btn,
@@ -356,3 +352,12 @@
     display: inline-block;
     background-color: #313131;
 }
+
+.is-winner {
+    border-color: lightgreen;
+}
+
+.is-winner-hint {
+    border: 1px solid lightgreen;
+}
+

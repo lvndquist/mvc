@@ -146,7 +146,48 @@ class Game
      */
     public function smartComputerPlay(): void
     {
-        $this->basicComputerPlay();
+        $player =  $this->players[$this->currPlayerIndex];
+        $this->setEvaluation($player);
+        $score = $player->getEvaluatedScore();
+        if ($this->canCheck($this->currPlayerIndex)) {
+            if ($score === 10) {
+                $this->playerRaise($this->currPlayerIndex, $player->getMoney());
+            } elseif ($score >= 8) {
+                $this->playerRaise($this->currPlayerIndex, intdiv($player->getMoney(), 2));
+            } elseif ($score >= 6) {
+                $this->playerRaise($this->currPlayerIndex, intdiv($player->getMoney(), 4));
+            } elseif ($score >= 3) {
+                $this->playerRaise($this->currPlayerIndex, rand(1, 5) * 100);
+            } else {
+                $this->playerCheck($this->currPlayerIndex);
+            }
+        } else {
+            // there is a bet, computer should fold, raise or call
+            $callAmount = $this->currentBet - $player->getCurrentBet();
+            if ($score >= 8) {
+                $this->playerRaise($this->currPlayerIndex, $player->getMoney());
+            } elseif ($score >= 5) {
+                $this->playerCall($this->currPlayerIndex);
+            } elseif ($score >= 2) {
+                if ($callAmount <= intdiv($player->getMoney(), 4)) {
+                    $this->playerCall($this->currPlayerIndex);
+                } else {
+                    $this->playerFold($this->currPlayerIndex);
+                }
+            } else {
+                $decision = rand(0, 2);
+                // bluff
+                if ($this->phase === 0) {
+                    $this->playerCall($this->currPlayerIndex);
+                } elseif ($decision === 0) {
+                    $this->playerRaise($this->currPlayerIndex, rand(1, 5) * 100);
+                } else {
+                    $this->playerFold($this->currPlayerIndex);
+                }
+            }
+        }
+        $player->hasPlayed(true);
+        return;
     }
 
     public function setEvaluation(Player $player) {
@@ -162,7 +203,17 @@ class Game
     public function nextPhase()
     {
         $this->phase++;
-        $this->dealerCards->addCard($this->deck->draw());
+        $phase = $this->phase;
+        // flop: dealer puts 3 cards
+        if ($phase === 1) {
+            $this->dealerCards->addCard($this->deck->draw());
+            $this->dealerCards->addCard($this->deck->draw());
+            $this->dealerCards->addCard($this->deck->draw());
+        } elseif ($phase === 4) {
+            $this->handleWin();
+        } else {
+            $this->dealerCards->addCard($this->deck->draw());
+        }
         foreach ($this->players as $player) {
             $player->setPlayed(false);
         }
@@ -213,6 +264,11 @@ class Game
 
     public function handleWin(): void
     {
+        $players =  $this->players;
+        $evaluator = new Evaluator();
+        $res = $evaluator->evaluateWinners($players);
+
+        $this->winner = 1;
     }
 
     /**

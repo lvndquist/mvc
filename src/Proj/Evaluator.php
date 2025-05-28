@@ -107,6 +107,11 @@ class Evaluator
             }
         }
 
+        // if there is a tie, a fifth card is needed to determine a winner
+        $determining = array_filter($cards, fn($card) => $card->getValue() !== $target);
+        $sorted = $this->sortCardsByValue($determining);
+        $fourOfAKindCards[] = $sorted[0];
+
         return $fourOfAKindCards;
     }
 
@@ -259,5 +264,125 @@ class Evaluator
         $sorted = $cards;
         usort($sorted, fn($a, $b) => $b->getValue() - $a->getValue());
         return $sorted;
+    }
+
+    /**
+     * Evaluate winner indexes. Multiple winner indexes mean there is a tie
+     */
+    public function evaluateWinners(array $players): array
+    {
+        $evals = [];
+        foreach ($players as $index => $player) {
+            $eval = $player->getEvaluation();
+            $score = $eval["score"];
+            $cards = $eval["cards"];
+            $evals[$index] = [
+                "score" => $score,
+                "cards" => $cards
+            ];
+        }
+
+        $max = max(array_column($evals, "score"));
+        $indexes = array_keys(array_filter($evals, fn($evl) => $evl["score"] === $max));
+        if (count($indexes) === 1 || $max === 10) {
+            return [$indexes[0]];
+        }
+        switch ($max) {
+            case 9:
+            case 5:
+                return $this->straightTie($evals, $indexes);
+            case 8:
+                return $this->fourOfAKindTie($evals, $indexes);
+            default:
+                return $indexes;
+        }
+
+
+    }
+
+    /**
+     * Straight or straight flush tie, compares the top card to determine winner.
+     * Same top card means its a tie.
+     */
+    public function straightTie($evals, $indexes): array
+    {
+        foreach ($indexes as $index) {
+            $cards = $evals[$index]["cards"];
+            $highest[$index] = $cards[0]->getValue();
+        }
+
+        $max = max($highest);
+        return array_keys(array_filter($highest, fn($val) => $val === $max));
+    }
+
+    /**
+     * Four of a kind tie, compares the values of the four cards.
+     * If those are all the same, it goes to the last card to check what is the highest.
+     */
+    public function fourOfAKindTie($evals, $indexes): array
+    {
+        foreach ($indexes as $index) {
+            $cards = $evals[$index]["cards"];
+            $highest[$index] = $cards[0]->getValue();
+        }
+        $max = max($highest);
+
+        $highestIndexes = array_keys(array_filter($highest, fn($val) => $val === $max));
+
+        if (count($highestIndexes) <= 1) {
+            return $highestIndexes;
+        }
+
+        $determining = [];
+        foreach($highestIndexes as $index) {
+            $cards = $evals[$index]["cards"];
+            $determining[$index] = $cards[4]->getValue();
+        }
+
+        $maxDetermining = max($determining);
+        $highestDeterming = array_keys(array_filter($determining, fn($val) => $val === $maxDetermining));
+
+        return $highestDeterming;
+    }
+
+    public function fullHouseTie(): array
+    {
+
+    }
+
+    public function flushTie(): array
+    {
+
+    }
+
+    public function threeOfAKindTie(): array
+    {
+
+    }
+
+    public function twoPairTie(): array
+    {
+
+    }
+
+    public function onePairTie(): array
+    {
+
+    }
+
+    public function highCardTie(): array
+    {
+
+    }
+
+    /**
+     * Compare cards in a hand. Used to determine who wins when hands have same score.
+     */
+    public function compareHands(array $hand1, array $hand2) {
+        /*
+        return 1;
+        return 2;
+        return 0;
+         */
     }
 }
