@@ -120,7 +120,6 @@ class Evaluator
      */
     public function getFullHouseCards(array $cards, array $valueCount): array
     {
-        $fullHouseCards = [];
         $twoCardTarget = null;
         $threeCardTarget = null;
 
@@ -133,14 +132,19 @@ class Evaluator
             }
         }
 
+        $threeCards = [];
+        $twoCards = [];
+
         foreach ($cards as $card) {
             $value = $card->getValue();
-            if ($value === $twoCardTarget || $value === $threeCardTarget) {
-                $fullHouseCards[] = $card;
+            if ($value === $threeCardTarget) {
+                $threeCards[] = $card;
+            } elseif ($value === $twoCardTarget) {
+                $twoCards[] = $card;
             }
         }
 
-        return $fullHouseCards;
+        return array_merge($threeCards, $twoCards);
     }
 
     /**
@@ -162,7 +166,8 @@ class Evaluator
                 $flushCards[] = $card;
             }
         }
-        return $flushCards;
+
+        return $this->sortCardsByValue($flushCards);
     }
 
     /**
@@ -267,7 +272,10 @@ class Evaluator
     }
 
     /**
-     * Evaluate winner indexes. Multiple winner indexes mean there is a tie
+     * Evaluate winner indexes. Multiple winner indexes mean there is a tie.
+     * Cards need to be sorted based on their hands rank and in decending value.
+     * Each player has a hand of 5 cards, if the hand isnt using 5 cards as with
+     * three of a kind etc, the rest will be the highest cards available.
      */
     public function evaluateWinners(array $players): array
     {
@@ -290,13 +298,37 @@ class Evaluator
         switch ($max) {
             case 9:
             case 5:
-                return $this->straightTie($evals, $indexes);
+                // straight and straight flush
+                // first card, rest are lower
+                return $this->twoPartTie($evals, $indexes, 0, 1, 0);
             case 8:
-                return $this->fourOfAKindTie($evals, $indexes);
+                // four of a kind
+                // first the four cards, then the fifth.
+                return $this->twoPartTie($evals, $indexes, 0, 4, 1);
+            case 7:
+                // full house
+                // first three cards, then the fourth (fifth is the same)
+                return $this->twoPartTie($evals, $indexes, 0, 3, 1);
+            case 6:
+                // flush
+                // first card, then next and so on
+                return $this->twoPartTie($evals, $indexes, 0, 0, 5);
+                //return $this->compareAllTie($evals, $indexes);
+            case 4:
+                // three of a kind
+                // first three cards, then the last two.
+            case 3:
+                // two pair
+                // first pair, then second pair, last the fifth card
+            case 2:
+                // one pair
+                // first the pair, then the 3 rest.
+            case 1:
+                // highest card
+                // first card then the rest.
             default:
                 return $indexes;
         }
-
 
     }
 
@@ -316,43 +348,63 @@ class Evaluator
     }
 
     /**
-     * Four of a kind tie, compares the values of the four cards.
-     * If those are all the same, it goes to the last card to check what is the highest.
+     * Use in determining a tie that has two parts like:
+     * full house: first three cards then the pair.
+     * flush: compare highest then next ...
+     * three of a kind: check first three then remaining 2.
+     * one pair: check pair then the rest
+     * highest card: check first card then the rest.
      */
-    public function fourOfAKindTie($evals, $indexes): array
+    public function twoPartTie($evals, $indexes, $firstPart, $secondPart, $secondPartLen): array
     {
+        $start = [];
         foreach ($indexes as $index) {
             $cards = $evals[$index]["cards"];
-            $highest[$index] = $cards[0]->getValue();
+            $start[$index] = $cards[$firstPart]->getValue();
         }
-        $max = max($highest);
+        $max = max($start);
 
-        $highestIndexes = array_keys(array_filter($highest, fn($val) => $val === $max));
+        $remaining = array_keys(array_filter($start, fn($val) => $val === $max));
 
-        if (count($highestIndexes) <= 1) {
-            return $highestIndexes;
-        }
-
-        $determining = [];
-        foreach($highestIndexes as $index) {
-            $cards = $evals[$index]["cards"];
-            $determining[$index] = $cards[4]->getValue();
+        if (count($remaining) <= 1) {
+            return $remaining;
         }
 
-        $maxDetermining = max($determining);
-        $highestDeterming = array_keys(array_filter($determining, fn($val) => $val === $maxDetermining));
+        for ($i = 0; $i < $secondPartLen; $i++) {
+            $determining = [];
+            foreach($remaining as $index) {
+                $determining[$index]= $evals[$index]["cards"][$secondPart + $i]->getValue();
+            }
 
-        return $highestDeterming;
+            $max = max($determining);
+            $remaining = array_keys(array_filter($determining, fn($val) => $val === $max));
+
+            if (count($remaining) <= 1) {
+                return $remaining;
+            }
+        }
+
+        return $remaining;
     }
 
-    public function fullHouseTie(): array
+    public function compareAllTie($evals, $indexes): array
     {
+        $remaining = $indexes;
+        for ($i = 0; $i < 5; $i++) {
+            $vals = [];
 
-    }
+            foreach ($remaining as $index) {
+                $vals[$index] = $evals[$index]["cards"][$i]->getValue();
+            }
 
-    public function flushTie(): array
-    {
+            $max = max($vals);
+            $remaining = array_keys(array_filter($vals, fn($val) => $val === $max));
 
+            if (count($remaining) === 1) {
+                return $remaining;
+            }
+        }
+        return $remaining;
     }
 
     public function threeOfAKindTie(): array
