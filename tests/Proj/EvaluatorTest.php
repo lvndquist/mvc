@@ -316,6 +316,16 @@ class EvaluatorTest extends TestCase
         $this->assertEquals($expResScore, $resScore);
     }
 
+    public function evaluateWinnersSetUp($players, $cards): array
+    {
+        $evaluator = new Evaluator();
+        for ($i = 0; $i < count($players); $i++) {
+            [$cardsString, $cardsScore, $cardsCards ] = $evaluator->evaluateCards($cards[$i]);
+            $players[$i]->setEvaluation($cardsString, $cardsScore, $cardsCards);
+        }
+        return $evaluator->evaluateWinners($players);
+    }
+
     public function testEvaluateWinnersStraightNoTie(): void
     {
         $evaluator = new Evaluator();
@@ -327,16 +337,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(2, 2), new Card(3, 3), new Card(4, 0), new Card(5, 1), new Card(6, 1), new Card(7, 3), new Card(5, 2)];
         $cards3 = [new Card(3, 2), new Card(3, 1), new Card(7, 0), new Card(10, 1), new Card(8, 1), new Card(5, 3), new Card(5, 0)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(1, count($winners));
         $this->assertEquals(0, $winners[0]);
     }
@@ -352,16 +356,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(3, 2), new Card(3, 3), new Card(4, 0), new Card(5, 1), new Card(6, 1), new Card(7, 3), new Card(5, 2)];
         $cards3 = [new Card(14, 1), new Card(12, 1), new Card(13, 1), new Card(10, 1), new Card(11, 3), new Card(5, 3), new Card(5, 0)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(2, count($winners));
         $this->assertEquals(0, $winners[0]);
         $this->assertEquals(2, $winners[1]);
@@ -378,16 +376,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(3, 2), new Card(3, 3), new Card(4, 0), new Card(5, 1), new Card(12, 1), new Card(7, 3), new Card(5, 2)];
         $cards3 = [new Card(13, 2), new Card(13, 3), new Card(13, 2), new Card(13, 1), new Card(11, 3), new Card(5, 3), new Card(5, 0)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(1, count($winners));
         $this->assertEquals(0, $winners[0]);
     }
@@ -403,16 +395,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(14, 2), new Card(14, 0), new Card(14, 1), new Card(14, 3), new Card(12, 1), new Card(5, 2), new Card(13, 3)];
         $cards3 = [new Card(3, 2), new Card(3, 3), new Card(4, 0), new Card(5, 1), new Card(12, 1), new Card(7, 3), new Card(5, 2)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(2, count($winners));
         $this->assertEquals(0, $winners[0]);
         $this->assertEquals(1, $winners[1]);
@@ -429,16 +415,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(14, 2), new Card(14, 0), new Card(14, 1), new Card(13, 3), new Card(13, 2), new Card(5, 0), new Card(2, 0)];
         $cards3 = [new Card(3, 2), new Card(3, 3), new Card(3, 0), new Card(5, 1), new Card(8, 1), new Card(6, 3), new Card(5, 2)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(1, count($winners));
         $this->assertEquals(1, $winners[0]);
     }
@@ -454,16 +434,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(14, 2), new Card(14, 0), new Card(14, 1), new Card(13, 3), new Card(13, 2), new Card(5, 0), new Card(2, 0)];
         $cards3 = [new Card(3, 2), new Card(3, 3), new Card(3, 0), new Card(5, 1), new Card(8, 1), new Card(6, 3), new Card(5, 2)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(2, count($winners));
         $this->assertEquals(0, $winners[0]);
         $this->assertEquals(1, $winners[1]);
@@ -480,16 +454,10 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(14, 0), new Card(11, 0), new Card(14, 3), new Card(10, 0), new Card(7, 0), new Card(4, 0), new Card(2, 1)];
         $cards3 = [new Card(2, 1), new Card(3, 1), new Card(8, 1), new Card(5, 1), new Card(8, 3), new Card(6, 1), new Card(5, 2)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(1, count($winners));
         $this->assertEquals(1, $winners[0]);
     }
@@ -505,16 +473,166 @@ class EvaluatorTest extends TestCase
         $cards2 = [new Card(14, 0), new Card(11, 0), new Card(7, 0), new Card(10, 0), new Card(3, 0), new Card(4, 2), new Card(2, 1)];
         $cards3 = [new Card(14, 1), new Card(11, 1), new Card(7, 1), new Card(10, 1), new Card(3, 1), new Card(6, 3), new Card(5, 2)];
 
-        [$cards1String, $cards1Score, $cards1Cards ] = $evaluator->evaluateCards($cards1);
-        [$cards2String, $cards2Score, $cards2Cards ] = $evaluator->evaluateCards($cards2);
-        [$cards3String, $cards3Score, $cards3Cards ] = $evaluator->evaluateCards($cards3);
-
-        $player1->setEvaluation($cards1String, $cards1Score, $cards1Cards);
-        $player2->setEvaluation($cards2String, $cards2Score, $cards2Cards);
-        $player3->setEvaluation($cards3String, $cards3Score, $cards3Cards);
-
+        $cards = [$cards1, $cards2, $cards3];
         $players = [$player1, $player2, $player3];
-        $winners = $evaluator->evaluateWinners($players);
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(2, count($winners));
+        $this->assertEquals(1, $winners[0]);
+        $this->assertEquals(2, $winners[1]);
+    }
+
+    public function testEvaluateWinnersThreeOfAKindNoTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(14, 0), new Card(14, 1), new Card(14, 2), new Card(2, 0), new Card(3, 0), new Card(4, 2), new Card(6, 1)];
+        $cards3 = [new Card(3, 0), new Card(3, 1), new Card(3, 2), new Card(2, 1), new Card(13, 1), new Card(6, 3), new Card(5, 2)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(1, count($winners));
+        $this->assertEquals(1, $winners[0]);
+    }
+
+    public function testEvaluateWinnersThreeOfAKindWithTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(8, 0), new Card(8, 1), new Card(8, 2), new Card(12, 0), new Card(6, 0), new Card(4, 2), new Card(2, 1)];
+        $cards3 = [new Card(8, 0), new Card(8, 1), new Card(8, 2), new Card(12, 0), new Card(6, 0), new Card(4, 2), new Card(5, 2)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(2, count($winners));
+        $this->assertEquals(1, $winners[0]);
+        $this->assertEquals(2, $winners[1]);
+    }
+
+    public function testEvaluateWinnersTwoPairNoTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(8, 0), new Card(8, 1), new Card(7, 2), new Card(7, 0), new Card(6, 0), new Card(4, 2), new Card(2, 1)];
+        $cards3 = [new Card(8, 0), new Card(8, 1), new Card(6, 2), new Card(6, 0), new Card(3, 0), new Card(10, 2), new Card(9, 2)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(1, count($winners));
+        $this->assertEquals(1, $winners[0]);
+    }
+
+    public function testEvaluateWinnersTwoPairWithTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(8, 0), new Card(8, 1), new Card(7, 2), new Card(7, 0), new Card(10, 0), new Card(4, 2), new Card(2, 1)];
+        $cards3 = [new Card(8, 0), new Card(8, 1), new Card(7, 2), new Card(7, 0), new Card(10, 0), new Card(4, 2), new Card(9, 2)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(2, count($winners));
+        $this->assertEquals(1, $winners[0]);
+        $this->assertEquals(2, $winners[1]);
+    }
+
+    public function testEvaluateWinnersPairNoTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(14, 0), new Card(14, 1), new Card(7, 2), new Card(3, 0), new Card(10, 0), new Card(4, 2), new Card(2, 1)];
+        $cards3 = [new Card(4, 0), new Card(8, 1), new Card(7, 2), new Card(7, 0), new Card(10, 0), new Card(12, 2), new Card(9, 2)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(1, count($winners));
+        $this->assertEquals(1, $winners[0]);
+    }
+
+    public function testEvaluateWinnersPairWithTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(14, 0), new Card(14, 1), new Card(10, 2), new Card(9, 0), new Card(6, 0), new Card(4, 2), new Card(2, 1)];
+        $cards3 = [new Card(14, 0), new Card(14, 1), new Card(10, 2), new Card(9, 0), new Card(6, 0), new Card(3, 2), new Card(2, 1)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(2, count($winners));
+        $this->assertEquals(1, $winners[0]);
+        $this->assertEquals(2, $winners[1]);
+    }
+
+    public function testEvaluateWinnersHighCardNoTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(14, 0), new Card(4, 1), new Card(10, 2), new Card(9, 0), new Card(6, 0), new Card(13, 2), new Card(2, 1)];
+        $cards3 = [new Card(2, 0), new Card(8, 1), new Card(6, 2), new Card(5, 0), new Card(3, 0), new Card(11, 2), new Card(13, 1)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
+        $this->assertEquals(1, count($winners));
+        $this->assertEquals(1, $winners[0]);
+    }
+
+    public function testEvaluateWinnersHighCardWithTie(): void
+    {
+        $evaluator = new Evaluator();
+        $player1 = new Player("p1", 5000, false, false);
+        $player2 = new Player("p2", 5000, false, false);
+        $player3 = new Player("p3", 5000, false, false);
+
+        $cards1 = [new Card(4, 2), new Card(2, 0), new Card(6, 1), new Card(9, 3), new Card(13, 1), new Card(5, 2), new Card(7, 3)];
+        $cards2 = [new Card(14, 0), new Card(4, 1), new Card(10, 2), new Card(9, 0), new Card(6, 0), new Card(13, 2), new Card(2, 1)];
+        $cards3 = [new Card(14, 0), new Card(5, 1), new Card(10, 2), new Card(9, 0), new Card(6, 0), new Card(13, 2), new Card(2, 1)];
+
+        $cards = [$cards1, $cards2, $cards3];
+        $players = [$player1, $player2, $player3];
+
+        $winners = $this->evaluateWinnersSetUp($players, $cards);
         $this->assertEquals(2, count($winners));
         $this->assertEquals(1, $winners[0]);
         $this->assertEquals(2, $winners[1]);

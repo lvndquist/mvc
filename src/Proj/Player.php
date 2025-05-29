@@ -63,6 +63,11 @@ class Player
     private array $evaluation;
 
     /**
+     * Log to keep track of computer decisions.
+     */
+    private array $computerLog;
+
+    /**
      * Initialize the player object.
      */
     public function __construct(string $name, int $money, bool $computer, bool $smart)
@@ -77,6 +82,28 @@ class Player
         $this->allIn = false;
         $this->played = false;
         $this->evaluation = [];
+        $this->computerLog = [];
+    }
+
+    /**
+     * Ready players for new round
+     */
+    public function newRound(): void
+    {
+        $this->currentBet = 0;
+        $this->isFolded = false;
+        $this->allIn = false;
+        $this->played = false;
+        $this->evaluation = [];
+        $this->computerLog = [];
+    }
+
+    /**
+     * Get log of computer plays.
+     */
+    public function getComputerLog(): array
+    {
+        return $this->computerLog;
     }
 
     /**
@@ -176,7 +203,6 @@ class Player
         return $this->evaluation["score"];
     }
 
-
     /**
      * Adds a card to the player's hand.
      */
@@ -242,6 +268,24 @@ class Player
             "handString" => $handString,
             "score" => $score,
             "cards" => $cards
+        ];
+    }
+
+    /**
+     * Set entry in computer log
+     */
+    public function setComputerLog($entry): void
+    {
+        $this->computerLog[] = [
+            "name" => $entry["name"],
+            "score" => $entry["score"],
+            "possibility" => $entry["possibility"],
+            "callAmount" => $entry["callAmount"] ?? null,
+            "odds" => $entry["odds"] ?? null,
+            "randDecision" => $entry["randDecision"] ?? null,
+            "phase" => $entry["phase"],
+            "takenAction" => $entry["takenAction"] ?? null,
+            "extra" => $entry["extra"] ?? null
         ];
     }
 

@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Psr\Log\LoggerInterface;
+
 use App\Proj\Game;
 
 class HoldemController extends AbstractController
@@ -30,16 +32,18 @@ class HoldemController extends AbstractController
         $name = (string) $request->request->get('name');
         $startingMoney = (int) $request->request->get('money');
         $setOpenCards = $request->request->has('open_cards');
-        $setHelpLog = $request->request->has('help_log');
-        $setFullLog = $request->request->has('full_log');
+        $setHelp = $request->request->has('help_log');
+        $setFullHelp = $request->request->has('full_log');
 
-        $game = new Game($startingMoney, $name, $setHelpLog, $setFullLog, $setOpenCards);
+        $game = new Game($startingMoney, $name, $setHelp, $setFullHelp, $setOpenCards);
+
         $session->set("settings", [
             "money" => $startingMoney,
             "name" => $name,
-            "helpLog" => $setHelpLog,
-            "fullLog" => $setFullLog,
-            "openCards" => $setOpenCards
+            "help" => $setHelp,
+            "fullHelp" => $setFullHelp,
+            "openCards" => $setOpenCards,
+            "consoleDebug" => true
         ]);
         $session->set("game", $game);
 
@@ -51,15 +55,20 @@ class HoldemController extends AbstractController
     {
         /** @var Game|null $game */
         $game = $session->get("game");
+        $settings = $session->get("settings");
+
         $game->updateGameState();
         $players = $game->getPlayers();
         foreach ($players as $player) {
             $game->setEvaluation($player);
         }
+
+        $isOver = $game->isOver();
         $computerTurn = $players[$game->getCurrPlayerIndex()]->isComputer();
         $dealerCards = $game->getDealerCards();
         $currIndex = $game->getCurrPlayerIndex();
         $useHelp = $game->getUseHelp();
+
         $data = [
             "players" => $players,
             "winner" => $game->getWinner(),
@@ -73,7 +82,9 @@ class HoldemController extends AbstractController
             "openCards" => $game->getUseOpenCards(),
             "useFullHelp" => $game->getUseFullHelp(),
             "useHelp" => $useHelp,
-            "help" => $currIndex === 0 && $useHelp ? $players[0]->getEvaluatedString() : ""
+            "help" => $currIndex === 0 && $useHelp ? $players[0]->getEvaluatedString() : "",
+            "isOver" => $isOver,
+            "consoleDebug" => $settings["consoleDebug"]
         ];
         return $this->render('proj/game.html.twig', $data);
     }
@@ -96,9 +107,10 @@ class HoldemController extends AbstractController
                 $game->playerCheck(0);
             }
         } elseif ($request->request->has("continue")) {
+            $game->nextRound();
         } elseif ($request->request->has("reset")) {
             $settings = $session->get("settings");
-            $game = new Game($settings["money"], $settings["name"], $settings["helpLog"], $settings["fullLog"], $settings["openCards"]);
+            $game = new Game($settings["money"], $settings["name"], $settings["help"], $settings["fullHelp"], $settings["openCards"]);
         }
         $session->set("game", $game);
         return $this->redirectToRoute('holdem');

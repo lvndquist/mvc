@@ -22,16 +22,16 @@
             <div class="player-section">
                 {% for player in players %}
                     {% set playerIndex = loop.index0 %}
-                    {% set activePlayer = playerIndex == currPlayerIndex and winner == -1 %}
+                    {% set activePlayer = playerIndex == currPlayerIndex and winner is empty %}
                     {% set folded = player.folded %}
                     <div class="poker-player {{ folded ? "folded" : "" }} {{ activePlayer ? "active-dent" : ""}}">
                         {% if useHelp and playerIndex == 0 and not useFullHelp %}
                             <div class = "poker-player-help">
-                                {{help}}
+                                {{ player.getEvaluatedString() }}
                             </div>
                         {% endif %}
-                        {% if useFullHelp or winner != -1 %}
-                            <div class = "poker-player-help {{ winner == playerIndex ? "is-winner-hint" : ""}}">
+                        {% if useFullHelp or winner is not empty %}
+                            <div class = "poker-player-help {{ playerIndex in winner ? "is-winner-hint" : ""}}">
                                 {{ player.getEvaluatedString() }}
                             </div>
                         {% endif %}
@@ -39,7 +39,7 @@
                         <div class="poker-player-cards">
                         {% for card in player.hand %}
                             <div class="poker-card {{ activePlayer ? "active-player" : "" }} {{ winner == playerIndex ? "is-winner" : ""}}">
-                                {% if playerIndex == 0 or openCards or winner != -1 %}
+                                {% if playerIndex == 0 or openCards or winner is not empty %}
                                     <div style="background-image: url({{ asset('img/deck.png') }})" class="poker-deck-sprite card-{{ card.toString() }}"></div>
                                 {% else %}
                                     <div style="background-image: url({{ asset('img/backside.jpg') }})" class="poker-card-back"></div>
@@ -54,10 +54,10 @@
             </div>
             <div class = "bottom-section">
                 <div class="controls">
-                    <form class = "control-form {{computerTurn ? "disabled-inputs" : ""}}" method="post" action="{{ path("user_input") }}">
-                        {% if winner != -1 %}
-                            <button name = "reset" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Reset</button>
-                            <button name = "continue" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Continue</button>
+                    <form class = "control-form {{computerTurn and winner is empty ? "disabled-inputs" : ""}}" method="post" action="{{ path("user_input") }}">
+                        {% if winner is not empty %}
+                            <button name = "reset" class="fold-btn">Reset</button>
+                            <button name = "continue" class="fold-btn">Continue</button>
                         {% else %}
                             <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
                             {% if not canCheck %}
@@ -89,11 +89,17 @@
         </div>
     </main>
 
-        <script>
-        {% if computerTurn %}
+    <script>
+        {% if computerTurn and not isOver %}
             setTimeout(function() {
                 window.location.href = "{{ path("holdem") }}"
             }, 2000);
         {% endif %}
-        </script>
+        {% if currPlayerIndex == 0 or winner is not empty %}
+            {% for player in players %}
+                    const log{{ loop.index }} = {{ player.getComputerLog()|json_encode(constant('JSON_PRETTY_PRINT'))|raw }};
+                    console.log("Log for Player {{ loop.index }}:", log{{ loop.index }});
+            {% endfor %}
+        {% endif %}
+    </script>
 {% endblock %}

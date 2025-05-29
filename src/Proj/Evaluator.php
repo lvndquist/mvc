@@ -73,17 +73,17 @@ class Evaluator
         $pairs = $this->getPairs($cards, $valueCount);
 
         // Two pair
-        if (count($pairs) === 4) {
-            return ["Two pair", $this->handRanks["twoPair"], $pairs];
+        if ($pairs[1] === 2) {
+            return ["Two pair", $this->handRanks["twoPair"], $pairs[0]];
         }
 
         // Pair
-        if (count($pairs) === 2) {
-            return ["Pair", $this->handRanks["pair"], $pairs];
+        if ($pairs[1] === 1) {
+            return ["Pair", $this->handRanks["pair"], $pairs[0]];
         }
 
         // High card
-        return ["High card", $this->handRanks["highCard"], [$cards[0]]];
+        return ["High card", $this->handRanks["highCard"], $this->getHighCards($cards)];
     }
 
     /**
@@ -116,7 +116,7 @@ class Evaluator
     }
 
     /**
-     * Get full house cards.
+     * Get full house cards. Sorted by three part first then two part.
      */
     public function getFullHouseCards(array $cards, array $valueCount): array
     {
@@ -148,7 +148,7 @@ class Evaluator
     }
 
     /**
-     *  Get flush cards.
+     *  Get flush cards. Sorted by highest to lowest
      */
     public function getFlushCards(array $cards, array $colorCount): array
     {
@@ -171,7 +171,7 @@ class Evaluator
     }
 
     /**
-     * Get straight cards.
+     * Get straight cards. Sorted from highest to lowest
      */
     public function getStraightCards(array $cards): array
     {
@@ -217,7 +217,9 @@ class Evaluator
     }
 
     /**
-     * Get pairs.
+     * Get pairs. Includes the other highest cards that are not pairs,
+     * for two pairs the other highest card is also included.
+     * for one pair the three other highest cards are included.
      */
     public function getPairs(array $cards, array $valueCount): array
     {
@@ -229,16 +231,32 @@ class Evaluator
             }
         }
 
+        $otherCards = [];
+        rsort($targets);
+        $targets = array_slice($targets, 0, 2);
+
         foreach ($cards as $card) {
             if (in_array($card->getValue(), $targets)) {
                 $pairs[] = $card;
+            } else {
+                $otherCards[] = $card;
             }
         }
-        return $pairs;
+        $sorted = $this->sortCardsByValue($otherCards);
+        $include = array_slice($sorted, 0, 5 - count($pairs));
+        $pairs = $this->sortCardsByValue($pairs);
+        $numPairs = 0;
+        if (count($pairs) === 4) {
+            $numPairs = 2;
+        } elseif (count($pairs) === 2) {
+            $numPairs = 1;
+        }
+
+        return [array_merge($pairs, $include), $numPairs];
     }
 
     /**
-     * Get three of a kind cards.
+     * Get three of a kind cards. Also includes the 2 highest other cards
      */
     public function getThreeOfAKindCards(array $cards, array $valueCount): array
     {
@@ -252,13 +270,28 @@ class Evaluator
             }
         }
 
+        $notThreeOfAKind = [];
         foreach ($cards as $card) {
             if ($card->getValue() === $target) {
                 $threeOfAKindCards[] = $card;
+            } else {
+                $notThreeOfAKind[] = $card;
             }
         }
 
-        return $threeOfAKindCards;
+        $ordered = $this->sortCardsByValue($notThreeOfAKind);
+        $highest = array_slice($ordered, 0, 2);
+
+        return array_merge($threeOfAKindCards, $highest);
+    }
+
+    /**
+     * Get 5 highest cards.
+     */
+    public function getHighCards(array $cards): array
+    {
+        $sorted = $this->sortCardsByValue($cards);
+        return array_slice($cards, 0, 5);
     }
 
     /**
@@ -317,15 +350,19 @@ class Evaluator
             case 4:
                 // three of a kind
                 // first three cards, then the last two.
+                return $this->twoPartTie($evals, $indexes, 0, 3, 2);
             case 3:
                 // two pair
                 // first pair, then second pair, last the fifth card
+                return $this->twoPairTie($evals, $indexes);
             case 2:
                 // one pair
                 // first the pair, then the 3 rest.
+                return $this->twoPartTie($evals, $indexes, 0, 2, 3);
             case 1:
                 // highest card
                 // first card then the rest.
+                return $this->twoPartTie($evals, $indexes, 0, 0, 5);
             default:
                 return $indexes;
         }
@@ -333,14 +370,13 @@ class Evaluator
     }
 
     /**
-     * Straight or straight flush tie, compares the top card to determine winner.
-     * Same top card means its a tie.
+     * Compares card at some index.
      */
-    public function straightTie($evals, $indexes): array
+    public function onePartTie($evals, $indexes, $start): array
     {
         foreach ($indexes as $index) {
             $cards = $evals[$index]["cards"];
-            $highest[$index] = $cards[0]->getValue();
+            $highest[$index] = $cards[$start]->getValue();
         }
 
         $max = max($highest);
@@ -387,54 +423,20 @@ class Evaluator
         return $remaining;
     }
 
-    public function compareAllTie($evals, $indexes): array
+    public function twoPairTie($evals, $indexes): array
     {
-        $remaining = $indexes;
-        for ($i = 0; $i < 5; $i++) {
-            $vals = [];
-
-            foreach ($remaining as $index) {
-                $vals[$index] = $evals[$index]["cards"][$i]->getValue();
-            }
-
-            $max = max($vals);
-            $remaining = array_keys(array_filter($vals, fn($val) => $val === $max));
-
-            if (count($remaining) === 1) {
-                return $remaining;
-            }
+        $firstPair = $this->onePartTie($evals, $indexes, 0);
+        if (count($firstPair) === 1) {
+            return $firstPair;
         }
-        return $remaining;
-    }
 
-    public function threeOfAKindTie(): array
-    {
+        $secondPair = $this->onePartTie($evals, $indexes, 2);
+        if (count($secondPair) === 1) {
+            return $secondPair;
+        }
 
-    }
+        $lastCard = $this->onePartTie($evals, $indexes, 4);
+        return $lastCard;
 
-    public function twoPairTie(): array
-    {
-
-    }
-
-    public function onePairTie(): array
-    {
-
-    }
-
-    public function highCardTie(): array
-    {
-
-    }
-
-    /**
-     * Compare cards in a hand. Used to determine who wins when hands have same score.
-     */
-    public function compareHands(array $hand1, array $hand2) {
-        /*
-        return 1;
-        return 2;
-        return 0;
-         */
     }
 }
