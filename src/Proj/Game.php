@@ -26,6 +26,7 @@ class Game
     private int $numPlayers = 4;
     private int $smallBlind = 20;
     private int $bigBlind = 40;
+    private int $buyBack = 2500;
     private array $playLog;
 
     private bool $useHelp;
@@ -92,25 +93,7 @@ class Game
             return;
         }
 
-        if ($this->onePlayerLeft()) {
-            $this->handleWin();
-            return;
-        }
-
-        if ($this->allPlayed()) {
-            $this->nextPhase();
-            return;
-        }
-
-        if ($player->isFolded() || $player->isAllIn() || $player->getMoney() === 0) {
-            $this->nextPlayer();
-            return;
-        }
-
-        if (!$player->hasPlayed() && $this->currPlayerIndex == 0) {
-            return;
-        }
-
+        // let the computer play
         if ($player->isComputer() && !$player->hasPlayed() && !$player->isFolded()) {
             if ($player->isSmart()) {
                 $this->smartComputerPlay($this->currPlayerIndex);
@@ -118,6 +101,30 @@ class Game
                 $this->basicComputerPlay($this->currPlayerIndex);
             }
         }
+
+        // only one player left so handle win
+        if ($this->onePlayerLeft()) {
+            $this->handleWin();
+            return;
+        }
+
+        // go to next phase
+        if ($this->allPlayed()) {
+            $this->nextPhase();
+            return;
+        }
+
+        // check if valid for playing otherwise go to next player
+        if ($player->isFolded() || $player->isAllIn() || $player->getMoney() === 0) {
+            $this->nextPlayer();
+            return;
+        }
+
+        // if human player hasnt played, return
+        if (!$player->hasPlayed() && $this->currPlayerIndex == 0) {
+            return;
+        }
+
 
         $this->nextPlayer();
         return;
@@ -178,6 +185,7 @@ class Game
         $playerLogEntry["randDecision"] = $decision;
 
         if ($player->isAllIn()) {
+            $player->hasPlayed(true);
             return;
         }
 
@@ -373,7 +381,7 @@ class Game
     {
         $count = 0;
         foreach ($this->players as $player) {
-            if (!$player->isFolded() || $player->getMoney() === 0) {
+            if (!$player->isFolded() && ($player->getMoney() > 0 || $player->isAllIn())) {
                 $count += 1;
             }
         }
@@ -401,6 +409,7 @@ class Game
         $players =  $this->players;
         $deck = $this->deck;
         $numPlayers = $this->numPlayers;
+        $this->playLog = [];
 
         if ($deck->size() < 5 + $numPlayers * 2) {
             $this->deck = new Deck(true);
@@ -411,6 +420,10 @@ class Game
             $player->newRound();
             if (in_array($index, $this->winners)) {
                 $player->setMoney($player->getMoney() + intdiv($this->pot, count($this->winners)));
+            } elseif ($player->getMoney() < $this->bigBlind) {
+                // buy back in
+                $player->setMoney($this->buyBack);
+                $this->writeToLog($index, "buy in", $this->buyBack);
             }
         }
         //$this->deck = new Deck(true);
@@ -420,7 +433,6 @@ class Game
         $this->phase = 0;
         $this->currentBet = 0;
         $this->winners = [];
-        $this->playLog = [];
         $this->dealerCards = new Hand();
 
         $this->dealToPlayers();
