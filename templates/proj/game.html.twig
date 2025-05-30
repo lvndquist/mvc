@@ -24,7 +24,8 @@
                     {% set playerIndex = loop.index0 %}
                     {% set activePlayer = playerIndex == currPlayerIndex and winner is empty %}
                     {% set folded = player.folded %}
-                    <div class="poker-player {{ folded ? "folded" : "" }} {{ activePlayer ? "active-dent" : ""}}">
+                    <div class="poker-player {{ folded ? "folded" : "" }} {{ activePlayer ? "active-dent" : ""}} {{ player.getMoney() == 0 and playerIndex not in winner ? "no-money" : ""}}">
+
                         {% if useHelp and playerIndex == 0 and not useFullHelp %}
                             <div class = "poker-player-help">
                                 {{ player.getEvaluatedString() }}
@@ -54,21 +55,24 @@
             </div>
             <div class = "bottom-section">
                 <div class="controls">
-                    <form class = "control-form {{computerTurn and winner is empty ? "disabled-inputs" : ""}}" method="post" action="{{ path("user_input") }}">
-                        {% if winner is not empty %}
-                            <button name = "reset" class="fold-btn">Reset</button>
-                            <button name = "continue" class="fold-btn">Continue</button>
-                        {% else %}
-                            <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
-                            {% if not canCheck %}
-                                <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
-                            {% else %}
-                                <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
+                        <form class = "control-form {{computerTurn and winner is empty ? "disabled-inputs" : ""}}" method="post" action="{{ path("user_input") }}">
+                            {% if winner is not empty %}
+                                <button name = "continue" class="fold-btn">Continue</button>
                             {% endif %}
-                            <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
-                            <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
-                        {% endif %}
-                    </form>
+                            {% if winner is not empty or players[0].getMoney() == 0 %}
+                                <button name = "reset" class="fold-btn">Reset</button>
+                            {% endif %}
+                            {% if winner is empty %}
+                                <button name = "fold" class="fold-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Fold</button>
+                                {% if not canCheck %}
+                                    <button name = "call" class="call-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Call</button>
+                                {% else %}
+                                    <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
+                                {% endif %}
+                                <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
+                                <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
+                            {% endif %}
+                        </form>
                 </div>
 
                 <div class = "log-container">

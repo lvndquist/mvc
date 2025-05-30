@@ -92,16 +92,17 @@ class Game
             return;
         }
 
-        if ($this->allPlayed() || $this->onePlayerLeft()) {
-            if ($this->onePlayerLeft()) {
-                $this->handleWin();
-                return;
-            }
+        if ($this->onePlayerLeft()) {
+            $this->handleWin();
+            return;
+        }
+
+        if ($this->allPlayed()) {
             $this->nextPhase();
             return;
         }
 
-        if ($player->isFolded()) {
+        if ($player->isFolded() || $player->isAllIn() || $player->getMoney() === 0) {
             $this->nextPlayer();
             return;
         }
@@ -114,7 +115,7 @@ class Game
             if ($player->isSmart()) {
                 $this->smartComputerPlay($this->currPlayerIndex);
             } else {
-                $this->basicComputerPlay();
+                $this->basicComputerPlay($this->currPlayerIndex);
             }
         }
 
@@ -125,27 +126,32 @@ class Game
     /**
      * Basic computer play. Basically no logic and does choices randomly.
      */
-    public function basicComputerPlay(): void
+    public function basicComputerPlay(int $index): void
     {
-        $player =  $this->players[$this->currPlayerIndex];
+        $player =  $this->players[$index];
         $raiseAmount = rand(1, 5) * 100;
+
+        if ($player->isAllIn()) {
+            return;
+        }
+
         // no bet, computer should raise or check
-        if ($this->canCheck($this->currPlayerIndex)) {
+        if ($this->canCheck($index)) {
             $decision = rand(0, 1);
             if ($decision === 0) {
-                $this->playerCheck($this->currPlayerIndex);
+                $this->playerCheck($index);
             } else {
-                $this->playerRaise($this->currPlayerIndex, $raiseAmount);
+                $this->playerRaise($index, $raiseAmount);
             }
         } else {
             // there is a bet, computer should fold, raise or call
             $decision = rand(0, 2);
             if ($decision === 0 && $this->phase != 0) {
-                $this->playerFold($this->currPlayerIndex);
+                $this->playerFold($index);
             } elseif ($decision === 1 || $this->phase === 4) {
-                $this->playerCall($this->currPlayerIndex);
+                $this->playerCall($index);
             } else {
-                $this->playerRaise($this->currPlayerIndex, $raiseAmount);
+                $this->playerRaise($index, $raiseAmount);
             }
         }
         $player->hasPlayed(true);
@@ -170,6 +176,10 @@ class Game
         $playerLogEntry["phase"] = $phase;
 
         $playerLogEntry["randDecision"] = $decision;
+
+        if ($player->isAllIn()) {
+            return;
+        }
 
         if ($this->canCheck($index)) {
             $playerLogEntry["possibility"] = "check/raise";
@@ -287,6 +297,7 @@ class Game
         } elseif ($phase === 4) {
             $this->checkBets();
             $this->handleWin();
+            return;
         } else {
             $this->dealerCards->addCard($this->deck->draw());
         }
@@ -306,27 +317,40 @@ class Game
         $players = $this->players;
         $currentBet = $this->currentBet;
         foreach ($players as $index => $player) {
-            if ($player->isComputer() && !$player->isFolded()) {
-                if (!$this->canCheck($index)) {
+            if ($player->isComputer() && !$player->isFolded() && !$this->canCheck($index)) {
+                if ($player->isSmart()) {
                     $this->smartComputerPlay($index);
+                } else {
+                    $this->basicComputerPlay($index);
                 }
             }
         }
     }
 
     /**
-     * Update the currPlayerIndex, ignoring players who have folded.
+     * Update the currPlayerIndex, ignoring players who have folded or are all in.
      */
     public function nextPlayer(): void
     {
         $nextIndex = $this->currPlayerIndex;
-        while(true) {
+        $count = 0;
+
+        while($count < $this->numPlayers) {
             $nextIndex = ($nextIndex - 1 + $this->numPlayers) % $this->numPlayers;
-            if (!$this->players[$nextIndex]->isFolded()) {
+            $player = $this->players[$nextIndex];
+
+            if (!$player->isFolded() && !$player->isAllIn()) {
                 $this->currPlayerIndex = $nextIndex;
-                break;
+                return;
+                //break;
             }
+            $count++;
         }
+
+        // no one can play...
+        $this->nextPhase();
+
+
     }
 
     /**
@@ -349,7 +373,7 @@ class Game
     {
         $count = 0;
         foreach ($this->players as $player) {
-            if (!$player->isFolded()) {
+            if (!$player->isFolded() || $player->getMoney() === 0) {
                 $count += 1;
             }
         }
@@ -386,7 +410,7 @@ class Game
         foreach ($players as $index => $player) {
             $player->newRound();
             if (in_array($index, $this->winners)) {
-                $player->setMoney(intdiv($this->pot, count($this->winners)));
+                $player->setMoney($player->getMoney() + intdiv($this->pot, count($this->winners)));
             }
         }
         //$this->deck = new Deck(true);
@@ -422,12 +446,19 @@ class Game
     public function playerCall(int $playerIndex)
     {
         $player = $this->players[$playerIndex];
-
         $callAmount = $this->currentBet - $player->getCurrentBet();
+        $callAmount = max(0, $callAmount);
+        $playerMoney = $player->getMoney();
+
+        if ($callAmount >= $playerMoney) {
+            $callAmount = $playerMoney;
+            $this->writeToLog($playerIndex, "all in (call)", $callAmount);
+        } else {
+            $this->writeToLog($playerIndex, "call", $callAmount);
+        }
+
         $player->makeBet($callAmount);
         $this->pot += $callAmount;
-
-        $this->writeToLog($playerIndex, "call", $callAmount);
 
         $player->hasPlayed(true);
     }
@@ -440,13 +471,21 @@ class Game
         $player = $this->players[$playerIndex];
         $handString = $player->getEvaluatedString();
 
+        $playerBet = $player->getCurrentBet();
         $total = $this->currentBet + $amount;
-        $raiseAmount = $total - $player->getCurrentBet();
+
+        $raiseAmount = $total - $playerBet;
+
+        if ($raiseAmount >= $player->getMoney()) {
+            $raiseAmount = $player->getMoney();
+            $this->writeToLog($playerIndex, "all in (raise)", $raiseAmount);
+        } else {
+            $this->writeToLog($playerIndex, "raise", $raiseAmount);
+        }
 
         $player->makeBet($raiseAmount);
         $this->pot += $raiseAmount;
-        $this->currentBet = $total;
-        $this->writeToLog($playerIndex, "raise", $raiseAmount);
+        $this->currentBet = max($this->currentBet, $player->getCurrentBet());
 
         $player->hasPlayed(true);
     }

@@ -264,6 +264,7 @@
 .poker-deck-sprite.card-3-14 { background-position: -6px -304px; }
 
 .fold-btn,
+.hard-reset-btn,
 .call-btn,
 .raise-btn,
 .check-btn,
@@ -361,3 +362,10 @@
     border: 1px solid lightgreen;
 }
 
+.no-money {
+    opacity: 30%;
+}
+
+.hard-reset-btn {
+    opacity: 100% !important;
+}

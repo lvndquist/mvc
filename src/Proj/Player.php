@@ -90,6 +90,7 @@ class Player
      */
     public function newRound(): void
     {
+        $this->hand = new Hand();
         $this->currentBet = 0;
         $this->isFolded = false;
         $this->allIn = false;
@@ -160,7 +161,7 @@ class Player
      */
     public function isAllIn(): bool
     {
-        return $this->isAllIn;
+        return $this->allIn;
     }
 
     /**
