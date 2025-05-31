@@ -62,7 +62,7 @@ class ApiController extends AbstractController
         $response = new JsonResponse([
             "action" => $action,
             "currentPlayerIndex" => $playerIndex,
-            "winners" => $winners,
+            "winnerIndexes" => $winners,
             "communityCards" => $dealerHand->toString(),
             "playerCards" => $selfHand->toString(),
             "selfBet" => $selfBet,
@@ -85,14 +85,10 @@ class ApiController extends AbstractController
     {
         $game = $session->get("apiGame");
         $game->updateGameState();
-        while(true) {
-            if ($game->getCurrPlayerIndex() !== 0) {
-                $game->updateGameState();
-            } else {
-                break;
-            }
-        }
 
+        while($game->getCurrPlayerIndex() !== 0) {
+                $game->updateGameState();
+        }
         $session->set("apiGame", $game);
         return $this->gameResponse($session, $action);
     }
@@ -128,12 +124,17 @@ class ApiController extends AbstractController
     {
         $amount = (int) $request->request->get('amount');
         $game = $session->get("apiGame");
-        if (!$game->isOver()) {
+        $folded = $game->getPlayers()[0]->isFolded();
+
+        if (!$game->isOver() && !$folded) {
             $game->playerRaise(0, $amount);
             return $this->gamePlay($session, "raise");
         }
 
-        $response = new JsonResponse(["Could not raise... make sure round hasnt finished"]);
+        $response = new JsonResponse(["Could not call... round has finished"]);
+        if ($folded) {
+            $response = new JsonResponse(["You folded and cant continue"]);
+        }
 
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
@@ -146,12 +147,13 @@ class ApiController extends AbstractController
     public function playFold(SessionInterface $session, Request $request): Response
     {
         $game = $session->get("apiGame");
-        if (!$game->isOver()) {
-            $game->playerFold(0);
-            return $this->gamePlay($session, "fold");
-        }
+        $folded = $game->getPlayers()[0]->isFolded();
 
-        $response = new JsonResponse(["Could not fold... make sure round hasnt finished"]);
+        $response = new JsonResponse(["Could not fold... round has finished"]);
+        if (!$game->isOver() || $folded) {
+            $game->playerFold(0);
+            $response = new JsonResponse(["You folded and cant continue"]);
+        }
 
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
@@ -164,12 +166,16 @@ class ApiController extends AbstractController
     public function playCall(SessionInterface $session, Request $request): Response
     {
         $game = $session->get("apiGame");
-        if (!$game->isOver()) {
+        $folded = $game->getPlayers()[0]->isFolded();
+        if (!$game->isOver() && !$folded) {
             $game->playerCall(0);
             return $this->gamePlay($session, "call");
         }
 
-        $response = new JsonResponse(["Could not call... make sure round hasnt finished"]);
+        $response = new JsonResponse(["Could not call... round has finished"]);
+        if ($folded) {
+            $response = new JsonResponse(["You folded and cant continue"]);
+        }
 
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
@@ -182,12 +188,19 @@ class ApiController extends AbstractController
     public function playCheck(SessionInterface $session, Request $request): Response
     {
         $game = $session->get("apiGame");
-        if ($game->canCheck(0)) {
+        $folded = $game->getPlayers()[0]->isFolded();
+
+        if ($game->canCheck(0) && !$game->isOver() && !$folded) {
             $game->playerCheck(0);
             return $this->gamePlay($session, "check");
         }
-
-        $response = new JsonResponse(["Could not check...try some other action"]);
+        if ($game->isOver()) {
+            $response = new JsonResponse(["Could not check... round has finished"]);
+        } elseif ($folded) {
+            $response = new JsonResponse(["You folded and cant continue"]);
+        } else {
+            $response = new JsonResponse(["Could not check...try some other action"]);
+        }
 
         $response->setEncodingOptions(
             $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
@@ -200,8 +213,10 @@ class ApiController extends AbstractController
     public function playContinue(SessionInterface $session, Request $request): Response
     {
         $game = $session->get("apiGame");
-        if ($game->isOver()) {
-            $game->newRound();
+        $folded = $game->getPlayers()[0]->isFolded();
+
+        if ($game->isOver() || $folded) {
+            $game->nextRound();
             return $this->gamePlay($session, "continue");
         }
 

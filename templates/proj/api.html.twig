@@ -20,25 +20,31 @@
                         <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/raise</a>
                         <input class = "api-url-input" type="number" name="amount" min="20" max="2000" value="200">
                     </form>
-                    Raise current bet.
+                    Raise current bet
                 </li>
                 <li>
                     <form action="{{path('call')}}" method="POST">
                         <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/call</a>
                     </form>
-                    Call current bet.
+                    Call current bet
                 </li>
                 <li>
                     <form action="{{path('fold')}}" method="POST">
                         <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/fold</a>
                     </form>
-                    Fold.
+                    Fold current bet
                 </li>
                 <li>
                     <form action="{{path('check')}}" method="POST">
                         <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/check</a>
                     </form>
-                    Check.
+                    Check current bet
+                </li>
+                <li>
+                    <form action="{{path('continue')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/continue</a>
+                    </form>
+                    Continue (next round)
                 </li>
             </ul>
         <div>
