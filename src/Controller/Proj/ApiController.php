@@ -84,11 +84,16 @@ class ApiController extends AbstractController
     public function gamePlay(SessionInterface $session, string $action): Response
     {
         $game = $session->get("apiGame");
-        $game->updateGameState();
-
-        while($game->getCurrPlayerIndex() !== 0) {
-                $game->updateGameState();
+        if($game->getPlayers()[0]->isFolded()) {
+            while(!$game->isOver()) {
+                    $game->updateGameState();
+            }
+        } else {
+            while($game->getCurrPlayerIndex() !== 0) {
+                    $game->updateGameState();
+            }
         }
+
         $session->set("apiGame", $game);
         return $this->gameResponse($session, $action);
     }
@@ -152,7 +157,7 @@ class ApiController extends AbstractController
         $response = new JsonResponse(["Could not fold... round has finished"]);
         if (!$game->isOver() || $folded) {
             $game->playerFold(0);
-            $response = new JsonResponse(["You folded and cant continue"]);
+            return $this->gamePlay($session, "fold");
         }
 
         $response->setEncodingOptions(
