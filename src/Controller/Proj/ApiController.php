@@ -89,6 +89,7 @@ class ApiController extends AbstractController
                     $game->updateGameState();
             }
         } else {
+            $game->updateGameState();
             while($game->getCurrPlayerIndex() !== 0) {
                     $game->updateGameState();
             }
@@ -119,8 +120,33 @@ class ApiController extends AbstractController
     }
 
     #[Route("proj/api/best-hands", name: "best_hands")]
-    public function getBestHands(): Response
+    public function getBestHands(SessionInterface $session): Response
     {
+        $game = $session->get("apiGame");
+        $players = $game->getPlayers();
+        $evaluation = [];
+        foreach($players as $player) {
+            $game->setEvaluation($player);
+            $playerEvaluation = $player->getEvaluation();
+            $handString = $playerEvaluation["handString"];
+            $score = $playerEvaluation["score"];
+            $cards = $playerEvaluation["cards"];
+            $cardsToString = [];
+            foreach($cards as $card) {
+                $cardsToString[] = $card->toString();
+            }
+            $evaluation[] = [
+                "score" => $score,
+                "handString" => $handString,
+                "cards" => $cardsToString
+            ];
+        }
+        $response = new JsonResponse($evaluation);
+        $response->setEncodingOptions(
+            $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        );
+        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
+        return $response;
 
     }
 
