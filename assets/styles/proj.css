@@ -369,3 +369,29 @@
 .hard-reset-btn {
     opacity: 100% !important;
 }
+
+.about-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    height: 100vh;
+    text-align: left;
+    width: 70%;
+}
+
+.api {
+    justify-content: flex-start !important;
+}
+
+.api-url-input {
+    border: none;
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+    background-color: #121212;
+    color: white;
+    width: 50px;
+}

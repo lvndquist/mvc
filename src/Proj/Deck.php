@@ -3,7 +3,7 @@
 namespace App\Proj;
 
 use App\Proj\CardGraphic;
-use App\Proj\CardHand;
+use App\Proj\Hand;
 use Exception;
 
 /**
@@ -82,17 +82,6 @@ class Deck
     public function size(): int
     {
         return count($this->cards);
-    }
-
-    /**
-     * Draw multiple number of cards from deck.
-     */
-    public function drawMultiple(int $number, CardHand $hand): void
-    {
-        for ($i = 0; $i < $number && !$this->isEmpty(); $i++) {
-            $card = $this->draw();
-            $hand -> addCard($card);
-        }
     }
 
     /**

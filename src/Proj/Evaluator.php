@@ -326,7 +326,7 @@ class Evaluator
         $max = max(array_column($evals, "score"));
         $indexes = array_keys(array_filter($evals, fn($evl) => $evl["score"] === $max));
         if (count($indexes) === 1 || $max === 10) {
-            return [$indexes[0]];
+            return $indexes;
         }
         switch ($max) {
             case 9:
@@ -363,8 +363,6 @@ class Evaluator
                 // highest card
                 // first card then the rest.
                 return $this->twoPartTie($evals, $indexes, 0, 0, 5);
-            default:
-                return $indexes;
         }
 
     }
@@ -393,6 +391,7 @@ class Evaluator
      */
     public function twoPartTie($evals, $indexes, $firstPart, $secondPart, $secondPartLen): array
     {
+        /*
         $start = [];
         foreach ($indexes as $index) {
             $cards = $evals[$index]["cards"];
@@ -401,6 +400,8 @@ class Evaluator
         $max = max($start);
 
         $remaining = array_keys(array_filter($start, fn($val) => $val === $max));
+        */
+        $remaining = $this->onePartTie($evals, $indexes, $firstPart);
 
         if (count($remaining) <= 1) {
             return $remaining;
@@ -415,9 +416,10 @@ class Evaluator
             $max = max($determining);
             $remaining = array_keys(array_filter($determining, fn($val) => $val === $max));
 
+            /*
             if (count($remaining) <= 1) {
                 return $remaining;
-            }
+            } */
         }
 
         return $remaining;
@@ -434,7 +436,6 @@ class Evaluator
         if (count($secondPair) === 1) {
             return $secondPair;
         }
-
         $lastCard = $this->onePartTie($evals, $indexes, 4);
         return $lastCard;
 

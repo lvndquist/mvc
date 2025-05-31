@@ -20,10 +20,10 @@ class HoldemController extends AbstractController
         return $this->render('proj/index.html.twig');
     }
 
-    #[Route("/proj/about", name: "about")]
+    #[Route("/proj/about", name: "proj_about")]
     public function about(): Response
     {
-        return $this->render('proj/index.html.twig');
+        return $this->render('proj/about.html.twig');
     }
 
     #[Route("/proj/start", name: "start_game", methods: ["POST"])]

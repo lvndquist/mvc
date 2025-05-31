@@ -33,14 +33,18 @@ class Game
     private bool $useFullHelp;
     private bool $useOpenCards;
 
+    private bool $gameOver;
+
     public function __construct(
         int $startingMoney,
         string $playerName,
         bool $useHelp,
         bool $useFullHelp,
-        bool $useOpenCards
+        bool $useOpenCards,
+        bool $graphic = true
+
     ) {
-        $this->deck = new Deck(true);
+        $this->deck = new Deck($graphic);
         $this->deck->shuffle();
         $this->players = [];
         for ($i = 0; $i < $this->numPlayers; $i++) {
@@ -52,6 +56,7 @@ class Game
             }
             $this->players[] = new Player($name, $startingMoney, $computer, $smart);
         }
+        $this->gameOver = false;
         $this->pot = 0;
         $this->currPlayerIndex = 1;
         $this->phase = 0;
@@ -89,7 +94,7 @@ class Game
         $player = $this->players[$this->currPlayerIndex];
         $this->setEvaluation($player);
 
-        if (count($this->winners) != 0) {
+        if ($this->isOver()) {
             return;
         }
 
@@ -121,10 +126,9 @@ class Game
         }
 
         // if human player hasnt played, return
-        if (!$player->hasPlayed() && $this->currPlayerIndex == 0) {
+        if (!$player->hasPlayed() && !$player->isComputer()) {
             return;
         }
-
 
         $this->nextPlayer();
         return;
@@ -139,6 +143,7 @@ class Game
         $raiseAmount = rand(1, 5) * 100;
 
         if ($player->isAllIn()) {
+            $player->setPlayed(true);
             return;
         }
 
@@ -161,7 +166,7 @@ class Game
                 $this->playerRaise($index, $raiseAmount);
             }
         }
-        $player->hasPlayed(true);
+        $player->setPlayed(true);
         return;
     }
 
@@ -185,7 +190,7 @@ class Game
         $playerLogEntry["randDecision"] = $decision;
 
         if ($player->isAllIn()) {
-            $player->hasPlayed(true);
+            $player->setPlayed(true);
             return;
         }
 
@@ -238,7 +243,7 @@ class Game
                     }
                 } else {
                     if ($phase !== 4) {
-                        $amount = $intdiv($player->getMoney(), 2);
+                        $amount = intdiv($player->getMoney(), 2);
                         $this->playerRaise($index, $amount);
                         $playerLogEntry["takenAction"] = "raise by {$amount}";
                     } else {
@@ -279,7 +284,7 @@ class Game
             }
         }
         $player->setComputerLog($playerLogEntry);
-        $player->hasPlayed(true);
+        $player->setPlayed(true);
         return;
     }
 
@@ -322,6 +327,7 @@ class Game
      */
     public function checkBets(): void
     {
+
         $players = $this->players;
         $currentBet = $this->currentBet;
         foreach ($players as $index => $player) {
@@ -357,8 +363,6 @@ class Game
 
         // no one can play...
         $this->nextPhase();
-
-
     }
 
     /**
@@ -367,7 +371,10 @@ class Game
     public function allPlayed(): bool
     {
         foreach ($this->players as $player) {
-            if(!$player->isFolded() && !$player->hasPlayed()) {
+            if ($player->isFolded() || $player->isAllIn() || $player->getMoney() == 0) {
+                continue;
+            }
+            if (!$player->hasPlayed()) {
                 return false;
             }
         }
@@ -402,6 +409,7 @@ class Game
         foreach ($winners as $winner) {
             $this->writeToLog($winner, "win", intdiv($this->pot, count($winners)));
         }
+        $this->gameOver = true;
     }
 
     public function nextRound(): void
@@ -438,6 +446,7 @@ class Game
         $this->dealToPlayers();
         $this->playerBlind(3, "small blind", $this->smallBlind);
         $this->playerBlind(2, "big blind", $this->bigBlind);
+        $this->gameOver = false;
     }
 
     /**
@@ -449,7 +458,7 @@ class Game
         $player->setFolded(true);
         $this->writeToLog($playerIndex, "fold");
 
-        $player->hasPlayed(true);
+        $player->setPlayed(true);
     }
 
     /**
@@ -472,7 +481,7 @@ class Game
         $player->makeBet($callAmount);
         $this->pot += $callAmount;
 
-        $player->hasPlayed(true);
+        $player->setPlayed(true);
     }
 
     /**
@@ -481,7 +490,7 @@ class Game
     public function playerRaise(int $playerIndex, int $amount): void
     {
         $player = $this->players[$playerIndex];
-        $handString = $player->getEvaluatedString();
+        //$handString = $player->getEvaluatedString();
 
         $playerBet = $player->getCurrentBet();
         $total = $this->currentBet + $amount;
@@ -499,7 +508,7 @@ class Game
         $this->pot += $raiseAmount;
         $this->currentBet = max($this->currentBet, $player->getCurrentBet());
 
-        $player->hasPlayed(true);
+        $player->setPlayed(true);
     }
 
     /**
@@ -519,6 +528,7 @@ class Game
      */
     public function playerBlind(int $playerIndex, string $blind, int $amount): void
     {
+
         $player = $this->players[$playerIndex];
         $player->makeBet($amount);
         $this->currentBet += $amount;
@@ -535,12 +545,6 @@ class Game
     {
         $player = $this->players[$playerIndex];
         return ($player->getCurrentBet() === $this->currentBet);
-    }
-
-    public function canRaise(int $playerIndex): bool
-    {
-        $player = $this->players[$playerIndex];
-
     }
 
     /**
@@ -577,7 +581,7 @@ class Game
     /**
      * Get player cards.
      */
-    public function getPlayerCards($playerIndex): Hand
+    public function getPlayerCards($playerIndex): array
     {
         return $this->players[$playerIndex]->getHand();
     }
@@ -643,10 +647,13 @@ class Game
      */
     public function isOver(): bool
     {
+        return $this->gameOver;
+        /*
         if (empty($this->winners)) {
             return false;
         }
         return true;
+         */
     }
 
     /**
@@ -703,5 +710,15 @@ class Game
     public function setUseOpenCards(bool $val): void
     {
         $this->useOpenCards = $val;
+    }
+
+    public function setCurrentBet(int $val): void
+    {
+        $this->currentBet = $val;
+    }
+
+    public function setWinners(array $val): void
+    {
+        $this->winners = $val;
     }
 }

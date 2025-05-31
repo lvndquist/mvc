@@ -52,7 +52,7 @@ class Card
     /**
      * Get the letter of the color.
      */
-    public function getLetter(): int
+    public function getLetter(): string
     {
         return $this->colorLetter;
     }

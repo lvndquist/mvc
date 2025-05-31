@@ -1,0 +1,17 @@
+{% extends "proj-base.html.twig" %}
+
+{% block title %}Project{% endblock %}
+
+{% block body %}
+    <main class = "proj-main">
+        <div class = "about-container">
+            <h1 class = "start-title">About</h1>
+            <p>This project is a web-based Texas Hold’em poker game, developed as a part of the course "mvc" at BTH.
+            The game is structured according to the model/view/controller design pattern.
+            The models handle the game logic (deck, players, betting, hand evaluation). Views are handled with Twig templates. The controllers handle user input and updates the games continuosly.</p>
+            <p>Texas Hold’em is a popular variant of poker where players compete to make the best five-card hand using a combination of two private cards and five cards in the middle of the board.</p>
+            <p>In the first round, 2 first players call big and small blinds. After that the other players are allowed to call, fold or raise. After that the next phase begins, 3 cards are placed by the dealer and another betting round follows. Now two more betting rounds follow. If the last player decides to raise before the showdow, the remaining players are allowed to call or fold.</p>
+            <p>At the showdown all player cards are revealed and the best hand is decided. If players have the same best hand, the pot is split between them.</p>
+        <div>
+    </main>
+{% endblock %}

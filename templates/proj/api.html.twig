@@ -1,0 +1,46 @@
+
+{% extends "proj-base.html.twig" %}
+
+{% block title %}Project{% endblock %}
+
+{% block body %}
+    <main class = "proj-main">
+        <div class = "about-container api">
+            <h1>API routes</h1>
+            <ul class = "api-list">
+                <li>
+                    <form action="{{path('api_start_game')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/start-game</a>
+                    </form>
+                    Start a game (use this before anything else).
+                </li>
+                <li><a href = "{{path('get_game')}}">/proj/api/get-game</a> Get game and its current state</li>
+                <li>
+                    <form class = "url-input-container" action="{{path('raise')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/raise</a>
+                        <input class = "api-url-input" type="number" name="amount" min="20" max="2000" value="200">
+                    </form>
+                    Raise current bet.
+                </li>
+                <li>
+                    <form action="{{path('call')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/call</a>
+                    </form>
+                    Call current bet.
+                </li>
+                <li>
+                    <form action="{{path('fold')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/fold</a>
+                    </form>
+                    Fold.
+                </li>
+                <li>
+                    <form action="{{path('check')}}" method="POST">
+                        <a href="javascript:;" onclick="this.parentNode.submit()">/proj/api/check</a>
+                    </form>
+                    Check.
+                </li>
+            </ul>
+        <div>
+    </main>
+{% endblock %}

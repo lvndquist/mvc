@@ -241,7 +241,7 @@ class Player
      */
     public function setAllIn(bool $val): void
     {
-        $this->isAllIn = $val;
+        $this->allIn = $val;
     }
 
     /**
@@ -258,6 +258,14 @@ class Player
     public function setSmart(bool $val): void
     {
         $this->smart = $val;
+    }
+
+    /**
+     * Set to act as computer, useful in testing
+     */
+    public function setComputer(bool $val): void
+    {
+        $this->computer = $val;
     }
 
     /**
@@ -301,6 +309,6 @@ class Player
         }
         $this->money -= $amount;
         $this->currentBet += $amount;
-        $this->played = true;
+        //$this->played = true;
     }
 }
