@@ -76,8 +76,8 @@ class Computer
         $this->game->setEvaluation($player);
         $score = $player->getEvaluatedScore();
         $name = $player->getName();
-        $decision = rand(0, 3);
         $phase = $this->game->getPhase();
+        $decision = rand(0, 3);
 
         $playerLogEntry = [];
         $playerLogEntry["name"] = $name;
@@ -92,56 +92,68 @@ class Computer
         }
 
         if ($this->game->canCheck($index)) {
-            $playerLogEntry["possibility"] = "check/raise";
-            if ($score === 10) {
-                $amount = $player->getMoney();
-                $this->actions->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount} (all in)";
-                $player->setComputerLog($playerLogEntry);
-                $player->setPlayed(true);
-                return;
-            } elseif ($score >= 8) {
-                $amount = intdiv($player->getMoney(), 2);
-                $this->actions->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-                $player->setComputerLog($playerLogEntry);
-                $player->setPlayed(true);
-                return;
-            } elseif ($score >= 6) {
-                $amount = intdiv($player->getMoney(), 4);
-                $this->actions->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-                $player->setComputerLog($playerLogEntry);
-                $player->setPlayed(true);
-                return;
-            } elseif ($score >= 3) {
-                $amount = rand(1, 5) * 100;
-                $this->actions->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-                $player->setComputerLog($playerLogEntry);
-                $player->setPlayed(true);
-                return;
-            }
+            $this->smartComputerCheckOrRaise($score, $player, $playerLogEntry, $decision, $phase, $index);
+        }
+        $this->smartComputerBet($score, $player, $playerLogEntry, $decision, $phase, $index);
+        return;
+    }
 
-            if ($decision === 1) {
-                $amount = rand(1, 3) * 100;
-                $this->actions->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-                $player->setComputerLog($playerLogEntry);
-                $player->setPlayed(true);
-                return;
-            }
-
-            $this->actions->playerCheck($index);
-            $playerLogEntry["takenAction"] = "check";
+    public function smartComputerCheckOrRaise(int $score, Player $player, array $playerLogEntry, int $decision, int $phase, $index) {
+        $playerLogEntry["possibility"] = "check/raise";
+        if ($score === 10) {
+            $amount = $player->getMoney();
+            $this->actions->playerRaise($index, $amount);
+            $playerLogEntry["takenAction"] = "raise by {$amount} (all in)";
+            $player->setComputerLog($playerLogEntry);
+            $player->setPlayed(true);
+            return;
+        } elseif ($score >= 8) {
+            $amount = intdiv($player->getMoney(), 2);
+            $this->actions->playerRaise($index, $amount);
+            $playerLogEntry["takenAction"] = "raise by {$amount}";
+            $player->setComputerLog($playerLogEntry);
+            $player->setPlayed(true);
+            return;
+        } elseif ($score >= 6) {
+            $amount = intdiv($player->getMoney(), 4);
+            $this->actions->playerRaise($index, $amount);
+            $playerLogEntry["takenAction"] = "raise by {$amount}";
+            $player->setComputerLog($playerLogEntry);
+            $player->setPlayed(true);
+            return;
+        } elseif ($score >= 3) {
+            $amount = rand(1, 5) * 100;
+            $this->actions->playerRaise($index, $amount);
+            $playerLogEntry["takenAction"] = "raise by {$amount}";
             $player->setComputerLog($playerLogEntry);
             $player->setPlayed(true);
             return;
         }
 
+        if ($decision === 1) {
+            $amount = rand(1, 3) * 100;
+            $this->actions->playerRaise($index, $amount);
+            $playerLogEntry["takenAction"] = "raise by {$amount}";
+            $player->setComputerLog($playerLogEntry);
+            $player->setPlayed(true);
+            return;
+        }
+
+        $this->actions->playerCheck($index);
+        $playerLogEntry["takenAction"] = "check";
+        $player->setComputerLog($playerLogEntry);
+        $player->setPlayed(true);
+        return;
+    }
+
+    public function smartComputerBet(int $score, Player $player, array $playerLogEntry, int $decision, int $phase, int $index) {
+
         // there is a bet, computer should fold, raise or call
         $callAmount = $this->game->getCurrentBet() - $player->getCurrentBet();
         $odds = $callAmount / ($this->game->getPot() + $callAmount);
+
+        $decision = rand(0, 3);
+        $phase = $this->game->getPhase();
 
         $playerLogEntry["possibility"] = "fold/raise/call";
         $playerLogEntry["callAmount"] = $callAmount;
@@ -150,7 +162,7 @@ class Computer
 
         if ($score >= 8) {
             if ($odds < 0.3) {
-                if ($this->game->getPhase() !== 4) {
+                if ($phase !== 4) {
                     $amount = $player->getMoney();
                     $this->actions->playerRaise($index, $amount);
                     $playerLogEntry["takenAction"] = "raise by {$amount} (all in)";
@@ -167,7 +179,7 @@ class Computer
             }
 
             if ($odds >= 0.3) {
-                if ($this->game->getPhase() !== 4) {
+                if ($phase !== 4) {
                     $amount = intdiv($this->$player->getMoney(), 2);
                     $this->actions->playerRaise($index, $amount);
                     $playerLogEntry["takenAction"] = "raise by {$amount}";
@@ -183,7 +195,7 @@ class Computer
                 return;
             }
         } elseif ($score >= 5) {
-            if ($decision === 0 || $odds < 0.3 && $this->game->getPhase() !== 4) {
+            if ($decision === 0 || $odds < 0.3 && $phase !== 4) {
                 $amount = rand(1, 8) * 100;
                 $this->actions->playerRaise($index, $amount);
                 $playerLogEntry["takenAction"] = "raise by {$amount}";
@@ -235,4 +247,7 @@ class Computer
         $player->setPlayed(true);
         return;
     }
+
 }
+
+
