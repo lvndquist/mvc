@@ -92,7 +92,7 @@ class Computer
         }
 
         if ($this->game->canCheck($index)) {
-            $this->smartComputerCheckOrRaise($score, $player, $playerLogEntry, $decision, $phase, $index);
+            $this->smartComputerCheckOrRaise($score, $player, $playerLogEntry, $decision, $index);
         }
         $this->smartComputerBet($score, $player, $playerLogEntry, $decision, $phase, $index);
         return;
@@ -100,7 +100,7 @@ class Computer
     /**
      * @param array<string, null|float|int|list<int>|string> $playerLogEntry
      */
-    public function smartComputerCheckOrRaise(int $score, Player $player, array $playerLogEntry, int $decision, int $phase, int $index): void {
+    public function smartComputerCheckOrRaise(int $score, Player $player, array $playerLogEntry, int $decision, int $index): void {
         $playerLogEntry["possibility"] = "check/raise";
         if ($score === 10) {
             $amount = $player->getMoney();
@@ -156,9 +156,6 @@ class Computer
         // there is a bet, computer should fold, raise or call
         $callAmount = $this->game->getCurrentBet() - $player->getCurrentBet();
         $odds = $callAmount / ($this->game->getPot() + $callAmount);
-
-        $decision = rand(0, 3);
-        $phase = $this->game->getPhase();
 
         $playerLogEntry["possibility"] = "fold/raise/call";
         $playerLogEntry["callAmount"] = $callAmount;
