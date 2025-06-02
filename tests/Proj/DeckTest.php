@@ -43,7 +43,8 @@ class DeckTest extends TestCase
         $deck->shuffle();
         $cardsPostShuffle = $deck->getCards();
         $diff = false;
-        for($i = 0; $i < count($cardsPreShuffle); $i++) {
+        $count = count($cardsPreShuffle);
+        for ($i = 0; $i < $count; $i++) {
             $preVal = $cardsPreShuffle[$i]->getValue();
             $preCol = $cardsPreShuffle[$i]->getColor();
 

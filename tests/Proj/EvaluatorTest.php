@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
  */
 class EvaluatorTest extends TestCase
 {
-
     /**
      * Test a hand with royal flush.
      */
@@ -29,9 +28,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Royal Flush";
         $expResScore = 10;
@@ -60,9 +59,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Straight Flush";
         $expResScore = 9;
@@ -91,9 +90,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Four of a kind";
         $expResScore = 8;
@@ -121,9 +120,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Full house";
         $expResScore = 7;
@@ -154,9 +153,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Flush";
         $expResScore = 6;
@@ -184,9 +183,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Straight";
         $expResScore = 5;
@@ -214,9 +213,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Three of a kind";
         $expResScore = 4;
@@ -244,9 +243,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(7, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Two pair";
         $expResScore = 3;
@@ -275,9 +274,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(9, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "Pair";
         $expResScore = 2;
@@ -304,9 +303,9 @@ class EvaluatorTest extends TestCase
         $cards[] = new Card(9, 2);
         $res = $evaluator->evaluateCards($cards);
 
-        $resString = $res[0];
-        $resScore = $res[1];
-        $resCards = $res[2];
+        $resString = $res["handString"];
+        $resScore = $res["score"];
+        $resCards = $res["cards"];
 
         $expResString = "High card";
         $expResScore = 1;
@@ -316,11 +315,20 @@ class EvaluatorTest extends TestCase
         $this->assertEquals($expResScore, $resScore);
     }
 
-    public function evaluateWinnersSetUp($players, $cards): array
+    /**
+     * @param Player[] $players
+     * @param Card[][] $cards
+     * @return int[] $winners
+     */
+    public function evaluateWinnersSetUp(array $players, array $cards): array
     {
         $evaluator = new Evaluator();
-        for ($i = 0; $i < count($players); $i++) {
-            [$cardsString, $cardsScore, $cardsCards ] = $evaluator->evaluateCards($cards[$i]);
+        $count = count($players);
+        for ($i = 0; $i < $count; $i++) {
+            $res = $evaluator->evaluateCards($cards[$i]);
+            $cardsString = $res["handString"];
+            $cardsScore = $res["score"];
+            $cardsCards = $res["cards"];
             $players[$i]->setEvaluation($cardsString, $cardsScore, $cardsCards);
         }
         $winners = $evaluator->evaluateWinners($players);
@@ -330,7 +338,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersRoyalFlushNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -349,7 +356,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersRoyalFlushWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -370,7 +376,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersStraightNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -389,7 +394,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersStraightWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -409,7 +413,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersFourOfAKindNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -426,29 +429,8 @@ class EvaluatorTest extends TestCase
         $this->assertEquals(0, $winners[0]);
     }
 
-    /*
-    public function testEvaluateWinnersFourOfAKindNoTie2(): void
-    {
-        $evaluator = new Evaluator();
-        $player1 = new Player("p1", 5000, false, false);
-        $player2 = new Player("p2", 5000, false, false);
-        $player3 = new Player("p3", 5000, false, false);
-
-        $cards1 = [new Card(14, 2), new Card(14, 0), new Card(14, 1), new Card(14, 3), new Card(10, 2), new Card(3, 0), new Card(2, 0)];
-        $cards2 = [new Card(3, 2), new Card(3, 3), new Card(4, 0), new Card(5, 1), new Card(12, 1), new Card(7, 3), new Card(5, 2)];
-        $cards3 = [new Card(14, 2), new Card(14, 0), new Card(14, 1), new Card(14, 3), new Card(11, 3), new Card(10, 3), new Card(5, 0)];
-
-        $cards = [$cards1, $cards2, $cards3];
-        $players = [$player1, $player2, $player3];
-
-        $winners = $this->evaluateWinnersSetUp($players, $cards);
-        $this->assertEquals(1, count($winners));
-        $this->assertEquals(2, $winners[0]);
-    } */
-
     public function testEvaluateWinnersFourOfAKindWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -468,7 +450,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersFullHouseNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -487,7 +468,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersFullHouseWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -507,7 +487,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersFlushNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -526,7 +505,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersFlushWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -546,7 +524,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersThreeOfAKindNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -565,7 +542,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersThreeOfAKindWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -585,7 +561,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersTwoPairNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -604,7 +579,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersTwoPairNoTie2(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -623,7 +597,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersTwoPairWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -643,7 +616,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersPairNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -662,7 +634,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersPairWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -682,7 +653,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersHighCardNoTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);
@@ -701,7 +671,6 @@ class EvaluatorTest extends TestCase
 
     public function testEvaluateWinnersHighCardWithTie(): void
     {
-        $evaluator = new Evaluator();
         $player1 = new Player("p1", 5000, false, false);
         $player2 = new Player("p2", 5000, false, false);
         $player3 = new Player("p3", 5000, false, false);

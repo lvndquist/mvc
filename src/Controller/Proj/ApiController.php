@@ -4,8 +4,8 @@ namespace App\Controller\Proj;
 
 use App\Proj\Game;
 use App\Proj\Hand;
-
-
+use App\Proj\Computer;
+use App\Proj\PlayerActions;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +23,7 @@ class ApiController extends AbstractController
 
     public function gameResponse(SessionInterface $session, string $action): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
 
         $players = $game->getPlayers();
@@ -39,7 +40,7 @@ class ApiController extends AbstractController
         $winners = $game->getWinner();
 
         $playersInfo = [];
-        foreach($players as $index => $player) {
+        foreach ($players as $index => $player) {
             $playersInfo[$index]["name"] = $player->getName();
             $playersInfo[$index]["money"] = $player->getMoney();
             $playersInfo[$index]["currentBet"] = $player->getCurrentBet();
@@ -50,16 +51,17 @@ class ApiController extends AbstractController
         }
 
         $selfHand = new Hand();
-        foreach($selfCards as $card) {
+        foreach ($selfCards as $card) {
             $selfHand->addCard($card);
         }
 
         $dealerHand = new Hand();
-        foreach($dealerCards as $card) {
+        foreach ($dealerCards as $card) {
             $dealerHand->addCard($card);
         }
 
-        $response = new JsonResponse([
+        $response = new JsonResponse(
+            [
             "action" => $action,
             "currentPlayerIndex" => $playerIndex,
             "winnerIndexes" => $winners,
@@ -83,16 +85,20 @@ class ApiController extends AbstractController
 
     public function gamePlay(SessionInterface $session, string $action): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
-        if($game->getPlayers()[0]->isFolded()) {
-            while(!$game->isOver()) {
-                    $game->updateGameState();
+        if ($game->getPlayers()[0]->isFolded()) {
+            while (!$game->isOver()) {
+                $game->updateGameState();
             }
-        } else {
+
+            $session->set("apiGame", $game);
+            return $this->gameResponse($session, $action);
+        }
+
+        $game->updateGameState();
+        while ($game->getCurrPlayerIndex() !== 0) {
             $game->updateGameState();
-            while($game->getCurrPlayerIndex() !== 0) {
-                    $game->updateGameState();
-            }
         }
 
         $session->set("apiGame", $game);
@@ -104,7 +110,12 @@ class ApiController extends AbstractController
     {
         $name = "self";
         $startingMoney = 5000;
+
         $game = new Game($startingMoney, $name, false, false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $game->updateGameState();
         $session->set("apiGame", $game);
 
@@ -122,20 +133,22 @@ class ApiController extends AbstractController
     #[Route("proj/api/best-hands", name: "best_hands")]
     public function getBestHands(SessionInterface $session): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
         $players = $game->getPlayers();
         $evaluation = [];
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $game->setEvaluation($player);
             $playerEvaluation = $player->getEvaluation();
             $handString = $playerEvaluation["handString"];
             $score = $playerEvaluation["score"];
             $cards = $playerEvaluation["cards"];
             $cardsToString = [];
-            foreach($cards as $card) {
+            foreach ($cards as $card) {
                 $cardsToString[] = $card->toString();
             }
             $evaluation[] = [
+                "name" => $player->getName(),
                 "score" => $score,
                 "handString" => $handString,
                 "cards" => $cardsToString
@@ -154,11 +167,13 @@ class ApiController extends AbstractController
     public function playRaise(SessionInterface $session, Request $request): Response
     {
         $amount = (int) $request->request->get('amount');
+        /** @var Game */
         $game = $session->get("apiGame");
         $folded = $game->getPlayers()[0]->isFolded();
+        $actions = $game->getActions();
 
         if (!$game->isOver() && !$folded) {
-            $game->playerRaise(0, $amount);
+            $actions->playerRaise(0, $amount);
             return $this->gamePlay($session, "raise");
         }
 
@@ -175,14 +190,16 @@ class ApiController extends AbstractController
     }
 
     #[Route("proj/api/fold", name: "fold", methods: ["POST"])]
-    public function playFold(SessionInterface $session, Request $request): Response
+    public function playFold(SessionInterface $session): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
         $folded = $game->getPlayers()[0]->isFolded();
+        $actions = $game->getActions();
 
         $response = new JsonResponse(["Could not fold... round has finished"]);
         if (!$game->isOver() || $folded) {
-            $game->playerFold(0);
+            $actions->playerFold(0);
             return $this->gamePlay($session, "fold");
         }
 
@@ -194,12 +211,15 @@ class ApiController extends AbstractController
     }
 
     #[Route("proj/api/call", name: "call", methods: ["POST"])]
-    public function playCall(SessionInterface $session, Request $request): Response
+    public function playCall(SessionInterface $session): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
+        $actions = $game->getActions();
         $folded = $game->getPlayers()[0]->isFolded();
+
         if (!$game->isOver() && !$folded) {
-            $game->playerCall(0);
+            $actions->playerCall(0);
             return $this->gamePlay($session, "call");
         }
 
@@ -216,33 +236,34 @@ class ApiController extends AbstractController
     }
 
     #[Route("proj/api/check", name: "check", methods: ["POST"])]
-    public function playCheck(SessionInterface $session, Request $request): Response
+    public function playCheck(SessionInterface $session): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
         $folded = $game->getPlayers()[0]->isFolded();
+        $actions = $game->getActions();
 
         if ($game->canCheck(0) && !$game->isOver() && !$folded) {
-            $game->playerCheck(0);
+            $actions->playerCheck(0);
             return $this->gamePlay($session, "check");
         }
+
         if ($game->isOver()) {
-            $response = new JsonResponse(["Could not check... round has finished"]);
-        } elseif ($folded) {
-            $response = new JsonResponse(["You folded and cant continue"]);
-        } else {
-            $response = new JsonResponse(["Could not check...try some other action"]);
+            return new JsonResponse(["Could not check... round has finished"]);
         }
 
-        $response->setEncodingOptions(
-            $response->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
-        );
-        $response->headers->set('Content-Type', 'application/json; charset=UTF-8');
-        return $response;
+        if ($folded) {
+            return new JsonResponse(["You folded and cant continue"]);
+        }
+
+        return new JsonResponse(["Could not check...try some other action"]);
+
     }
 
     #[Route("proj/api/continue", name: "continue", methods: ["POST"])]
-    public function playContinue(SessionInterface $session, Request $request): Response
+    public function playContinue(SessionInterface $session): Response
     {
+        /** @var Game */
         $game = $session->get("apiGame");
         $folded = $game->getPlayers()[0]->isFolded();
 

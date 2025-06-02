@@ -9,6 +9,7 @@ use App\Proj\Card;
  */
 class Evaluator
 {
+    /** @var array<string, int> */
     private array $handRanks = [
         "highCard" => 1,        // highest card
         "pair" => 2,            // 1 pair
@@ -22,72 +23,103 @@ class Evaluator
         "royalFlush" => 10      // A, K, Q, J, 10 in same color
     ];
 
+    /** @var array<int> */
     private array $straightCardValues = [];
 
+    /**
+     * Evaluate cards in a hand, and get the corresponding score.
+     * @param Card[] $cards
+     * @return array{
+     *  handString: string,
+     *  score: int,
+     *  cards: Card[]
+     * }
+     */
     public function evaluateCards(array $cards): array
     {
         //usort($cards, fn($a, $b) => $b->getValue() - $a->getValue());
         $cards = $this->sortCardsByValue($cards);
-        $values = array_map(fn($card) => $card->getValue(), $cards);
-        $colors = array_map(fn($card) => $card->getColor(), $cards);
+        $values = array_map(fn ($card) => $card->getValue(), $cards);
+        $colors = array_map(fn ($card) => $card->getColor(), $cards);
         $valueCount = array_count_values($values);
         $colorCount = array_count_values($colors);
-        $flush = max($colorCount) >= 5;
+        $flush = !empty($colorCount) && max($colorCount) >= 5;
         $straight = $this->isStraight($values);
 
         // Royal flush or Straight flush
         if ($flush && $straight) {
             $straightCards = $this->getStraightCards($cards);
             if ($straightCards[0]->getValue() === 14) {
-                return ["Royal Flush", $this->handRanks["royalFlush"], $straightCards];
+                return $this->wrapEval(["Royal Flush", $this->handRanks["royalFlush"], $straightCards]);
             }
             $flushCards = $this->getFlushCards($straightCards, $colorCount);
-            return ["Straight Flush", $this->handRanks["straightFlush"], $flushCards];
+            return $this->wrapEval(["Straight Flush", $this->handRanks["straightFlush"], $flushCards]);
         }
 
         // Four of a kind
         if (in_array(4, $valueCount)) {
-            return ["Four of a kind", $this->handRanks["fourOfAKind"], $this->getFourOfAKindCards($cards, $valueCount)];
+            return $this->wrapEval(["Four of a kind", $this->handRanks["fourOfAKind"], $this->getFourOfAKindCards($cards, $valueCount)]);
         }
 
         // Full house
         if (in_array(3, $valueCount) && in_array(2, $valueCount)) {
-            return ["Full house", $this->handRanks["fullHouse"], $this->getFullHouseCards($cards, $valueCount)];
+            return $this->wrapEval(["Full house", $this->handRanks["fullHouse"], $this->getFullHouseCards($cards, $valueCount)]);
         }
 
         // Flush
         if ($flush) {
-            return ["Flush", $this->handRanks["flush"], $this->getFlushCards($cards, $colorCount)];
+            return $this->wrapEval(["Flush", $this->handRanks["flush"], $this->getFlushCards($cards, $colorCount)]);
         }
 
         // Straight
         if ($straight) {
-            return ["Straight", $this->handRanks["straight"], $this->getStraightCards($cards)];
+            return $this->wrapEval(["Straight", $this->handRanks["straight"], $this->getStraightCards($cards)]);
         }
 
         // Three of a kind
         if (in_array(3, $valueCount)) {
-            return ["Three of a kind", $this->handRanks["threeOfAKind"], $this->getThreeOfAKindCards($cards, $valueCount)];
+            return $this->wrapEval(["Three of a kind", $this->handRanks["threeOfAKind"], $this->getThreeOfAKindCards($cards, $valueCount)]);
         }
 
         $pairs = $this->getPairs($cards, $valueCount);
 
         // Two pair
-        if ($pairs[1] === 2) {
-            return ["Two pair", $this->handRanks["twoPair"], $pairs[0]];
+        if ($pairs["numPairs"] === 2) {
+            return $this->wrapEval(["Two pair", $this->handRanks["twoPair"], $pairs["pairs"]]);
         }
 
         // Pair
-        if ($pairs[1] === 1) {
-            return ["Pair", $this->handRanks["pair"], $pairs[0]];
+        if ($pairs["numPairs"] === 1) {
+            return $this->wrapEval(["Pair", $this->handRanks["pair"], $pairs["pairs"]]);
         }
 
         // High card
-        return ["High card", $this->handRanks["highCard"], $this->getHighCards($cards)];
+        return $this->wrapEval(["High card", $this->handRanks["highCard"], $this->getHighCards($cards)]);
+    }
+
+    /**
+     * Return formatting for evaluation
+     * @param array{0: string, 1: int, 2: Card[]} $eval
+     * @return array{
+     *  handString: string,
+     *  score: int,
+     *  cards: Card[]
+     * }
+     */
+    public function wrapEval(array $eval): array
+    {
+        return [
+            "handString" => $eval[0],
+            "score" => $eval[1],
+            "cards" => $eval[2]
+        ];
     }
 
     /**
      * Get four of a kind cards.
+     * @param Card[] $cards
+     * @param int[] $valueCount
+     * @return Card[]
      */
     public function getFourOfAKindCards(array $cards, array $valueCount): array
     {
@@ -108,7 +140,7 @@ class Evaluator
         }
 
         // if there is a tie, a fifth card is needed to determine a winner
-        $determining = array_filter($cards, fn($card) => $card->getValue() !== $target);
+        $determining = array_filter($cards, fn ($card) => $card->getValue() !== $target);
         $sorted = $this->sortCardsByValue($determining);
         $fourOfAKindCards[] = $sorted[0];
 
@@ -117,6 +149,9 @@ class Evaluator
 
     /**
      * Get full house cards. Sorted by three part first then two part.
+     * @param Card[] $cards
+     * @param int[] $valueCount
+     * @return Card[]
      */
     public function getFullHouseCards(array $cards, array $valueCount): array
     {
@@ -149,6 +184,9 @@ class Evaluator
 
     /**
      *  Get flush cards. Sorted by highest to lowest
+     * @param Card[] $cards
+     * @param int[] $colorCount
+     * @return Card[]
      */
     public function getFlushCards(array $cards, array $colorCount): array
     {
@@ -172,10 +210,13 @@ class Evaluator
 
     /**
      * Get straight cards. Sorted from highest to lowest
+     *
+     * @param Card[] $cards
+     * @return Card[]
      */
     public function getStraightCards(array $cards): array
     {
-        $straigtCards = [];
+        $straightCards = [];
         foreach ($cards as $card) {
             if (in_array($card->getValue(), $this->straightCardValues)) {
                 $straightCards[] = $card;
@@ -186,6 +227,8 @@ class Evaluator
 
     /**
      * Evaluate if an array of cards is a stright (5 consecutive cards)
+     * @param int[] $values
+     * @return bool
      */
     public function isStraight(array $values): bool
     {
@@ -196,7 +239,8 @@ class Evaluator
         if (count($uniques) < 5) {
             return false;
         }
-        for ($j = 0; $j <= count($uniques) - 5; $j++) {
+        $count = count($uniques);
+        for ($j = 0; $j <= $count - 5; $j++) {
             $straightCardValues = [$uniques[$j]];
             $consecutive = true;
             for ($i = 1; $i < 5; $i++) {
@@ -220,6 +264,12 @@ class Evaluator
      * Get pairs. Includes the other highest cards that are not pairs,
      * for two pairs the other highest card is also included.
      * for one pair the three other highest cards are included.
+     * @param Card[] $cards
+     * @param int[] $valueCount
+     * @return array{
+     *  pairs: Card[],
+     *  numPairs: int
+     * }
      */
     public function getPairs(array $cards, array $valueCount): array
     {
@@ -238,9 +288,9 @@ class Evaluator
         foreach ($cards as $card) {
             if (in_array($card->getValue(), $targets)) {
                 $pairs[] = $card;
-            } else {
-                $otherCards[] = $card;
+                continue;
             }
+            $otherCards[] = $card;
         }
         $sorted = $this->sortCardsByValue($otherCards);
         $include = array_slice($sorted, 0, 5 - count($pairs));
@@ -252,11 +302,18 @@ class Evaluator
             $numPairs = 1;
         }
 
-        return [array_merge($pairs, $include), $numPairs];
+        return [
+            "pairs" => array_merge($pairs, $include),
+            "numPairs" => $numPairs
+        ];
+        //return [array_merge($pairs, $include), $numPairs];
     }
 
     /**
      * Get three of a kind cards. Also includes the 2 highest other cards
+     * @param Card[] $cards
+     * @param int[] $valueCount
+     * @return Card[]
      */
     public function getThreeOfAKindCards(array $cards, array $valueCount): array
     {
@@ -274,9 +331,9 @@ class Evaluator
         foreach ($cards as $card) {
             if ($card->getValue() === $target) {
                 $threeOfAKindCards[] = $card;
-            } else {
-                $notThreeOfAKind[] = $card;
+                continue;
             }
+            $notThreeOfAKind[] = $card;
         }
 
         $ordered = $this->sortCardsByValue($notThreeOfAKind);
@@ -287,20 +344,24 @@ class Evaluator
 
     /**
      * Get 5 highest cards.
+     * @param Card[] $cards
+     * @return Card[]
      */
     public function getHighCards(array $cards): array
     {
         $sorted = $this->sortCardsByValue($cards);
-        return array_slice($cards, 0, 5);
+        return array_slice($sorted, 0, 5);
     }
 
     /**
      * Sort cards in decending order based on value.
+     * @param Card[] $cards
+     * @return Card[]
      */
     public function sortCardsByValue(array $cards): array
     {
         $sorted = $cards;
-        usort($sorted, fn($a, $b) => $b->getValue() - $a->getValue());
+        usort($sorted, fn ($val1, $val2) => $val2->getValue() - $val1->getValue());
         return $sorted;
     }
 
@@ -309,9 +370,12 @@ class Evaluator
      * Cards need to be sorted based on their hands rank and in decending value.
      * Each player has a hand of 5 cards, if the hand isnt using 5 cards as with
      * three of a kind etc, the rest will be the highest cards available.
+     * @param Player[] $players
+     * @return int[]
      */
     public function evaluateWinners(array $players): array
     {
+        /** @var array<int, array{score: int, cards: array<\App\Proj\Card>}> $evals */
         $evals = [];
         foreach ($players as $index => $player) {
             $eval = $player->getEvaluation();
@@ -323,8 +387,8 @@ class Evaluator
             ];
         }
 
-        $max = max(array_column($evals, "score"));
-        $indexes = array_keys(array_filter($evals, fn($evl) => $evl["score"] === $max));
+        $max = !empty($evals) ? max(array_column($evals, "score")) : 0;
+        $indexes = array_keys(array_filter($evals, fn ($evl) => $evl["score"] === $max));
         if (count($indexes) === 1 || $max === 10) {
             return $indexes;
         }
@@ -363,22 +427,29 @@ class Evaluator
                 // highest card
                 // first card then the rest.
                 return $this->twoPartTie($evals, $indexes, 0, 0, 5);
+            default:
+                return [];
         }
 
     }
 
     /**
      * Compares card at some index.
+     *
+     * @param array<array{score: mixed, cards: Card[]}> $evals
+     * @param int[] $indexes
+     * @return int[]
      */
-    public function onePartTie($evals, $indexes, $start): array
+    public function onePartTie(array $evals, array $indexes, int $start): array
     {
+        $highest = [];
         foreach ($indexes as $index) {
             $cards = $evals[$index]["cards"];
             $highest[$index] = $cards[$start]->getValue();
         }
 
-        $max = max($highest);
-        return array_keys(array_filter($highest, fn($val) => $val === $max));
+        $max = !empty($highest) ? max($highest) : 0;
+        return array_keys(array_filter($highest, fn ($val) => $val === $max));
     }
 
     /**
@@ -388,8 +459,12 @@ class Evaluator
      * three of a kind: check first three then remaining 2.
      * one pair: check pair then the rest
      * highest card: check first card then the rest.
+     *
+     * @param array<array{score: mixed, cards: array<\App\Proj\Card>}> $evals
+     * @param int[] $indexes
+     * @return int[]
      */
-    public function twoPartTie($evals, $indexes, $firstPart, $secondPart, $secondPartLen): array
+    public function twoPartTie(array $evals, array $indexes, int $firstPart, int $secondPart, int $secondPartLen): array
     {
         /*
         $start = [];
@@ -409,12 +484,12 @@ class Evaluator
 
         for ($i = 0; $i < $secondPartLen; $i++) {
             $determining = [];
-            foreach($remaining as $index) {
-                $determining[$index]= $evals[$index]["cards"][$secondPart + $i]->getValue();
+            foreach ($remaining as $index) {
+                $determining[$index] = $evals[$index]["cards"][$secondPart + $i]->getValue();
             }
 
-            $max = max($determining);
-            $remaining = array_keys(array_filter($determining, fn($val) => $val === $max));
+            $max = !empty($determining) ? max($determining) : 0;
+            $remaining = array_keys(array_filter($determining, fn ($val) => $val === $max));
 
             /*
             if (count($remaining) <= 1) {
@@ -425,7 +500,13 @@ class Evaluator
         return $remaining;
     }
 
-    public function twoPairTie($evals, $indexes): array
+    /**
+     * Two pairs tie
+     * @param array<array{score: mixed, cards: Card[]}> $evals
+     * @param int[] $indexes
+     * @return int[]
+     */
+    public function twoPairTie(array $evals, array $indexes): array
     {
         $firstPair = $this->onePartTie($evals, $indexes, 0);
         if (count($firstPair) === 1) {

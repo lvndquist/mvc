@@ -38,8 +38,12 @@ class PlayerTest extends TestCase
         $expPlayed = false;
         $expComputer = false;
         $expSmart = false;
-        $expEvaluation = [];
         $expComputerLog = [];
+        $expEvaluation = [
+            "handString" => "",
+            "score" => 0,
+            "cards" => []
+        ];
 
         $this->assertEquals($expHand, $hand);
         $this->assertEquals($expName, $name);
@@ -50,9 +54,8 @@ class PlayerTest extends TestCase
         $this->assertEquals($expPlayed, $played);
         $this->assertEquals($expComputer, $computer);
         $this->assertEquals($expSmart, $smart);
-        $this->assertEquals($expEvaluation, $evaluation);
         $this->assertEquals($expComputerLog, $computerLog);
-
+        $this->assertEquals($expEvaluation, $evaluation);
     }
 
     /**
@@ -173,8 +176,13 @@ class PlayerTest extends TestCase
         $expIsFolded = false;
         $expAllIn = false;
         $expPlayed = false;
-        $expEvaluation = [];
+        $expEvaluation = [
+            "handString" => "",
+            "score" => 0,
+            "cards" => []
+        ];
         $expComputerLog = [];
+
 
 
         $player->newRound();

@@ -70,7 +70,7 @@
                                     <button name = "check" class="check-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Check</button>
                                 {% endif %}
                                 <button name = "raise" class="raise-btn" {{ currPlayerIndex != 0 ? "disabled" : "" }}>Raise</button>
-                                <input class = "raise-input" type="number" name="money" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
+                                <input class = "raise-input" type="number" name="amount" placeholder = "Raise $" min = 20 value = 20 {{ currPlayerIndex != 0 ? "disabled" : "" }}>
                             {% endif %}
                         </form>
                 </div>

@@ -13,7 +13,7 @@ class Player
 {
     /**
      * Player's hand containing their cards.
-     * @var CardHand
+     * @var Hand
      */
     private Hand $hand;
 
@@ -59,11 +59,14 @@ class Player
 
     /**
      * Evaluation of player's combined cards
+     *
+     * @var array{handString: string, score: int, cards: Card[]}
      */
     private array $evaluation;
 
     /**
      * Log to keep track of computer decisions.
+     * @var array<int, array<string, float|int|list<int>|string|null>>
      */
     private array $computerLog;
 
@@ -81,7 +84,11 @@ class Player
         $this->isFolded = false;
         $this->allIn = false;
         $this->played = false;
-        $this->evaluation = [];
+        $this->evaluation = [
+            "handString" => "",
+            "score" => 0,
+            "cards" => []
+        ];
         $this->computerLog = [];
     }
 
@@ -95,12 +102,17 @@ class Player
         $this->isFolded = false;
         $this->allIn = false;
         $this->played = false;
-        $this->evaluation = [];
+        $this->evaluation = [
+            "handString" => "",
+            "score" => 0,
+            "cards" => []
+        ];
         $this->computerLog = [];
     }
 
     /**
      * Get log of computer plays.
+     * @return array<int, array<string,float|int|list<int>|string|null>>
      */
     public function getComputerLog(): array
     {
@@ -182,6 +194,7 @@ class Player
 
     /**
      * Get evaluation
+     * @return array{handString: string, score: int, cards: array<\App\Proj\Card>}
      */
     public function getEvaluation(): array
     {
@@ -199,7 +212,7 @@ class Player
     /**
      * Get the score of the best cards that player can play.
      */
-    public function getEvaluatedScore(): string
+    public function getEvaluatedScore(): int
     {
         return $this->evaluation["score"];
     }
@@ -270,6 +283,9 @@ class Player
 
     /**
      * Set evaluation.
+     * @param string $handString
+     * @param int $score
+     * @param Card[] $cards
      */
     public function setEvaluation(string $handString, int $score, array $cards): void
     {
@@ -282,8 +298,9 @@ class Player
 
     /**
      * Set entry in computer log
+     * @param array<string, float|int|list<int>|string|null> $entry
      */
-    public function setComputerLog($entry): void
+    public function setComputerLog(array $entry): void
     {
         $this->computerLog[] = [
             "name" => $entry["name"],

@@ -5,6 +5,8 @@ namespace App\Proj;
 use App\Proj\Hand;
 use App\Proj\Game;
 use App\Proj\Player;
+use App\Proj\PlayerActions;
+use App\Proj\Computer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,15 +20,19 @@ class GameTest extends TestCase
     public function testCreateGame(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $this->assertInstanceOf("\App\Proj\Game", $game);
 
         $log = $game->getLog();
-        $this->assertIsArray($log);
+        $this->assertNotEmpty($log);
 
         $players = $game->getPlayers();
-        $this->assertIsArray($players);
+        $this->assertNotEmpty($players);
         $this->assertCount(4, $players);
-        foreach($players as $index => $player) {
+        foreach ($players as $index => $player) {
             $this->assertInstanceOf("\App\Proj\Player", $player);
             $playerCards = $game->getPlayerCards($index);
             $this->assertCount(2, $playerCards);
@@ -54,7 +60,6 @@ class GameTest extends TestCase
         $this->assertFalse($isOver);
 
         $winners = $game->getWinner();
-        $this->assertIsArray($winners);
         $this->assertEmpty($winners);
 
         $useHelp = $game->getUseHelp();
@@ -76,6 +81,10 @@ class GameTest extends TestCase
     public function testUpdateGameState(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $this->assertInstanceOf("\App\Proj\Game", $game);
         $potPre = $game->getPot();
         $currPlayerIndexPre = $game->getCurrPlayerIndex();
@@ -94,8 +103,13 @@ class GameTest extends TestCase
     public function testBasicComputerWithBet(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
-        $game->basicComputerPlay($index);
+        $game->getComputer()->basicComputerPlay($index);
+
         $players = $game->getPlayers();
         $player = $players[$index];
         $played = $player->hasPlayed();
@@ -111,12 +125,16 @@ class GameTest extends TestCase
     public function testBasicComputerAllIn(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
         $players = $game->getPlayers();
         $player = $players[$index];
         $player->setAllIn(true);
         $logPre = $game->getLog();
-        $game->basicComputerPlay($index);
+        $game->getComputer()->basicComputerPlay($index);
         $logPost = $game->getLog();
         $this->assertEquals($logPre, $logPost);
     }
@@ -124,14 +142,18 @@ class GameTest extends TestCase
     public function testPlayThroughSmartManyTimes(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $players = $game->getPlayers();
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $player->setSmart(true);
             $player->setComputer(true);
         }
 
         $count = 0;
-        while(true) {
+        while (true) {
             $game->updateGameState();
             if ($game->isOver()) {
                 $this->assertNotEmpty($game->getWinner());
@@ -148,13 +170,17 @@ class GameTest extends TestCase
     public function testPlayThroughSmart(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $players = $game->getPlayers();
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $player->setSmart(true);
             $player->setComputer(true);
         }
 
-        while(true) {
+        while (true) {
             $game->updateGameState();
             if ($game->isOver()) {
                 break;
@@ -174,12 +200,16 @@ class GameTest extends TestCase
     public function testSmartComputerAllIn(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $players = $game->getPlayers();
         $index = $game->getCurrPlayerIndex();
         $player = $players[$index];
         $player->setAllIn(true);
 
-        $game->smartComputerPlay($index);
+        $game->getComputer()->smartComputerPlay($index);
 
         $this->assertTrue($player->hasPlayed());
     }
@@ -188,7 +218,7 @@ class GameTest extends TestCase
     {
         $game = new Game(5000, "test", false, false, false);
         $players = $game->getPlayers();
-        foreach($players as $player) {
+        foreach ($players as $player) {
             $player->setFolded(true);
             $player->setPlayed(true);
         }
@@ -200,8 +230,12 @@ class GameTest extends TestCase
     public function testPlayerFold(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
-        $game->playerFold($index);
+        $game->getActions()->playerFold($index);
         $players = $game->getPlayers();
         $player = $players[$index];
         $folded = $player->isFolded();
@@ -218,8 +252,12 @@ class GameTest extends TestCase
     public function testPlayerCall(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
-        $game->playerCall($index);
+        $game->getActions()->playerCall($index);
         $players = $game->getPlayers();
         $player = $players[$index];
         $played = $player->hasPlayed();
@@ -238,9 +276,13 @@ class GameTest extends TestCase
     public function testPlayerCallAllIn(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
         $game->setCurrentBet(5100);
-        $game->playerCall($index);
+        $game->getActions()->playerCall($index);
         $players = $game->getPlayers();
         $player = $players[$index];
         $played = $player->hasPlayed();
@@ -259,9 +301,13 @@ class GameTest extends TestCase
     public function testPlayerRaise(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
         $game->setCurrentBet(5100);
-        $game->playerRaise($index, 20);
+        $game->getActions()->playerRaise($index, 20);
         $players = $game->getPlayers();
         $player = $players[$index];
         $played = $player->hasPlayed();
@@ -280,8 +326,12 @@ class GameTest extends TestCase
     public function testPlayerRaiseAllIn(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
-        $game->playerRaise($index, 20);
+        $game->getActions()->playerRaise($index, 20);
         $players = $game->getPlayers();
         $player = $players[$index];
         $played = $player->hasPlayed();
@@ -300,8 +350,12 @@ class GameTest extends TestCase
     public function testPlayerCheck(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
-        $game->playerCheck($index);
+        $game->getActions()->playerCheck($index);
 
         $players = $game->getPlayers();
         $player = $players[$index];
@@ -317,6 +371,10 @@ class GameTest extends TestCase
     public function testCanCheck(): void
     {
         $game = new Game(5000, "test", false, false, false);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+        $game->start($computer, $actions);
+
         $index = $game->getCurrPlayerIndex();
         $canCheck = $game->canCheck($index);
         $this->assertFalse($canCheck);

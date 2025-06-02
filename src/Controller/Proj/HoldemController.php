@@ -7,10 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
-
-use Psr\Log\LoggerInterface;
-
 use App\Proj\Game;
+use App\Proj\PlayerActions;
+use App\Proj\Computer;
 
 class HoldemController extends AbstractController
 {
@@ -36,6 +35,10 @@ class HoldemController extends AbstractController
         $setFullHelp = $request->request->has('full_log');
 
         $game = new Game($startingMoney, $name, $setHelp, $setFullHelp, $setOpenCards);
+        $actions = new PlayerActions($game);
+        $computer = new Computer($game, $actions);
+
+        $game->start($computer, $actions);
 
         $session->set("settings", [
             "money" => $startingMoney,
@@ -53,9 +56,24 @@ class HoldemController extends AbstractController
     #[Route("/proj/game", name: "holdem")]
     public function holdem(SessionInterface $session): Response
     {
-        /** @var Game|null $game */
+        /** @var Game $game */
         $game = $session->get("game");
         $settings = $session->get("settings");
+
+        if (!is_array($settings) ||
+            !isset($settings["money"], $settings["name"], $settings["help"],
+                $settings["fullHelp"], $settings["openCards"], $settings["consoleDebug"]
+            )
+        ) {
+            $settings = [
+                "money" => 5000,
+                "name" => "player",
+                "help" => false,
+                "fullHelp" => false,
+                "openCards" => false,
+                "consoleDebug" => true
+            ];
+        }
 
         $game->updateGameState();
         $players = $game->getPlayers();
@@ -92,24 +110,39 @@ class HoldemController extends AbstractController
     #[Route('/proj/user-input', name: 'user_input', methods: ['POST'])]
     public function userInput(Request $request, SessionInterface $session): Response
     {
-        /** @var Game|null $game */
+        /** @var Game $game */
         $game = $session->get("game");
+        $actions = $game->getActions();
 
         if ($request->request->has("fold")) {
-            $game->playerFold(0);
+            $actions->playerFold(0);
         } elseif ($request->request->has("call")) {
-            $game->playerCall(0);
+            $actions->playerCall(0);
         } elseif ($request->request->has("raise")) {
-            $amount = $request->request->getInt("money");
-            $game->playerRaise(0, $amount);
+            $amount = (int) $request->request->get('amount');
+            $actions->playerRaise(0, $amount);
         } elseif ($request->request->has("check")) {
             if ($game->canCheck(0)) {
-                $game->playerCheck(0);
+                $actions->playerCheck(0);
             }
         } elseif ($request->request->has("continue")) {
             $game->nextRound();
         } elseif ($request->request->has("reset")) {
             $settings = $session->get("settings");
+            if (!is_array($settings) ||
+                !isset($settings["money"], $settings["name"], $settings["help"],
+                    $settings["fullHelp"], $settings["openCards"], $settings["consoleDebug"]
+                )
+            ) {
+                $settings = [
+                    "money" => 5000,
+                    "name" => "player",
+                    "help" => false,
+                    "fullHelp" => false,
+                    "openCards" => false,
+                    "consoleDebug" => true
+                ];
+            }
             $game = new Game($settings["money"], $settings["name"], $settings["help"], $settings["fullHelp"], $settings["openCards"]);
         }
         $session->set("game", $game);

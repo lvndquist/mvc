@@ -15,6 +15,7 @@ use Exception;
  */
 class Game
 {
+    /** @var Player[] */
     private array $players;
     private Hand $dealerCards;
     private Deck $deck;
@@ -22,11 +23,22 @@ class Game
     private int $currPlayerIndex;
     private int $phase;
     private int $currentBet;
+    /** @var int[] */
     private array $winners;
     private int $numPlayers = 4;
     private int $smallBlind = 20;
     private int $bigBlind = 40;
     private int $buyBack = 2500;
+
+    /**
+     * @var array<int, array{
+     *  player: string,
+     *  playerIndex: int,
+     *  action: string,
+     *  amount: int|null,
+     *  optional: string|null
+     * }>
+     */
     private array $playLog;
 
     private bool $useHelp;
@@ -35,6 +47,9 @@ class Game
 
     private bool $gameOver;
 
+    private Computer $computer;
+    private PlayerActions $actions;
+
     public function __construct(
         int $startingMoney,
         string $playerName,
@@ -42,7 +57,6 @@ class Game
         bool $useFullHelp,
         bool $useOpenCards,
         bool $graphic = true
-
     ) {
         $this->deck = new Deck($graphic);
         $this->deck->shuffle();
@@ -67,17 +81,31 @@ class Game
         $this->useHelp = $useHelp;
         $this->useFullHelp = $useFullHelp;
         $this->useOpenCards = $useOpenCards;
-
         $this->dealToPlayers();
+    }
 
-        $this->playerBlind(3, "small blind", $this->smallBlind);
-        $this->playerBlind(2, "big blind", $this->bigBlind);
+    public function start(Computer $computer, PlayerActions $actions): void
+    {
+        $this->computer = $computer;
+        $this->actions = $actions;
+        $this->actions->playerBlind(3, "small blind", $this->smallBlind);
+        $this->actions->playerBlind(2, "big blind", $this->bigBlind);
+    }
+
+    public function getActions(): PlayerActions
+    {
+        return $this->actions;
+    }
+
+    public function getComputer(): Computer
+    {
+        return $this->computer;
     }
 
     /**
      * Deal two cards to each player.
      */
-    public function dealToPlayers()
+    public function dealToPlayers(): void
     {
         for ($j = 0; $j < 2; $j++) {
             for ($i = 0; $i < $this->numPlayers; $i++) {
@@ -101,9 +129,11 @@ class Game
         // let the computer play
         if ($player->isComputer() && !$player->hasPlayed() && !$player->isFolded()) {
             if ($player->isSmart()) {
-                $this->smartComputerPlay($this->currPlayerIndex);
-            } else {
-                $this->basicComputerPlay($this->currPlayerIndex);
+                $this->computer->smartComputerPlay($this->currPlayerIndex);
+            }
+
+            if (!$player->isSmart()) {
+                $this->computer->basicComputerPlay($this->currPlayerIndex);
             }
         }
 
@@ -135,170 +165,23 @@ class Game
     }
 
     /**
-     * Basic computer play. Basically no logic and does choices randomly.
+     * Set evaluation of players
      */
-    public function basicComputerPlay(int $index): void
+    public function setEvaluation(Player $player): void
     {
-        $player =  $this->players[$index];
-        $raiseAmount = rand(1, 5) * 100;
-
-        if ($player->isAllIn()) {
-            $player->setPlayed(true);
-            return;
-        }
-
-        // no bet, computer should raise or check
-        if ($this->canCheck($index)) {
-            $decision = rand(0, 1);
-            if ($decision === 0) {
-                $this->playerCheck($index);
-            } else {
-                $this->playerRaise($index, $raiseAmount);
-            }
-        } else {
-            // there is a bet, computer should fold, raise or call
-            $decision = rand(0, 2);
-            if ($decision === 0 && $this->phase != 0) {
-                $this->playerFold($index);
-            } elseif ($decision === 1 || $this->phase === 4) {
-                $this->playerCall($index);
-            } else {
-                $this->playerRaise($index, $raiseAmount);
-            }
-        }
-        $player->setPlayed(true);
-        return;
-    }
-
-    /**
-     * Smart computer play. Makes choices based on what cards are on the table/in players hand.
-     */
-    public function smartComputerPlay(int $index): void
-    {
-        $player =  $this->players[$index];
-        $this->setEvaluation($player);
-        $score = $player->getEvaluatedScore();
-        $name = $player->getName();
-        $decision = rand(0, 3);
-        $phase = $this->phase;
-
-        $playerLogEntry = [];
-        $playerLogEntry["name"] = $name;
-        $playerLogEntry["score"] = $score;
-        $playerLogEntry["phase"] = $phase;
-
-        $playerLogEntry["randDecision"] = $decision;
-
-        if ($player->isAllIn()) {
-            $player->setPlayed(true);
-            return;
-        }
-
-        if ($this->canCheck($index)) {
-            $playerLogEntry["possibility"] = "check/raise";
-            if ($score === 10) {
-                $amount = $player->getMoney();
-                $this->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount} (all in)";
-            } elseif ($score >= 8) {
-                $amount = intdiv($player->getMoney(), 2);
-                $this->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-            } elseif ($score >= 6) {
-                $amount = intdiv($player->getMoney(), 4);
-                $this->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-            } elseif ($score >= 3) {
-                $amount = rand(1, 5) * 100;
-                $this->playerRaise($index, $amount);
-                $playerLogEntry["takenAction"] = "raise by {$amount}";
-            } else {
-                if ($decision === 1) {
-                    $amount = rand(1, 3) * 100;
-                    $this->playerRaise($index, $amount);
-                    $playerLogEntry["takenAction"] = "raise by {$amount}";
-                }
-                $this->playerCheck($index);
-                $playerLogEntry["takenAction"] = "check";
-            }
-        } else {
-            // there is a bet, computer should fold, raise or call
-            $callAmount = $this->currentBet - $player->getCurrentBet();
-            $odds = $callAmount/($this->pot + $callAmount);
-
-            $playerLogEntry["possibility"] = "fold/raise/call";
-            $playerLogEntry["callAmount"] = $callAmount;
-            $playerLogEntry["odds"] = $odds;
-            $playerLogEntry["extra"] = [$callAmount, $this->currentBet, $player->getCurrentBet(), $this->pot];
-
-            if ($score >= 8) {
-                if ($odds < 0.3) {
-                    if ($phase !== 4) {
-                        $amount = $player->getMoney();
-                        $this->playerRaise($index, $amount);
-                        $playerLogEntry["takenAction"] = "raise by {$amount} (all in)";
-                    } else {
-                        $this->playerCall($index);
-                        $playerLogEntry["takenAction"] = "call by {$callAmount}";
-                    }
-                } else {
-                    if ($phase !== 4) {
-                        $amount = intdiv($player->getMoney(), 2);
-                        $this->playerRaise($index, $amount);
-                        $playerLogEntry["takenAction"] = "raise by {$amount}";
-                    } else {
-                        $this->playerCall($index);
-                        $playerLogEntry["takenAction"] = "call by {$callAmount}";
-                    }
-                }
-            } elseif ($score >= 5) {
-                if ($decision === 0 || $odds < 0.3 && $phase !== 4) {
-                    $amount = rand(1, 8) * 100;
-                    $this->playerRaise($index, $amount);
-                    $playerLogEntry["takenAction"] = "raise by {$amount}";
-                } else {
-                    $this->playerCall($index);
-                    $playerLogEntry["takenAction"] = "call by {$callAmount}";
-                }
-            } elseif ($score >= 2) {
-                if ($callAmount <= $player->getMoney() && $odds < 0.4 || $this->phase === 0) {
-                    $this->playerCall($index);
-                    $playerLogEntry["takenAction"] = "call by {$callAmount}";
-                } else {
-                    $this->playerFold($index);
-                    $playerLogEntry["takenAction"] = "fold";
-                }
-            } else {
-                // bluff
-                if ($phase === 0 || $phase === 1 || $phase === 4) {
-                    $this->playerCall($index);
-                    $playerLogEntry["takenAction"] = "call by {$callAmount}";
-                } elseif ($odds < 0.3) {
-                    $amount = rand(1, 5) * 100;
-                    $this->playerRaise($index, $amount);
-                    $playerLogEntry["takenAction"] = "raise by {$amount}";
-                } else {
-                    $this->playerFold($index);
-                    $playerLogEntry["takenAction"] = "fold";
-                }
-            }
-        }
-        $player->setComputerLog($playerLogEntry);
-        $player->setPlayed(true);
-        return;
-    }
-
-    public function setEvaluation(Player $player) {
         $allCards = array_merge($player->getHand(), $this->getDealerCards());
         $evaluator = new Evaluator();
-        [$handString, $score, $cards] = $evaluator->evaluateCards($allCards);
+        $res = $evaluator->evaluateCards($allCards);
+        $handString = $res["handString"];
+        $score = $res["score"];
+        $cards = $res["cards"];
         $player->setEvaluation($handString, $score, $cards);
     }
 
     /**
      * Go to next phase.
      */
-    public function nextPhase()
+    public function nextPhase(): void
     {
         $this->phase++;
         $phase = $this->phase;
@@ -307,18 +190,30 @@ class Game
             $this->dealerCards->addCard($this->deck->draw());
             $this->dealerCards->addCard($this->deck->draw());
             $this->dealerCards->addCard($this->deck->draw());
-        } elseif ($phase === 4) {
+            $this->advancePlayers();
+            return;
+        }
+
+        if ($phase === 4) {
             $this->checkBets();
             $this->handleWin();
             return;
-        } else {
-            $this->dealerCards->addCard($this->deck->draw());
         }
+
+        $this->dealerCards->addCard($this->deck->draw());
+        $this->advancePlayers();
+        return;
+    }
+
+    /**
+     * Set all players as not played and go to next player
+     */
+    public function advancePlayers(): void
+    {
         foreach ($this->players as $player) {
             $player->setPlayed(false);
         }
         $this->nextPlayer();
-        //$this->currPlayerIndex = $this->numPlayers - 1;
     }
 
     /**
@@ -327,15 +222,14 @@ class Game
      */
     public function checkBets(): void
     {
-
         $players = $this->players;
-        $currentBet = $this->currentBet;
         foreach ($players as $index => $player) {
             if ($player->isComputer() && !$player->isFolded() && !$this->canCheck($index)) {
                 if ($player->isSmart()) {
-                    $this->smartComputerPlay($index);
-                } else {
-                    $this->basicComputerPlay($index);
+                    $this->computer->smartComputerPlay($index);
+                }
+                if (!$player->isSmart()) {
+                    $this->computer->basicComputerPlay($index);
                 }
             }
         }
@@ -349,7 +243,7 @@ class Game
         $nextIndex = $this->currPlayerIndex;
         $count = 0;
 
-        while($count < $this->numPlayers) {
+        while ($count < $this->numPlayers) {
             $nextIndex = ($nextIndex - 1 + $this->numPlayers) % $this->numPlayers;
             $player = $this->players[$nextIndex];
 
@@ -401,7 +295,7 @@ class Game
     public function handleWin(): void
     {
         $players =  $this->players;
-        $validPlayers = array_filter($players, fn($player) => !$player->isFolded());
+        $validPlayers = array_filter($players, fn ($player) => !$player->isFolded());
 
         $evaluator = new Evaluator();
         $this->winners = $evaluator->evaluateWinners($validPlayers);
@@ -444,98 +338,9 @@ class Game
         $this->dealerCards = new Hand();
 
         $this->dealToPlayers();
-        $this->playerBlind(3, "small blind", $this->smallBlind);
-        $this->playerBlind(2, "big blind", $this->bigBlind);
+        $this->actions->playerBlind(3, "small blind", $this->smallBlind);
+        $this->actions->playerBlind(2, "big blind", $this->bigBlind);
         $this->gameOver = false;
-    }
-
-    /**
-     * Player fold.
-     */
-    public function playerFold(int $playerIndex)
-    {
-        $player = $this->players[$playerIndex];
-        $player->setFolded(true);
-        $this->writeToLog($playerIndex, "fold");
-
-        $player->setPlayed(true);
-    }
-
-    /**
-     * Player call.
-     */
-    public function playerCall(int $playerIndex)
-    {
-        $player = $this->players[$playerIndex];
-        $callAmount = $this->currentBet - $player->getCurrentBet();
-        $callAmount = max(0, $callAmount);
-        $playerMoney = $player->getMoney();
-
-        if ($callAmount >= $playerMoney) {
-            $callAmount = $playerMoney;
-            $this->writeToLog($playerIndex, "all in (call)", $callAmount);
-        } else {
-            $this->writeToLog($playerIndex, "call", $callAmount);
-        }
-
-        $player->makeBet($callAmount);
-        $this->pot += $callAmount;
-
-        $player->setPlayed(true);
-    }
-
-    /**
-     * Player raise.
-     */
-    public function playerRaise(int $playerIndex, int $amount): void
-    {
-        $player = $this->players[$playerIndex];
-        //$handString = $player->getEvaluatedString();
-
-        $playerBet = $player->getCurrentBet();
-        $total = $this->currentBet + $amount;
-
-        $raiseAmount = $total - $playerBet;
-
-        if ($raiseAmount >= $player->getMoney()) {
-            $raiseAmount = $player->getMoney();
-            $this->writeToLog($playerIndex, "all in (raise)", $raiseAmount);
-        } else {
-            $this->writeToLog($playerIndex, "raise", $raiseAmount);
-        }
-
-        $player->makeBet($raiseAmount);
-        $this->pot += $raiseAmount;
-        $this->currentBet = max($this->currentBet, $player->getCurrentBet());
-
-        $player->setPlayed(true);
-    }
-
-    /**
-     * Player check.
-     */
-    public function playerCheck(int $playerIndex): void
-    {
-        $player = $this->players[$playerIndex];
-
-        $this->writeToLog($playerIndex, "check");
-
-        $player->setPlayed(true);
-    }
-
-    /**
-     * Put down blind
-     */
-    public function playerBlind(int $playerIndex, string $blind, int $amount): void
-    {
-
-        $player = $this->players[$playerIndex];
-        $player->makeBet($amount);
-        $this->currentBet += $amount;
-        $this->writeToLog($playerIndex, $blind, $amount);
-
-        $this->pot += $amount;
-        $player->setPlayed(true);
     }
 
     /**
@@ -564,6 +369,13 @@ class Game
 
     /**
      * Get log.
+     * @return array<int, array{
+     *  player: string,
+     *  playerIndex: int,
+     *  action: string,
+     *  amount: int|null,
+     *  optional: string|null
+     * }>
      */
     public function getLog(): array
     {
@@ -572,6 +384,7 @@ class Game
 
     /**
      * Get players.
+     * @return Player[]
      */
     public function getPlayers(): array
     {
@@ -580,14 +393,16 @@ class Game
 
     /**
      * Get player cards.
+     * @return Card[]
      */
-    public function getPlayerCards($playerIndex): array
+    public function getPlayerCards(int $playerIndex): array
     {
         return $this->players[$playerIndex]->getHand();
     }
 
     /**
      * Get dealer cards.
+     * @return Card[]
      */
     public function getDealerCards(): array
     {
@@ -658,6 +473,7 @@ class Game
 
     /**
      * Get winning player
+     * @return int[]
      */
     public function getWinner(): array
     {
@@ -717,8 +533,8 @@ class Game
         $this->currentBet = $val;
     }
 
-    public function setWinners(array $val): void
+    public function setPot(int $val): void
     {
-        $this->winners = $val;
+        $this->pot = $val;
     }
 }
