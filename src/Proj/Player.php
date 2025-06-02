@@ -66,7 +66,7 @@ class Player
 
     /**
      * Log to keep track of computer decisions.
-     * @var array<int, array<string, float|int|list<int>|string|null>>
+     * @var array<int, array<string, null|float|int|list<int>|string>>
      */
     private array $computerLog;
 
@@ -112,7 +112,7 @@ class Player
 
     /**
      * Get log of computer plays.
-     * @return array<int, array<string,float|int|list<int>|string|null>>
+     * @return array<int, array<string,null|float|int|list<int>|string>>
      */
     public function getComputerLog(): array
     {
@@ -298,7 +298,7 @@ class Player
 
     /**
      * Set entry in computer log
-     * @param array<string, float|int|list<int>|string|null> $entry
+     * @param array<string, null|float|int|list<int>|string> $entry
      */
     public function setComputerLog(array $entry): void
     {

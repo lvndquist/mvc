@@ -198,7 +198,7 @@ class Computer
             $player->setPlayed(true);
             return;
         } elseif ($score >= 2) {
-            if ($callAmount <= $player->getMoney() && $odds < 0.4 || $phase === 0) {
+            if (($callAmount <= $player->getMoney() && $odds < 0.4) || $phase === 0) {
                 $this->actions->playerCall($index);
                 $playerLogEntry["takenAction"] = "call by {$callAmount}";
                 $player->setComputerLog($playerLogEntry);

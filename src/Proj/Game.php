@@ -36,7 +36,7 @@ class Game
      *  playerIndex: int,
      *  action: string,
      *  amount: int|null,
-     *  optional: string|null
+     *  optional: null|string
      * }>
      */
     private array $playLog;
@@ -374,7 +374,7 @@ class Game
      *  playerIndex: int,
      *  action: string,
      *  amount: int|null,
-     *  optional: string|null
+     *  optional: null|string
      * }>
      */
     public function getLog(): array

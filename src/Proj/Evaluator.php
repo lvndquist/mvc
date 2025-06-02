@@ -32,8 +32,8 @@ class Evaluator
      * @return array{
      *  handString: string,
      *  score: int,
-     *  cards: Card[]
-     * }
+     *  cards: Card[],
+     *  }
      */
     public function evaluateCards(array $cards): array
     {
@@ -103,8 +103,8 @@ class Evaluator
      * @return array{
      *  handString: string,
      *  score: int,
-     *  cards: Card[]
-     * }
+     *  cards: Card[],
+     *  }
      */
     public function wrapEval(array $eval): array
     {
@@ -268,7 +268,7 @@ class Evaluator
      * @param int[] $valueCount
      * @return array{
      *  pairs: Card[],
-     *  numPairs: int
+     *  numPairs: int,
      * }
      */
     public function getPairs(array $cards, array $valueCount): array
