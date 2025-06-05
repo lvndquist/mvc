@@ -104,6 +104,8 @@ class HoldemController extends AbstractController
             "isOver" => $isOver,
             "consoleDebug" => $settings["consoleDebug"]
         ];
+
+        //$session->set("game", $game);
         return $this->render('proj/game.html.twig', $data);
     }
 

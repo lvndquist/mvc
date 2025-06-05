@@ -93,6 +93,7 @@ class Computer
 
         if ($this->game->canCheck($index)) {
             $this->smartComputerCheckOrRaise($score, $player, $playerLogEntry, $decision, $index);
+            return;
         }
         $this->smartComputerBet($score, $player, $playerLogEntry, $decision, $phase, $index);
         return;
