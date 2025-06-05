@@ -85,8 +85,13 @@ class ApiController extends AbstractController
 
     public function gamePlay(SessionInterface $session, string $action): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Failed... no game found"]);
+        }
+
         if ($game->getPlayers()[0]->isFolded()) {
             while (!$game->isOver()) {
                 $game->updateGameState();
@@ -133,8 +138,12 @@ class ApiController extends AbstractController
     #[Route("proj/api/best-hands", name: "best_hands")]
     public function getBestHands(SessionInterface $session): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Failed... no game found"]);
+        }
         $players = $game->getPlayers();
         $evaluation = [];
         foreach ($players as $player) {
@@ -167,8 +176,13 @@ class ApiController extends AbstractController
     public function playRaise(SessionInterface $session, Request $request): Response
     {
         $amount = (int) $request->request->get('amount');
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Could not raise... no game found"]);
+        }
+
         $folded = $game->getPlayers()[0]->isFolded();
         $actions = $game->getActions();
 
@@ -177,7 +191,7 @@ class ApiController extends AbstractController
             return $this->gamePlay($session, "raise");
         }
 
-        $response = new JsonResponse(["Could not call... round has finished"]);
+        $response = new JsonResponse(["Could not raise... round has finished"]);
         if ($folded) {
             $response = new JsonResponse(["You folded and cant continue"]);
         }
@@ -192,8 +206,13 @@ class ApiController extends AbstractController
     #[Route("proj/api/fold", name: "fold", methods: ["POST"])]
     public function playFold(SessionInterface $session): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Could not fold... no game found"]);
+        }
+
         $folded = $game->getPlayers()[0]->isFolded();
         $actions = $game->getActions();
 
@@ -213,8 +232,13 @@ class ApiController extends AbstractController
     #[Route("proj/api/call", name: "call", methods: ["POST"])]
     public function playCall(SessionInterface $session): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Could not call... no game found"]);
+        }
+
         $actions = $game->getActions();
         $folded = $game->getPlayers()[0]->isFolded();
 
@@ -238,8 +262,13 @@ class ApiController extends AbstractController
     #[Route("proj/api/check", name: "check", methods: ["POST"])]
     public function playCheck(SessionInterface $session): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Could not check... no game found"]);
+        }
+
         $folded = $game->getPlayers()[0]->isFolded();
         $actions = $game->getActions();
 
@@ -263,8 +292,13 @@ class ApiController extends AbstractController
     #[Route("proj/api/continue", name: "continue", methods: ["POST"])]
     public function playContinue(SessionInterface $session): Response
     {
-        /** @var Game */
+        /** @var Game|null */
         $game = $session->get("apiGame");
+
+        if (!$game) {
+            return new JsonResponse(["Could not continue... no game found"]);
+        }
+
         $folded = $game->getPlayers()[0]->isFolded();
 
         if ($game->isOver() || $folded) {

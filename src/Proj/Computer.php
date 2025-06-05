@@ -100,7 +100,8 @@ class Computer
     /**
      * @param array<string, null|float|int|list<int>|string> $playerLogEntry
      */
-    public function smartComputerCheckOrRaise(int $score, Player $player, array $playerLogEntry, int $decision, int $index): void {
+    public function smartComputerCheckOrRaise(int $score, Player $player, array $playerLogEntry, int $decision, int $index): void
+    {
         $playerLogEntry["possibility"] = "check/raise";
         if ($score === 10) {
             $amount = $player->getMoney();
@@ -151,7 +152,8 @@ class Computer
     /**
      * @param array<string, null|float|int|list<int>|string> $playerLogEntry
      */
-     public function smartComputerBet(int $score, Player $player, array $playerLogEntry, int $decision, int $phase, int $index): void {
+    public function smartComputerBet(int $score, Player $player, array $playerLogEntry, int $decision, int $phase, int $index): void
+    {
 
         // there is a bet, computer should fold, raise or call
         $callAmount = $this->game->getCurrentBet() - $player->getCurrentBet();
@@ -251,5 +253,3 @@ class Computer
     }
 
 }
-
-

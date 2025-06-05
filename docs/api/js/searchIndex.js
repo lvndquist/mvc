@@ -786,6 +786,16 @@ Search.appendIndex(
             "summary": "Smart\u0020computer\u0020play.\u0020Makes\u0020choices\u0020based\u0020on\u0020what\u0020cards\u0020are\u0020on\u0020the\u0020table\/in\u0020players\u0020hand.",
             "url": "classes/App-Proj-Computer.html#method_smartComputerPlay"
         },                {
+            "fqsen": "\\App\\Proj\\Computer\u003A\u003AsmartComputerCheckOrRaise\u0028\u0029",
+            "name": "smartComputerCheckOrRaise",
+            "summary": "",
+            "url": "classes/App-Proj-Computer.html#method_smartComputerCheckOrRaise"
+        },                {
+            "fqsen": "\\App\\Proj\\Computer\u003A\u003AsmartComputerBet\u0028\u0029",
+            "name": "smartComputerBet",
+            "summary": "",
+            "url": "classes/App-Proj-Computer.html#method_smartComputerBet"
+        },                {
             "fqsen": "\\App\\Proj\\Computer\u003A\u003A\u0024players",
             "name": "players",
             "summary": "",
